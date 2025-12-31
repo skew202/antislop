@@ -1,0 +1,72 @@
+[package]
+name = "antislop"
+version = "0.1.0"
+description = "A blazing-fast, multi-language linter for detecting AI-generated code slop"
+authors = ["Antislop Contributors"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/user/antislop"
+homepage = "https://github.com/user/antislop"
+documentation = "https://docs.rs/antislop"
+keywords = ["linter", "ai", "code-quality", "slop", "static-analysis"]
+categories = ["command-line-utilities", "development-tools", "development-tools::cargo-plugins"]
+edition = "2021"
+rust-version = "1.76"
+
+[features]
+default = ["tree-sitter", "parallel"]
+tree-sitter = ["dep:tree-sitter"]
+parallel = ["dep:rayon"]
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive", "cargo", "unicode"] }
+clap_complete = "4.5"
+globset = "0.4"
+ignore = "0.4"
+owo-colors = "4.1"
+rayon = { version = "1.10", optional = true }
+regex = "1.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dependencies.tree-sitter]
+version = "0.22"
+optional = true
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+snapbox = "0.6"
+tempfile = "3.13"
+
+[[bin]]
+name = "antislop"
+path = "src/bin/antislop.rs"
+
+[lib]
+name = "antislop"
+path = "src/lib.rs"
+
+[[bench]]
+name = "scanner"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+
+[profile.test]
+opt-level = 1
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
