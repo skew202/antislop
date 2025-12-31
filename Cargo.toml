@@ -14,8 +14,20 @@ rust-version = "1.76"
 
 [features]
 default = ["tree-sitter", "parallel"]
-tree-sitter = ["dep:tree-sitter"]
-parallel = ["dep:rayon"]
+tree-sitter = [
+    "dep:tree-sitter",
+    "tree-sitter-python",
+    "tree-sitter-javascript",
+    "tree-sitter-typescript",
+    "tree-sitter-rust",
+]
+parallel = ["rayon"]
+
+# Per-language opt-in for reduced binary size
+tree-sitter-python-only = ["dep:tree-sitter", "tree-sitter-python"]
+tree-sitter-javascript-only = ["dep:tree-sitter", "tree-sitter-javascript"]
+tree-sitter-typescript-only = ["dep:tree-sitter", "tree-sitter-typescript"]
+tree-sitter-rust-only = ["dep:tree-sitter", "tree-sitter-rust"]
 
 [dependencies]
 anyhow = "1.0"
@@ -33,9 +45,12 @@ toml = "0.8"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
-[dependencies.tree-sitter]
-version = "0.22"
-optional = true
+# Tree-sitter core and language grammars
+tree-sitter = { version = "0.26", optional = true }
+tree-sitter-python = { version = "0.25", optional = true }
+tree-sitter-javascript = { version = "0.25", optional = true }
+tree-sitter-typescript = { version = "0.23", optional = true }
+tree-sitter-rust = { version = "0.24", optional = true }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }

@@ -64,6 +64,8 @@ mod tests {
             severity: Severity::Medium,
             message: "TODO".to_string(),
             category: PatternCategory::Placeholder,
+            ast_query: None,
+            languages: vec![],
         }];
 
         let registry = PatternRegistry::new(patterns);
@@ -79,6 +81,8 @@ mod tests {
             severity: Severity::Medium,
             message: "TODO".to_string(),
             category: PatternCategory::Placeholder,
+            ast_query: None,
+            languages: vec![],
         }];
 
         let registry = PatternRegistry::new(patterns);

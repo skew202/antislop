@@ -1,0 +1,25 @@
+# AST-level slop patterns (regex cannot detect these reliably)
+# These patterns use tree-sitter queries to detect code-level slop
+
+patterns = [
+  # Python: raise NotImplementedError stub
+  { regex = "raise NotImplementedError", ast_query = "(raise_statement)", severity = "critical", message = "NotImplementedError stub detected", category = "stub", languages = ["Python"] },
+
+  # Python: pass statement (often used as stub)
+  { regex = "pass$", ast_query = "(pass_statement)", severity = "medium", message = "Function body contains only 'pass' statement", category = "stub", languages = ["Python"] },
+
+  # Python: Ellipsis stub
+  { regex = "\\.\\.\\.$", ast_query = "(expression_statement (ellipsis))", severity = "medium", message = "Ellipsis (...) used as stub placeholder", category = "stub", languages = ["Python"] },
+
+  # JavaScript/TypeScript: throw new NotImplementedError
+  { regex = "throw new (NotImplementedError|NotImplemented)", ast_query = "(throw_statement)", severity = "critical", message = "NotImplementedError stub detected", category = "stub", languages = ["JavaScript", "TypeScript"] },
+
+  # JavaScript/TypeScript: Function with only null/undefined return
+  { regex = "return (null|undefined)", ast_query = "(return_statement)", severity = "low", message = "Function returns null/undefined placeholder", category = "stub", languages = ["JavaScript", "TypeScript"] },
+
+  # Rust: todo!() macro
+  { regex = "todo!", ast_query = "(macro_invocation)", severity = "critical", message = "todo!() macro stub detected", category = "stub", languages = ["Rust"] },
+
+  # Rust: unimplemented!() macro
+  { regex = "unimplemented!", ast_query = "(macro_invocation)", severity = "critical", message = "unimplemented!() macro stub detected", category = "stub", languages = ["Rust"] },
+]

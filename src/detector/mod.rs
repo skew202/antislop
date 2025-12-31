@@ -174,7 +174,15 @@ impl Language {
     /// Returns true if tree-sitter supports this language.
     #[cfg(feature = "tree-sitter")]
     pub fn has_tree_sitter(self) -> bool {
-        false
+        matches!(
+            self,
+            Language::Python
+                | Language::JavaScript
+                | Language::Jsx
+                | Language::TypeScript
+                | Language::Tsx
+                | Language::Rust
+        )
     }
 
     /// Returns true if tree-sitter supports this language.
@@ -205,15 +213,35 @@ impl Scanner {
     /// Scan a single file.
     pub fn scan_file(&self, path: &str, content: &str) -> FileScanResult {
         let lang = Language::from_path(Path::new(path));
-        let comments = self.extract_comments(lang, content);
-        self.findings_from_comments(path, comments)
+        let mut comment_findings = self.findings_from_comments(path, lang, content);
+
+        // Also run AST-level detection if available
+        #[cfg(feature = "tree-sitter")]
+        if lang.has_tree_sitter() {
+            if let Some(mut extractor) = self::tree_sitter::get_extractor(lang) {
+                // Collect pattern references for AST detection
+                let patterns: Vec<&Pattern> = self.registry.patterns.iter().map(|p| &p.pattern).collect();
+                // Convert Vec<&Pattern> to a slice that lives long enough
+                let pattern_refs: Vec<Pattern> = patterns.iter().map(|p| (**p).clone()).collect();
+                let ast_findings = extractor.extract_ast_findings(content, &pattern_refs);
+
+                // Set file path and add to results
+                for mut finding in ast_findings {
+                    finding.file = path.to_string();
+                    comment_findings.score += finding.severity.score();
+                    comment_findings.findings.push(finding);
+                }
+            }
+        }
+
+        comment_findings
     }
 
     /// Extract comments using the best available method.
     fn extract_comments(&self, lang: Language, source: &str) -> Vec<Comment> {
         #[cfg(feature = "tree-sitter")]
         if lang.has_tree_sitter() {
-            if let Some(extractor) = self::tree_sitter::get_extractor(lang) {
+            if let Some(mut extractor) = self::tree_sitter::get_extractor(lang) {
                 return extractor.extract(source);
             }
         }
@@ -223,12 +251,19 @@ impl Scanner {
     }
 
     /// Convert comments to findings by matching patterns.
-    fn findings_from_comments(&self, path: &str, comments: Vec<Comment>) -> FileScanResult {
+    fn findings_from_comments(&self, path: &str, lang: Language, source: &str) -> FileScanResult {
         let mut findings = Vec::new();
         let mut total_score = 0u32;
 
+        let comments = self.extract_comments(lang, source);
+
         for comment in &comments {
             for pattern in &self.registry.patterns {
+                // Skip AST-only patterns for comment-based matching
+                if pattern.pattern.ast_query.is_some() {
+                    continue;
+                }
+
                 if let Some(regex) = &pattern.compiled {
                     if let Some(mat) = regex.find(&comment.content) {
                         let severity = pattern.pattern.severity.clone();
@@ -268,12 +303,16 @@ mod tests {
                 severity: Severity::Medium,
                 message: "Placeholder comment found".to_string(),
                 category: PatternCategory::Placeholder,
+                ast_query: None,
+                languages: vec![],
             },
             Pattern {
                 regex: "(?i)for now".to_string(),
                 severity: Severity::Low,
                 message: "Deferral phrase detected".to_string(),
                 category: PatternCategory::Deferral,
+                ast_query: None,
+                languages: vec![],
             },
         ]
     }
@@ -282,9 +321,9 @@ mod tests {
     fn test_scan_file_findings() {
         let scanner = Scanner::new(test_patterns()).unwrap();
         let code = r#"
-// TODO: implement this later
-// This is fine
-// for now we'll do it this way
+# TODO: implement this later
+# This is fine
+# for now we'll do it this way
 "#;
         let result = scanner.scan_file("test.py", code);
         assert_eq!(result.findings.len(), 2);
@@ -295,7 +334,7 @@ mod tests {
     #[test]
     fn test_score_calculation() {
         let scanner = Scanner::new(test_patterns()).unwrap();
-        let code = "// TODO: fix this // for now we do this";
+        let code = "# TODO: fix this # for now we do this";
         let result = scanner.scan_file("test.py", code);
         assert_eq!(result.score, 6);
     }

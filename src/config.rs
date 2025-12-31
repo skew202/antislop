@@ -30,6 +30,7 @@ impl PatternsDirectory {
                 ("deferral", include_str!("../config/patterns/deferral.toml")),
                 ("hedging", include_str!("../config/patterns/hedging.toml")),
                 ("stub", include_str!("../config/patterns/stub.toml")),
+                ("ast", include_str!("../config/patterns/ast.toml")),
             ],
         }
     }
@@ -132,6 +133,14 @@ pub struct Pattern {
     /// Category of slop this pattern detects.
     #[serde(default)]
     pub category: PatternCategory,
+    /// Optional tree-sitter query for AST-level detection.
+    /// If provided, this pattern uses AST queries instead of regex.
+    #[serde(default)]
+    pub ast_query: Option<String>,
+    /// Languages this AST query applies to (e.g., ["Python", "JavaScript"]).
+    /// Only used when ast_query is set.
+    #[serde(default)]
+    pub languages: Vec<String>,
 }
 
 /// Main configuration structure.
