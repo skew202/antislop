@@ -1,0 +1,114 @@
+# Placeholder patterns
+# These detect untracked work markers like TODO, FIXME, HACK, XXX
+
+# Classic self-admitted technical debt markers
+[[patterns]]
+regex = "(?i)TODO:"
+severity = "medium"
+message = "Placeholder comment: untracked TODO found"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)FIXME:"
+severity = "medium"
+message = "Placeholder comment: FIXME indicates incomplete work"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)HACK:"
+severity = "high"
+message = "Placeholder comment: HACK indicates poor solution"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)XXX"
+severity = "high"
+message = "Critical marker: XXX indicates urgent problems"
+category = "placeholder"
+
+# Documentation/reminder anti-patterns
+[[patterns]]
+regex = "(?i)NOTE:.*(important|reminder)"
+severity = "low"
+message = "Unnecessary NOTE comment (code should be self-documenting)"
+category = "placeholder"
+
+# Review markers
+[[patterns]]
+regex = "(?i)REVIEW:"
+severity = "low"
+message = "Review marker: code marked for review but not resolved"
+category = "placeholder"
+
+# Work tracking markers
+[[patterns]]
+regex = "(?i)BUG:"
+severity = "medium"
+message = "BUG marker: known issue documented but not fixed"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)ISSUE:#?\\d+"
+severity = "low"
+message = "Issue reference: code references unresolved issue"
+category = "placeholder"
+
+# Cleanup markers
+[[patterns]]
+regex = "(?i)CLEANUP:"
+severity = "medium"
+message = "Cleanup marker: technical debt acknowledged but not addressed"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)REFACTOR:"
+severity = "low"
+message = "Refactor marker: code identified as needing refactoring"
+category = "placeholder"
+
+# Legacy markers
+[[patterns]]
+regex = "(?i)LEGACY:"
+severity = "low"
+message = "Legacy marker: old code marked as such but not modernized"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)DEPRECATED:"
+severity = "medium"
+message = "Deprecated marker: code marked obsolete but not removed"
+category = "placeholder"
+
+# Meta-commentary
+[[patterns]]
+regex = "(?i)THIS IS A "
+severity = "low"
+message = "Meta-comment: unnecessary description of what code is"
+category = "placeholder"
+
+# Redundant comments (from sloppylint noise.py)
+[[patterns]]
+regex = "(?i)#\\s*(increment|decrement|set|assign|return|get|initialize|init|create)\\s+\\w+\\s*$"
+severity = "low"
+message = "Noise: redundant comment restating obvious code"
+category = "placeholder"
+
+# Empty/generic docstrings (from sloppylint noise.py)
+[[patterns]]
+regex = "(?i)\"\"\"(\\s*|\\s*TODO.*|\\s*FIXME.*|\\s*pass\\s*|\\s*\\.\\.\\.\\s*)\"\"\""
+severity = "medium"
+message = "Noise: empty or placeholder docstring"
+category = "placeholder"
+
+[[patterns]]
+regex = "(?i)\"\"\"This (function|method|class) (does|is|handles?|returns?|takes?) (stuff|things|something|it|the)\\.?\"\"\""
+severity = "low"
+message = "Noise: generic docstring provides no useful information"
+category = "placeholder"
+
+# Changelog comments (from sloppylint noise.py)
+[[patterns]]
+regex = "(?i)#\\s*v?\\d+\\.\\d+.*[-:].*\\b(added|fixed|changed|removed|updated)\\b"
+severity = "low"
+message = "Noise: version history belongs in git commits, not code comments"
+category = "placeholder"

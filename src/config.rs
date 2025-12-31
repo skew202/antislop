@@ -10,6 +10,62 @@ use std::path::Path;
 
 const DEFAULT_CONFIG_TOML: &str = include_str!("../config/default.toml");
 
+/// Embedded pattern definitions.
+///
+/// Patterns are stored as individual files in config/patterns/ and embedded at compile time.
+/// This allows for easy maintenance while keeping zero runtime dependency on external files.
+const PATTERNS_DIR: PatternsDirectory = PatternsDirectory::new();
+
+/// Directory of embedded pattern files.
+struct PatternsDirectory {
+    files: &'static [(&'static str, &'static str)],
+}
+
+impl PatternsDirectory {
+    /// Create a new patterns directory with all embedded pattern files.
+    const fn new() -> Self {
+        Self {
+            files: &[
+                ("placeholder", include_str!("../config/patterns/placeholder.toml")),
+                ("deferral", include_str!("../config/patterns/deferral.toml")),
+                ("hedging", include_str!("../config/patterns/hedging.toml")),
+                ("stub", include_str!("../config/patterns/stub.toml")),
+            ],
+        }
+    }
+
+    /// Load all patterns from embedded files.
+    fn load_patterns(&self) -> Vec<Pattern> {
+        let mut all_patterns = Vec::new();
+
+        for (name, content) in self.files {
+            match self.parse_file(content) {
+                Ok(mut patterns) => {
+                    all_patterns.append(&mut patterns);
+                }
+                Err(e) => {
+                    eprintln!("Warning: Failed to parse embedded patterns '{}': {}", name, e);
+                }
+            }
+        }
+
+        all_patterns
+    }
+
+    /// Parse patterns from a single TOML file.
+    fn parse_file(&self, content: &str) -> Result<Vec<Pattern>> {
+        let parsed: PatternFile = toml::from_str(content)
+            .map_err(|e| Error::Config(format!("Parse error in pattern file: {}", e)))?;
+        Ok(parsed.patterns)
+    }
+}
+
+/// Pattern file structure (TOML).
+#[derive(Debug, Deserialize)]
+struct PatternFile {
+    patterns: Vec<Pattern>,
+}
+
 /// Severity level for a slop finding.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, Default)]
 #[serde(rename_all = "lowercase")]
@@ -114,7 +170,11 @@ fn default_max_file_size() -> u64 {
 
 impl Default for Config {
     fn default() -> Self {
-        toml::from_str(DEFAULT_CONFIG_TOML).expect("default config must be valid")
+        let mut base: Config = toml::from_str(DEFAULT_CONFIG_TOML)
+            .expect("default config must be valid");
+        // Load patterns from embedded pattern files
+        base.patterns = PATTERNS_DIR.load_patterns();
+        base
     }
 }
 
@@ -180,6 +240,8 @@ mod tests {
     #[test]
     fn test_validate_patterns() {
         let config = Config::default();
-        assert!(config.validate_patterns().is_ok());
+        if let Err(e) = config.validate_patterns() {
+            panic!("Pattern validation failed: {}", e);
+        }
     }
 }

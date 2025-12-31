@@ -6,7 +6,7 @@ Currently only the latest version of Antislop is supported.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please send an email to security@antislop.dev.
+If you discover a security vulnerability, please send an email to skew202+security@gmail.com.
 
 Include:
 - Description of the vulnerability

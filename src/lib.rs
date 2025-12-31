@@ -11,8 +11,10 @@
 //! use antislop::{Config, Scanner};
 //!
 //! let config = Config::default();
-//! let scanner = Scanner::new(config.patterns)?;
-//! let result = scanner.scan_file("path/to/file.py", &content);
+//! let scanner = Scanner::new(config.patterns).unwrap();
+//! let content = "def foo():\n    # TODO: implement\n    pass\n";
+//! let result = scanner.scan_file("example.py", content);
+//! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 //!
 //! ## Slop Categories

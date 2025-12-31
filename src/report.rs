@@ -120,12 +120,25 @@ impl Reporter {
 
         writeln!(
             handle,
-            "{}{}:{}:{}: {} {}",
-            reset, finding.file.cyan(),
+            "{}{}:{}:{}: ",
+            reset,
+            finding.file.cyan(),
             finding.line.to_string().dimmed(),
-            finding.column.to_string().dimmed(),
-            format!("{}{}{}", severity_color(&finding.severity), finding.severity.as_str(), reset),
-            format!("{}[{}]{}", category_color(&finding.category), format!("{:?}", finding.category).to_lowercase(), reset)
+            finding.column.to_string().dimmed()
+        )?;
+        write!(
+            handle,
+            "{}{}{} ",
+            severity_color(&finding.severity),
+            finding.severity.as_str(),
+            reset
+        )?;
+        writeln!(
+            handle,
+            "{}[{}]{}",
+            category_color(&finding.category),
+            format!("{:?}", finding.category).to_lowercase(),
+            reset
         )?;
 
         writeln!(
@@ -187,7 +200,7 @@ impl Reporter {
                         Severity::High => "\x1b[31;1m",
                         Severity::Critical => "\x1b[91;4;1m",
                     };
-                    write!(handle, "{}{} {} {}", color, count, severity.as_str(), "\x1b[0m")?;
+                    write!(handle, "{}{} {} \x1b[0m", color, count, severity.as_str())?;
                 }
             }
             writeln!(handle)?;
@@ -209,7 +222,7 @@ impl Reporter {
                         PatternCategory::Deferral => "\x1b[95m",
                         PatternCategory::Hedging => "\x1b[93m",
                     };
-                    write!(handle, "{}{} {} {}", color, count, format!("{:?}", category).to_lowercase(), "\x1b[0m")?;
+                    write!(handle, "{}{} {} \x1b[0m", color, count, format!("{:?}", category).to_lowercase())?;
                 }
             }
             writeln!(handle)?;

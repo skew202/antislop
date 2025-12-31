@@ -94,3 +94,7 @@ Begin by outputting:
 This project must be ready to ship to crates.io and attract contributors on day one. No compromises.
 
 Start now.
+
+---
+
+@examples/ and @languages folder are empty except @examples/sloppy_code.py - we want more languages: js, ts, rust, java, c++, c#, perl, go, kotlin, fortran, r, php, swift, ruby, lua, haskel, scala

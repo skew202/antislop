@@ -1,0 +1,221 @@
+# Stub patterns
+# These detect placeholder implementations and missing functionality
+
+# Explicit stub/placeholder markers
+[[patterns]]
+regex = "(?i)placeholder|stub"
+severity = "medium"
+message = "Stub indicator: placeholder code instead of implementation"
+category = "stub"
+
+# Not implemented variations
+[[patterns]]
+regex = "(?i)not implemented|unimplemented"
+severity = "critical"
+message = "Stub: explicitly unimplemented code"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)not.?implement"
+severity = "critical"
+message = "Stub: code explicitly not implemented"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)unimplement"
+severity = "critical"
+message = "Stub: unimplemented marker"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)\\bnot impl\\b"
+severity = "critical"
+message = "Stub: abbreviated 'not implemented'"
+category = "stub"
+
+# NotImplementedError patterns (Python etc)
+[[patterns]]
+regex = "(?i)raise NotImplementedError"
+severity = "critical"
+message = "Stub: NotImplementedError raised instead of implementation"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)NotImplementedError\\(\\)"
+severity = "critical"
+message = "Stub: NotImplementedError exception"
+category = "stub"
+
+# TODO/FIXME implementations (stubs disguised as tasks)
+[[patterns]]
+regex = "(?i)TODO: implement"
+severity = "high"
+message = "Stub: TODO with explicit implementation note"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)FIXME: implement"
+severity = "high"
+message = "Stub: FIXME with explicit implementation note"
+category = "stub"
+
+# To-do / to-be-done
+[[patterns]]
+regex = "(?i)to.?be.?implement"
+severity = "high"
+message = "Stub: future implementation marker"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)to.?do:? implement"
+severity = "high"
+message = "Stub: TODO implementation marker"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)needs.?implement"
+severity = "high"
+message = "Stub: implementation needed marker"
+category = "stub"
+
+# Missing logic
+[[patterns]]
+regex = "(?i)missing logic"
+severity = "high"
+message = "Stub: missing logic documented"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)logic.*to.?be.?add"
+severity = "high"
+message = "Stub: logic to be added"
+category = "stub"
+
+# Empty function warnings
+[[patterns]]
+regex = "(?i)empty.*function|function.*empty"
+severity = "medium"
+message = "Stub: empty function mentioned"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)nothing.*here|nothing.*yet"
+severity = "medium"
+message = "Stub: function emptiness indicator"
+category = "stub"
+
+# Pass statement (Python)
+[[patterns]]
+regex = "(?i)pass.*#.*implement"
+severity = "high"
+message = "Stub: pass statement with implementation note"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)pass.*#.*TODO"
+severity = "high"
+message = "Stub: pass statement with TODO"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)pass.*#.*FIXME"
+severity = "high"
+message = "Stub: pass statement with FIXME"
+category = "stub"
+
+# Ellipsis placeholder
+[[patterns]]
+regex = "(?i)\\.{3,}.*implement"
+severity = "high"
+message = "Stub: ellipsis placeholder"
+category = "stub"
+
+# Abstract method markers
+[[patterns]]
+regex = "(?i)abstract.*method"
+severity = "medium"
+message = "Stub: abstract method without implementation"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)subclass.*implement"
+severity = "medium"
+message = "Stub: implementation deferred to subclass"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)override.*implement"
+severity = "low"
+message = "Stub: implementation requires override"
+category = "stub"
+
+# Dummy/fake implementations
+[[patterns]]
+regex = "(?i)dummy.*valu"
+severity = "medium"
+message = "Stub: dummy value instead of real value"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)fake.*data"
+severity = "medium"
+message = "Stub: fake data in implementation"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)mock.*data"
+severity = "medium"
+message = "Stub: mock data in production code"
+category = "stub"
+
+# Hardcoded placeholder values
+[[patterns]]
+regex = "(?i)hardcoded.*valu"
+severity = "medium"
+message = "Stub: hardcoded placeholder value"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)magic number"
+severity = "low"
+message = "Stub: magic number warning"
+category = "stub"
+
+# Incomplete implementations
+[[patterns]]
+regex = "(?i)incomplete"
+severity = "high"
+message = "Stub: explicitly incomplete implementation"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)partial implement"
+severity = "high"
+message = "Stub: partial implementation"
+category = "stub"
+
+# Fallback behavior
+[[patterns]]
+regex = "(?i)fallback.*implement"
+severity = "low"
+message = "Stub: fallback implementation warning"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)default implement"
+severity = "low"
+message = "Stub: default implementation placeholder"
+category = "stub"
+
+# Example/template code
+[[patterns]]
+regex = "(?i)example.*implement"
+severity = "medium"
+message = "Stub: example implementation in production"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)template.*code"
+severity = "medium"
+message = "Stub: template code not customized"
+category = "stub"
