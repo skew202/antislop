@@ -14,12 +14,11 @@ fn antislop_bin() -> String {
     // Fallback: look in target/debug
     let path = std::path::PathBuf::from("target/debug/antislop");
     if !path.exists() {
-        // Build it first
+        // Build it first (use correct manifest path)
         let status = Command::new("cargo")
-            .args(["build", "--quiet"])
-            .current_dir("..")
+            .args(["build", "--quiet", "--bin", "antislop"])
             .status()
-            .expect("Failed to build antislop");
+            .expect("Failed to invoke cargo build");
         assert!(
             status.success(),
             "Failed to build antislop for integration tests"
