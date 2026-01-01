@@ -1,0 +1,54 @@
+{
+  "packages": {
+    ".": {
+      "component": "core",
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "cargo",
+          "path": "Cargo.toml"
+        },
+        {
+          "type": "cargo",
+          "path": "crates/antislop-lsp/Cargo.toml"
+        },
+        {
+          "type": "toml",
+          "path": "Cargo.toml",
+          "xpath": "workspace.dependencies.antislop"
+        }
+      ]
+    },
+    "packages/antislop": {
+      "component": "npm",
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "packages/antislop/package.json"
+        },
+        {
+          "type": "text",
+          "path": "packages/antislop/install.js",
+          "match": "const VERSION = \"[^\"]+\"",
+          "replace": "const VERSION = \"${version}\""
+        }
+      ]
+    }
+  },
+  "release-type": "rust",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "chore", "section": "Miscellaneous", "hidden": true },
+    { "type": "docs", "section": "Documentation" },
+    { "type": "perf", "section": "Performance" },
+    { "type": "refactor", "section": "Refactor", "hidden": true },
+    { "type": "style", "section": "Styling", "hidden": true },
+    { "type": "test", "section": "Tests" },
+    { "type": "ci", "section": "CI", "hidden": true }
+  ],
+  "pull-request-title-pattern": "chore: release ${version}",
+  "separate-pull-requests": false,
+  "versioning": "default"
+}

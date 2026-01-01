@@ -1,0 +1,30 @@
+name: Dist
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*"
+  pull_request:
+
+jobs:
+  # Build and upload artifacts using cargo-dist
+  build-release:
+    name: dist
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run cargo-dist
+        uses: axodotdev/cargo-dist-action@v0.14.1
+        with:
+          dist-version: 0.14.1
