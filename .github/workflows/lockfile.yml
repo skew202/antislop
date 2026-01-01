@@ -24,7 +24,7 @@ jobs:
         run: cargo update
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           title: "chore: update Cargo.lock"
           body: "Automated update of Cargo.lock to latest compatible dependency versions."
