@@ -13,8 +13,8 @@ build-dir = "book"
 [output.html]
 default-theme = "ayu"
 preferred-dark-theme = "ayu"
-git-repository-url = "https://github.com/user/antislop"
-edit-url-template = "https://github.com/user/antislop/edit/main/docs/{path}"
+git-repository-url = "https://github.com/skew202/antislop"
+edit-url-template = "https://github.com/skew202/antislop/edit/main/docs/{path}"
 
 [output.html.search]
 limit-results = 30
