@@ -61,9 +61,9 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # Tree-sitter core and language grammars
-tree-sitter = { version = "0.24.5", optional = true }
-tree-sitter-python = { version = "0.23.4", optional = true } # Python 0.23
-tree-sitter-javascript = { version = "0.23.0", optional = true }
+tree-sitter = { version = "0.24", optional = true }
+tree-sitter-python = { version = "0.23", optional = true }
+tree-sitter-javascript = { version = "0.23", optional = true }
 tree-sitter-typescript = { version = "0.23", optional = true }
 tree-sitter-rust = { version = "0.23", optional = true }
 tree-sitter-go = { version = "0.23", optional = true }
@@ -73,12 +73,9 @@ tree-sitter-c-sharp = { version = "0.23", optional = true }
 tree-sitter-php = { version = "0.23", optional = true }
 tree-sitter-ruby = { version = "0.23", optional = true }
 tree-sitter-haskell = { version = "0.23", optional = true }
-tree-sitter-kotlin = { version = "0.3", optional = true }
 tree-sitter-lua = { version = "0.2", optional = true }
-# tree-sitter-perl = { version = "1.1", optional = true } # Conflict: requires tree-sitter 0.26
-# tree-sitter-r = { version = "1.0", optional = true } # Suspected conflict
 tree-sitter-scala = { version = "0.23", optional = true }
-# tree-sitter-swift = { version = "0.6", optional = true } # Suspected conflict
+# Note: kotlin, perl, r, swift have tree-sitter version conflicts and are disabled
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
