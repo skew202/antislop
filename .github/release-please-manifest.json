@@ -1,1 +1,5 @@
-{}
+{
+  ".": "0.2.0",
+  "packages/antislop": "0.2.0",
+  "editors/vscode": "0.2.0"
+}
