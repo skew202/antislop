@@ -1,9 +1,8 @@
 FROM rust:1.85 AS builder
 WORKDIR /usr/src/antislop
 
-# Copy manifests first for better caching
-COPY Cargo.toml Cargo.lock ./
-COPY crates ./crates
+# Copy source
+COPY . .
 
 # Build release binary
 RUN cargo build --release
