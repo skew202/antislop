@@ -28,12 +28,6 @@
         {
           "type": "json",
           "path": "packages/antislop/package.json"
-        },
-        {
-          "type": "text",
-          "path": "packages/antislop/install.js",
-          "match": "const VERSION = \"[^\"]+\"",
-          "replace": "const VERSION = \"${version}\""
         }
       ]
     },
