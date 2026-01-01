@@ -13,7 +13,7 @@ COPY src ./src
 RUN cargo build --release && strip /usr/src/antislop/target/release/antislop
 
 # Runtime stage - minimal attack surface
-FROM debian:bookworm-slim@sha256:8a20f05f59b0d16c43fe97c82afc718453ca57cbac5b1db1f1a568eeb7b4d0f6 AS runtime
+FROM debian:bookworm-slim AS runtime
 
 # Install only runtime dependencies
 RUN apt-get update && \
