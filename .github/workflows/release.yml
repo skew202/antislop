@@ -1,35 +1,55 @@
 name: Release
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
-      - 'v*'
-
-permissions:
-  contents: read
+      - "v*"
+  pull_request:
 
 jobs:
-  create-release:
-    name: Create Release
+  # Determine the release version and generate changelog using git-cliff
+  changelog:
+    name: Generate Changelog
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      release_body: ${{ steps.git-cliff.outputs.content }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Generate Changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: -vv --latest --strip header
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+  # Build and upload artifacts using cargo-dist
+  build-release:
+    name: dist
+    needs: [changelog]
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Run cargo-dist
+        uses: axodotdev/cargo-dist-action@v0.14.1
         with:
-          toolchain: stable
-
-      - name: Install cargo-release
-        run: cargo install cargo-release
-
-      - name: Run cargo release
-        run: cargo release --execute --no-confirm
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          dist-version: 0.14.1
+          release-notes: ${{ needs.changelog.outputs.release_body }}

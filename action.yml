@@ -1,0 +1,21 @@
+name: "antislop"
+description: "Available AI-generated code slop detection"
+branding:
+  icon: "code"
+  color: "red"
+inputs:
+  args:
+    description: "Arguments passed to antislop"
+    required: false
+    default: "."
+runs:
+  using: "composite"
+  steps:
+    - name: Install antislop
+      shell: bash
+      run: |
+        curl --proto '=https' --tlsv1.2 -LsSf https://github.com/skew202/antislop/releases/latest/download/antislop-installer.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    - name: Run antislop
+      shell: bash
+      run: antislop ${{ inputs.args }}
