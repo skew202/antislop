@@ -1,0 +1,21 @@
+{
+  "name": "antislop",
+  "version": "0.1.0",
+  "description": "A blazing-fast, multi-language linter for detecting AI-generated code slop",
+  "bin": {
+    "antislop": "bin/antislop"
+  },
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skew202/antislop.git"
+  },
+  "author": "Antislop Contributors",
+  "license": "MIT OR Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/skew202/antislop/issues"
+  },
+  "homepage": "https://github.com/skew202/antislop#readme"
+}

@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const { spawn } = require('child_process');
+const path = require('path');
+const os = require('os');
+
+const binPath = path.join(__dirname, 'bin', os.platform() === 'win32' ? 'antislop.exe' : 'antislop');
+
+const child = spawn(binPath, process.argv.slice(2), {
+  stdio: 'inherit'
+});
+
+child.on('close', (code) => {
+  process.exit(code);
+});
