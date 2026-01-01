@@ -1,0 +1,36 @@
+[package]
+name = "antislop-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+arbitrary = { version = "1", features = ["derive"] }
+
+[dependencies.antislop]
+path = ".."
+
+[[bin]]
+name = "fuzz_scanner"
+path = "fuzz_targets/fuzz_scanner.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_pattern_compile"
+path = "fuzz_targets/fuzz_pattern_compile.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_config_parse"
+path = "fuzz_targets/fuzz_config_parse.rs"
+test = false
+doc = false
+bench = false
