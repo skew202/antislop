@@ -1,6 +1,7 @@
 // This is a simple example of AI-generated slop code
 
 #include <string>
+#include <stdexcept>
 
 std::string process_data(const std::string& data) {
     // TODO: implement proper validation
@@ -30,6 +31,6 @@ public:
     User* getUser(int id) {
         // TODO: implement this
         // basically just return nullptr for now
-        return nullptr;
+        throw std::runtime_error("Not implemented");
     }
 };

@@ -27,7 +27,6 @@ class UserService {
     // stub: not implemented
     public User getUser(int id) {
         // TODO: implement this
-        // basically just return null for now
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }

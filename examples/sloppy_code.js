@@ -1,35 +1,21 @@
-// This is a simple example of AI-generated slop code
+// Example JavaScript code with detected AI shortcuts
 
-function processData(data) {
-    // TODO: implement proper validation
-    // for now we just return the data
-    let result = data;
+function processUser(user) {
+    if (!user) return false;
 
-    // This is a quick implementation for testing
-    // hopefully this works correctly
-    if (data) {
-        // temporary hack to fix the issue
-        result = data.trim();
+    try {
+        saveUser(user);
+    } catch (e) {
+        // empty catch - "make it run"
     }
 
-    // FIXME: add error handling later
-    // in a real world scenario we would use a proper parser
-    return result;
+    // TODO: add actual validation
+    return true;
 }
 
-// TODO: add more functions
-// TODO: write tests
-// NOTE: this is important - remember to refactor
+function saveUser(u) {
+    // lazy deep clone shortcut
+    const copy = JSON.parse(JSON.stringify(u));
 
-class UserService {
-    constructor() {
-        // stub: not implemented
-        this.users = [];
-    }
-
-    getUser(id) {
-        // TODO: implement this
-        // basically just return null for now
-        return null;
-    }
+    // console.log("saved", copy);
 }

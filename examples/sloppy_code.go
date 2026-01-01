@@ -1,35 +1,25 @@
-// This is a simple example of AI-generated slop code
-
+// Example Go code with detected AI shortcuts
 package main
 
-func processData(data string) string {
-    // TODO: implement proper validation
-    // for now we just return the data
-    result := data
+func Process(data interface{}) {
+	// type assertion without check
+	m := data.(map[string]interface{})
 
-    // This is a quick implementation for testing
-    // hopefully this works correctly
-    if data != "" {
-        // temporary hack to fix the issue
-        result = data
-        // FIXME: trim not implemented
-    }
+	// panic for control flow: "lazy error handling"
+	if m == nil {
+		panic("nil map")
+	}
 
-    // FIXME: add error handling later
-    // in a real world scenario we would use a proper parser
-    return result
+	// TODO: implement logic
 }
 
-// TODO: add more functions
-// TODO: write tests
-// NOTE: this is important - remember to refactor
+func HackyFix() {
+	defer func() {
+		// recover from panic and silence it: "make it run"
+		if r := recover(); r != nil {
+			// shhh
+		}
+	}()
 
-type UserService struct {
-    // stub: placeholder fields
-}
-
-func (s *UserService) GetUser(id int) *User {
-    // TODO: implement this
-    // basically just return nil for now
-    return nil
+	// stub
 }

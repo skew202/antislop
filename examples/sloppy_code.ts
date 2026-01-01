@@ -1,43 +1,31 @@
-// This is a simple example of AI-generated slop code
+// Example TypeScript code with detected AI shortcuts
 
-interface User {
-    id: number;
-    name: string;
+// @ts-ignore - "I don't want to fix these types"
+const DEBUG = true;
+
+// "any" type defeats the purpose of TS
+function mapData(input: any[]): any[] {
+    return input.map(item => {
+        // simple hack
+        if (item == "skip") return null;
+
+        // unimplemented logic
+        // TODO: handle complex objects
+
+        return item;
+    });
 }
 
-function processData(data: string): string {
-    // TODO: implement proper validation
-    // for now we just return the data
-    let result: string = data;
+class Service {
+    // Public field without types
+    config: any;
 
-    // This is a quick implementation for testing
-    // hopefully this works correctly
-    if (data) {
-        // temporary hack to fix the issue
-        result = data.trim();
+    constructor() {
+        this.config = {};
     }
 
-    // FIXME: add error handling later
-    // in a real world scenario we would use a proper parser
-    return result;
-}
-
-// TODO: add more functions
-// TODO: write tests
-// NOTE: this is important - remember to refactor
-
-class UserService {
-    private users: User[] = [];
-
-    getUser(id: number): User | null {
-        // TODO: implement this
-        // basically just return null for now
-        return null;
-    }
-
-    // stub: placeholder implementation
-    updateUser(user: User): void {
-        // not implemented
-        throw new Error("not implemented");
+    connect() {
+        // "should work" - hedging
+        // hopefully this connects
     }
 }
