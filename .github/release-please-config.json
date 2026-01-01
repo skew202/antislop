@@ -5,12 +5,14 @@
       "include-component-in-tag": false,
       "extra-files": [
         {
-          "type": "cargo",
-          "path": "Cargo.toml"
+          "type": "toml",
+          "path": "Cargo.toml",
+          "xpath": "package.version"
         },
         {
-          "type": "cargo",
-          "path": "crates/antislop-lsp/Cargo.toml"
+          "type": "toml",
+          "path": "crates/antislop-lsp/Cargo.toml",
+          "xpath": "package.version"
         },
         {
           "type": "toml",

@@ -8,6 +8,8 @@ COPY Cargo.toml Cargo.lock ./
 # Copy source code
 COPY crates ./crates
 COPY src ./src
+COPY benches ./benches
+COPY config ./config
 
 # Build release binary
 RUN cargo build --release && strip /usr/src/antislop/target/release/antislop

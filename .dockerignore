@@ -27,7 +27,6 @@ dist.toml
 
 # Development/Testing (not needed in container)
 tests/
-benches/
 examples/
 fuzz/
 scripts/
@@ -56,4 +55,3 @@ yarn.lock
 *.log
 .env
 .env.*
-Cargo.lock
