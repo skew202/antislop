@@ -7,14 +7,17 @@ db-urls = ["https://github.com/rustsec/advisory-db"]
 allow = [
     "MIT",
     "Apache-2.0",
-    "Unicode-DFS-2016",
     "BSD-2-Clause",
     "BSD-3-Clause",
-    "ISC",
-    "CC0-1.0",
     "Unlicense",
 ]
 confidence-threshold = 0.8
+
+# The following licenses are defined but not currently used in dependencies
+# Uncomment if needed in the future:
+# - Unicode-DFS-2016
+# - ISC
+# - CC0-1.0
 
 [bans]
 multiple-versions = "warn"
@@ -23,9 +26,8 @@ highlight = "all"
 
 # Allow specific duplicate transitive dependencies (common in Rust ecosystem)
 skip = [
-    { crate = "thiserror-impl", reason = "transitive dependency of thiserror, has multiple versions" },
-    { crate = "syn", reason = "common proc-macro dependency, has multiple versions" },
-    { crate = "serde_json", reason = "common dependency, has multiple versions" },
+    { crate = "syn", reason = "syn 1.x and 2.x are both commonly used" },
+    { crate = "serde_core", reason = "internal serde implementation detail, appears multiple times" },
 ]
 
 [sources]
