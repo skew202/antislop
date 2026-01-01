@@ -109,12 +109,23 @@ mod tests {
         let temp = TempDir::new().unwrap();
         let dir = temp.path();
 
-        File::create(dir.join("test.rs")).unwrap().write_all(b"fn main() {}").unwrap();
-        File::create(dir.join("test.py")).unwrap().write_all(b"print('hi')").unwrap();
-        File::create(dir.join("test.txt")).unwrap().write_all(b"ignore me").unwrap();
+        File::create(dir.join("test.rs"))
+            .unwrap()
+            .write_all(b"fn main() {}")
+            .unwrap();
+        File::create(dir.join("test.py"))
+            .unwrap()
+            .write_all(b"print('hi')")
+            .unwrap();
+        File::create(dir.join("test.txt"))
+            .unwrap()
+            .write_all(b"ignore me")
+            .unwrap();
 
-        let mut config = Config::default();
-        config.file_extensions = vec![".rs".to_string()];
+        let config = Config {
+            file_extensions: vec![".rs".to_string()],
+            ..Default::default()
+        };
 
         let walker = Walker::new(&config);
         let files = walker.walk(&[dir.to_path_buf()]);
@@ -127,11 +138,14 @@ mod tests {
     fn test_single_file() {
         let temp = TempDir::new().unwrap();
         let file = temp.path().join("test.rs");
-        File::create(&file).unwrap().write_all(b"fn main() {}").unwrap();
+        File::create(&file)
+            .unwrap()
+            .write_all(b"fn main() {}")
+            .unwrap();
 
         let config = Config::default();
         let walker = Walker::new(&config);
-        let files = walker.walk(&[file.clone()]);
+        let files = walker.walk(std::slice::from_ref(&file));
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].path, file);

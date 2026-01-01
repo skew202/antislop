@@ -24,8 +24,7 @@ impl PatternRegistry {
         let compiled: Result<Vec<CompiledPattern>> = patterns
             .into_iter()
             .map(|p| {
-                let compiled = Regex::new(&p.regex)
-                    .map_err(|e| Error::Regex(p.regex.clone(), e.to_string()))?;
+                let compiled = Regex::new(&p.regex).map_err(Error::Regex)?;
                 Ok(CompiledPattern {
                     compiled: Some(compiled),
                     pattern: p,
@@ -55,12 +54,12 @@ impl PatternRegistry {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::PatternCategory;
+    use crate::config::{PatternCategory, RegexPattern};
 
     #[test]
     fn test_registry_creation() {
         let patterns = vec![Pattern {
-            regex: "(?i)TODO:".to_string(),
+            regex: RegexPattern::new("(?i)TODO:".to_string()).unwrap(),
             severity: Severity::Medium,
             message: "TODO".to_string(),
             category: PatternCategory::Placeholder,
@@ -76,16 +75,9 @@ mod tests {
 
     #[test]
     fn test_invalid_regex() {
-        let patterns = vec![Pattern {
-            regex: "(?i)TODO:".to_string(),
-            severity: Severity::Medium,
-            message: "TODO".to_string(),
-            category: PatternCategory::Placeholder,
-            ast_query: None,
-            languages: vec![],
-        }];
-
-        let registry = PatternRegistry::new(patterns);
-        assert!(registry.is_ok());
+        // RegexPattern prevents creation of invalid regex.
+        // So we test RegexPattern::new failure.
+        let result = RegexPattern::new("(?i)TODO:(".to_string());
+        assert!(result.is_err());
     }
 }

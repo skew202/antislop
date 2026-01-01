@@ -2,8 +2,8 @@
 //!
 //! A blazing-fast, multi-language linter for detecting AI-generated code slop.
 
-use anyhow::{Context, Result};
 use antislop::{Config, Format, Reporter, Scanner, Walker, CONFIG_FILES, VERSION};
+use anyhow::{Context, Result};
 use clap::{CommandFactory, Parser};
 use clap_complete::{generate, Shell};
 use std::fs;
@@ -50,6 +50,10 @@ struct Args {
     #[arg(long)]
     list_languages: bool,
 
+    /// Output format (human, json, sarif)
+    #[arg(long, value_name = "FORMAT")]
+    format: Option<String>,
+
     /// Print default configuration
     #[arg(long)]
     print_config: bool,
@@ -82,29 +86,34 @@ fn main() -> Result<()> {
     }
     config.max_file_size_kb = args.max_size;
 
-    config.validate_patterns()
+    config
+        .validate_patterns()
         .context("Invalid pattern in configuration")?;
 
-    let scanner = Scanner::new(config.patterns.clone())
-        .context("Failed to initialize scanner")?;
+    let scanner = Scanner::new(config.patterns.clone()).context("Failed to initialize scanner")?;
 
     let walker = Walker::new(&config);
     let entries = walker.walk(&args.paths);
 
     if entries.is_empty() {
         eprintln!("No files found to scan");
-        return Ok(());
+        std::process::exit(1);
     }
 
     let mut all_findings = Vec::new();
     let mut scan_results = Vec::new();
+    let mut has_errors = false;
 
     for entry in &entries {
         let path = entry.path.to_string_lossy().to_string();
 
         let content = match fs::read_to_string(&entry.path) {
             Ok(c) => c,
-            Err(_) => continue,
+            Err(e) => {
+                eprintln!("Error reading file '{}': {}", path, e);
+                has_errors = true;
+                continue;
+            }
         };
 
         if args.verbose >= 2 {
@@ -119,8 +128,25 @@ fn main() -> Result<()> {
     }
 
     let summary = antislop::ScanSummary::new(&scan_results);
-    let exit_code = if summary.total_score > 0 { 1 } else { 0 };
-    let reporter = Reporter::new(Format::from_json_flag(args.json));
+    let exit_code = if summary.total_score > 0 || has_errors {
+        1
+    } else {
+        0
+    };
+
+    let format = if let Some(fmt) = args.format {
+        match fmt.as_str() {
+            "json" => Format::Json,
+            "sarif" => Format::Sarif,
+            _ => Format::Human,
+        }
+    } else if args.json {
+        Format::Json
+    } else {
+        Format::Human
+    };
+
+    let reporter = Reporter::new(format);
 
     all_findings.sort_by_key(|f| (f.file.clone(), f.line));
 

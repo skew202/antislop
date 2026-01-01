@@ -26,7 +26,10 @@ impl PatternsDirectory {
     const fn new() -> Self {
         Self {
             files: &[
-                ("placeholder", include_str!("../config/patterns/placeholder.toml")),
+                (
+                    "placeholder",
+                    include_str!("../config/patterns/placeholder.toml"),
+                ),
                 ("deferral", include_str!("../config/patterns/deferral.toml")),
                 ("hedging", include_str!("../config/patterns/hedging.toml")),
                 ("stub", include_str!("../config/patterns/stub.toml")),
@@ -45,7 +48,10 @@ impl PatternsDirectory {
                     all_patterns.append(&mut patterns);
                 }
                 Err(e) => {
-                    eprintln!("Warning: Failed to parse embedded patterns '{}': {}", name, e);
+                    eprintln!(
+                        "Warning: Failed to parse embedded patterns '{}': {}",
+                        name, e
+                    );
                 }
             }
         }
@@ -56,7 +62,7 @@ impl PatternsDirectory {
     /// Parse patterns from a single TOML file.
     fn parse_file(&self, content: &str) -> Result<Vec<Pattern>> {
         let parsed: PatternFile = toml::from_str(content)
-            .map_err(|e| Error::Config(format!("Parse error in pattern file: {}", e)))?;
+            .map_err(|e| Error::ConfigInvalid(format!("Parse error in pattern file: {}", e)))?;
         Ok(parsed.patterns)
     }
 }
@@ -65,6 +71,38 @@ impl PatternsDirectory {
 #[derive(Debug, Deserialize)]
 struct PatternFile {
     patterns: Vec<Pattern>,
+}
+
+/// Regex pattern with validation.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(try_from = "String", into = "String")]
+pub struct RegexPattern(String);
+
+impl RegexPattern {
+    pub fn new(s: String) -> std::result::Result<Self, regex::Error> {
+        regex::Regex::new(&s)?;
+        Ok(Self(s))
+    }
+}
+
+impl TryFrom<String> for RegexPattern {
+    type Error = regex::Error;
+    fn try_from(s: String) -> std::result::Result<Self, Self::Error> {
+        Self::new(s)
+    }
+}
+
+impl From<RegexPattern> for String {
+    fn from(val: RegexPattern) -> Self {
+        val.0
+    }
+}
+
+impl std::ops::Deref for RegexPattern {
+    type Target = str;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
 }
 
 /// Severity level for a slop finding.
@@ -123,7 +161,7 @@ pub enum PatternCategory {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Pattern {
     /// Regular expression to match (case-insensitive supported with (?i)).
-    pub regex: String,
+    pub regex: RegexPattern,
     /// Severity level for matches.
     #[serde(default)]
     pub severity: Severity,
@@ -165,8 +203,8 @@ pub struct Config {
 
 fn default_extensions() -> Vec<String> {
     vec![
-        ".rs", ".py", ".js", ".ts", ".jsx", ".tsx", ".go", ".java", ".kt",
-        ".c", ".cpp", ".h", ".hpp", ".cs", ".php", ".rb", ".swift", ".dart",
+        ".rs", ".py", ".js", ".ts", ".jsx", ".tsx", ".go", ".java", ".kt", ".c", ".cpp", ".h",
+        ".hpp", ".cs", ".php", ".rb", ".swift", ".dart",
     ]
     .into_iter()
     .map(|s| s.to_string())
@@ -179,8 +217,8 @@ fn default_max_file_size() -> u64 {
 
 impl Default for Config {
     fn default() -> Self {
-        let mut base: Config = toml::from_str(DEFAULT_CONFIG_TOML)
-            .expect("default config must be valid");
+        let mut base: Config =
+            toml::from_str(DEFAULT_CONFIG_TOML).expect("default config must be valid");
         // Load patterns from embedded pattern files
         base.patterns = PATTERNS_DIR.load_patterns();
         base
@@ -190,9 +228,15 @@ impl Default for Config {
 impl Config {
     /// Load configuration from a file.
     pub fn load(path: &Path) -> Result<Self> {
-        let content = fs::read_to_string(path)?;
+        let content = fs::read_to_string(path).map_err(|e| {
+            Error::ConfigInvalid(format!(
+                "Failed to open config file '{}': {}",
+                path.display(),
+                e
+            ))
+        })?;
         let config: Self = toml::from_str(&content)
-            .map_err(|e| Error::Config(format!("Parse error: {}", e)))?;
+            .map_err(|e| Error::ConfigInvalid(format!("Parse error: {}", e)))?;
         Ok(config)
     }
 
@@ -210,8 +254,7 @@ impl Config {
     /// Validate all regex patterns in the config.
     pub fn validate_patterns(&self) -> Result<()> {
         for pattern in &self.patterns {
-            Regex::new(&pattern.regex)
-                .map_err(|e| Error::Regex(pattern.regex.clone(), e.to_string()))?;
+            Regex::new(&pattern.regex).map_err(Error::Regex)?;
         }
         Ok(())
     }
@@ -223,6 +266,15 @@ impl Config {
             .filter(|p| &p.category == category)
             .collect()
     }
+
+    /// Parse configuration from a TOML string.
+    ///
+    /// This is useful for testing and fuzzing.
+    pub fn from_toml_str(content: &str) -> Result<Self> {
+        let config: Self = toml::from_str(content)
+            .map_err(|e| Error::ConfigInvalid(format!("Parse error: {}", e)))?;
+        Ok(config)
+    }
 }
 
 #[cfg(test)]
@@ -233,9 +285,18 @@ mod tests {
     fn test_default_config_loads() {
         let config = Config::default();
         assert!(!config.patterns.is_empty());
-        assert!(config.patterns.iter().any(|p| p.category == PatternCategory::Placeholder));
-        assert!(config.patterns.iter().any(|p| p.category == PatternCategory::Deferral));
-        assert!(config.patterns.iter().any(|p| p.category == PatternCategory::Hedging));
+        assert!(config
+            .patterns
+            .iter()
+            .any(|p| p.category == PatternCategory::Placeholder));
+        assert!(config
+            .patterns
+            .iter()
+            .any(|p| p.category == PatternCategory::Deferral));
+        assert!(config
+            .patterns
+            .iter()
+            .any(|p| p.category == PatternCategory::Hedging));
     }
 
     #[test]

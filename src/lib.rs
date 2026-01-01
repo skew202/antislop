@@ -33,7 +33,7 @@ pub mod walker;
 pub use config::{Config, Pattern, PatternCategory, Severity};
 
 #[doc(inline)]
-pub use detector::{Comment, Finding, FileScanResult, Scanner, ScanSummary};
+pub use detector::{Comment, FileScanResult, Finding, ScanSummary, Scanner};
 
 #[doc(inline)]
 pub use report::{Format, Reporter};
@@ -52,12 +52,17 @@ pub enum Error {
     Io(#[from] std::io::Error),
 
     /// Config parsing error.
+    /// Config parsing error.
     #[error("Config error: {0}")]
-    Config(String),
+    Config(#[from] toml::de::Error),
+
+    /// Missing or invalid config.
+    #[error("Configuration invalid: {0}")]
+    ConfigInvalid(String),
 
     /// Regex compilation error.
-    #[error("Invalid regex '{0}': {1}")]
-    Regex(String, String),
+    #[error("Invalid regex: {0}")]
+    Regex(#[from] regex::Error),
 
     /// Tree-sitter parsing error.
     #[cfg(feature = "tree-sitter")]

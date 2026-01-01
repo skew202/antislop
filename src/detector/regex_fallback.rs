@@ -44,7 +44,8 @@ impl RegexExtractor {
             // Extract line comments
             for regex in &self.line_comments {
                 if let Some(mat) = regex.find(line) {
-                    let content = mat.as_str()
+                    let content = mat
+                        .as_str()
                         .trim_start_matches(&['/', '#', '-', '%', ';', '"', '\''][..])
                         .trim_start_matches(['/', '"', '\''])
                         .trim();
@@ -77,10 +78,7 @@ impl RegexExtractor {
                 for (_, end_regex) in &self.block_comments {
                     if let Some(mat) = end_regex.find(line) {
                         let _end_col = mat.start();
-                        let content: String = lines[start_line..=idx]
-                            .join("\n")
-                            .trim()
-                            .to_string();
+                        let content: String = lines[start_line..=idx].join("\n").trim().to_string();
 
                         if !content.is_empty() {
                             comments.push(Comment {
@@ -150,7 +148,7 @@ def foo():
         let extractor = RegexExtractor::new();
         let code = "#!/bin/bash\n# TODO: fix this\necho 'hello'";
         let comments = extractor.extract(code);
-        assert!(comments.len() >= 1);
+        assert!(!comments.is_empty());
         assert!(comments.iter().any(|c| c.content.contains("TODO")));
     }
 }

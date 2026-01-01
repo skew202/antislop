@@ -2,10 +2,13 @@
 
 use crate::config::{PatternCategory, Severity};
 use crate::detector::{Finding, ScanSummary};
+use crate::Error;
 use crate::Result;
 use owo_colors::OwoColorize;
 use serde::Serialize;
 use std::io::{self, Write};
+
+mod sarif;
 
 /// Output format.
 #[derive(Debug, Clone, Copy, clap::ValueEnum, PartialEq, Eq)]
@@ -14,6 +17,8 @@ pub enum Format {
     Human,
     /// Machine-readable JSON output.
     Json,
+    /// SARIF XML/JSON output for integrations.
+    Sarif,
 }
 
 impl Format {
@@ -71,6 +76,7 @@ impl Reporter {
         match self.format {
             Format::Human => self.report_human(&results, &summary),
             Format::Json => self.report_json(&results, &summary),
+            Format::Sarif => sarif::report_sarif(&results, &summary),
         }
     }
 
@@ -100,9 +106,9 @@ impl Reporter {
     fn write_finding(&self, handle: &mut impl Write, finding: &Finding) -> Result<()> {
         let severity_color = |s: &Severity| -> &'static str {
             match s {
-                Severity::Low => "\x1b[2m",      // dim
-                Severity::Medium => "\x1b[33m",    // yellow
-                Severity::High => "\x1b[31;1m",    // red bold
+                Severity::Low => "\x1b[2m",           // dim
+                Severity::Medium => "\x1b[33m",       // yellow
+                Severity::High => "\x1b[31;1m",       // red bold
                 Severity::Critical => "\x1b[91;4;1m", // bright red underline bold
             }
         };
@@ -141,19 +147,9 @@ impl Reporter {
             reset
         )?;
 
-        writeln!(
-            handle,
-            "    {} {}",
-            "!".yellow(),
-            finding.message.dimmed()
-        )?;
+        writeln!(handle, "    {} {}", "!".yellow(), finding.message.dimmed())?;
 
-        writeln!(
-            handle,
-            "    {} {}",
-            "→".blue(),
-            finding.match_text.yellow()
-        )?;
+        writeln!(handle, "    {} {}", "→".blue(), finding.match_text.yellow())?;
 
         writeln!(handle)?;
         Ok(())
@@ -161,11 +157,7 @@ impl Reporter {
 
     /// Print summary statistics.
     fn print_summary(&self, handle: &mut impl Write, summary: &ScanSummary) -> Result<()> {
-        writeln!(
-            handle,
-            "{}",
-            "─".repeat(60).dimmed()
-        )?;
+        writeln!(handle, "{}", "─".repeat(60).dimmed())?;
 
         writeln!(
             handle,
@@ -192,7 +184,12 @@ impl Reporter {
         if !summary.by_severity.is_empty() {
             writeln!(handle)?;
             write!(handle, "  By severity: ")?;
-            for severity in [Severity::Critical, Severity::High, Severity::Medium, Severity::Low] {
+            for severity in [
+                Severity::Critical,
+                Severity::High,
+                Severity::Medium,
+                Severity::Low,
+            ] {
                 if let Some(&count) = summary.by_severity.get(&severity) {
                     let color = match severity {
                         Severity::Low => "\x1b[2m",
@@ -222,7 +219,13 @@ impl Reporter {
                         PatternCategory::Deferral => "\x1b[95m",
                         PatternCategory::Hedging => "\x1b[93m",
                     };
-                    write!(handle, "{}{} {} \x1b[0m", color, count, format!("{:?}", category).to_lowercase())?;
+                    write!(
+                        handle,
+                        "{}{} {} \x1b[0m",
+                        color,
+                        count,
+                        format!("{:?}", category).to_lowercase()
+                    )?;
                 }
             }
             writeln!(handle)?;
@@ -281,7 +284,11 @@ impl Reporter {
                 .collect(),
         };
 
-        println!("{}", serde_json::to_string_pretty(&output).map_err(|e| crate::Error::Config(e.to_string()))?);
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&output)
+                .map_err(|e| Error::ConfigInvalid(e.to_string()))?
+        );
         Ok(())
     }
 }

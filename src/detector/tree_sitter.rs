@@ -5,8 +5,11 @@
 
 use crate::config::Pattern;
 use crate::detector::{Comment, Finding, Language};
+use streaming_iterator::StreamingIterator;
+
+// ...
+
 use tree_sitter::{Node, Parser, Query, QueryCursor};
-use tree_sitter::StreamingIterator;
 
 /// Get a comment extractor for the given language.
 #[cfg(feature = "tree-sitter")]
@@ -30,7 +33,10 @@ impl TreeSitterExtractor {
         let language_fn = get_language_fn(lang)?;
         parser.set_language(&language_fn).ok()?;
 
-        Some(Self { parser, language: lang })
+        Some(Self {
+            parser,
+            language: lang,
+        })
     }
 
     /// Extract all comments from source code.
@@ -49,11 +55,7 @@ impl TreeSitterExtractor {
     /// Extract AST-level findings using tree-sitter queries.
     ///
     /// Returns findings from patterns that have `ast_query` set and apply to this language.
-    pub fn extract_ast_findings(
-        &mut self,
-        source: &str,
-        patterns: &[Pattern],
-    ) -> Vec<Finding> {
+    pub fn extract_ast_findings(&mut self, source: &str, patterns: &[Pattern]) -> Vec<Finding> {
         let mut findings = Vec::new();
 
         let tree = match self.parser.parse(source, None) {
@@ -70,7 +72,8 @@ impl TreeSitterExtractor {
                 None => continue,
             };
 
-            if !pattern.languages.is_empty() && !pattern.languages.contains(&lang_name.to_string()) {
+            if !pattern.languages.is_empty() && !pattern.languages.contains(&lang_name.to_string())
+            {
                 continue;
             }
 
@@ -107,7 +110,7 @@ impl TreeSitterExtractor {
                         category: pattern.category.clone(),
                         message: pattern.message.clone(),
                         match_text: text,
-                        pattern_regex: pattern.regex.clone(),
+                        pattern_regex: pattern.regex.to_string(),
                     });
                 }
             }
@@ -118,11 +121,32 @@ impl TreeSitterExtractor {
 
     fn language_name(&self) -> &'static str {
         match self.language {
+            #[cfg(feature = "python")]
             Language::Python => "Python",
-            Language::JavaScript => "JavaScript",
-            Language::Jsx => "JavaScript",
+            #[cfg(feature = "javascript")]
+            Language::JavaScript | Language::Jsx => "JavaScript",
+            #[cfg(feature = "typescript")]
             Language::TypeScript | Language::Tsx => "TypeScript",
+            #[cfg(feature = "rust")]
             Language::Rust => "Rust",
+            #[cfg(feature = "go")]
+            Language::Go => "Go",
+            #[cfg(feature = "java")]
+            Language::Java => "Java",
+            #[cfg(feature = "cpp")]
+            Language::CCpp => "C++",
+            #[cfg(feature = "c-sharp")]
+            Language::CSharp => "C#",
+            #[cfg(feature = "php")]
+            Language::Php => "PHP",
+            #[cfg(feature = "ruby")]
+            Language::Ruby => "Ruby",
+            #[cfg(feature = "haskell")]
+            Language::Haskell => "Haskell",
+            #[cfg(feature = "lua")]
+            Language::Lua => "Lua",
+            #[cfg(feature = "scala")]
+            Language::Scala => "Scala",
             _ => "Unknown",
         }
     }
@@ -131,10 +155,33 @@ impl TreeSitterExtractor {
 #[cfg(feature = "tree-sitter")]
 fn get_language_fn(lang: Language) -> Option<tree_sitter::Language> {
     match lang {
+        #[cfg(feature = "python")]
         Language::Python => Some(tree_sitter_python::LANGUAGE.into()),
+        #[cfg(feature = "javascript")]
         Language::JavaScript | Language::Jsx => Some(tree_sitter_javascript::LANGUAGE.into()),
-        Language::TypeScript | Language::Tsx => Some(tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into()),
+        #[cfg(feature = "typescript")]
+        Language::TypeScript | Language::Tsx => {
+            Some(tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into())
+        }
+
+        #[cfg(feature = "rust")]
         Language::Rust => Some(tree_sitter_rust::LANGUAGE.into()),
+        #[cfg(feature = "go")]
+        Language::Go => Some(tree_sitter_go::LANGUAGE.into()),
+        #[cfg(feature = "java")]
+        Language::Java => Some(tree_sitter_java::LANGUAGE.into()),
+        #[cfg(feature = "cpp")]
+        Language::CCpp => Some(tree_sitter_cpp::LANGUAGE.into()),
+        #[cfg(feature = "c-sharp")]
+        Language::CSharp => Some(tree_sitter_c_sharp::LANGUAGE.into()),
+        #[cfg(feature = "ruby")]
+        Language::Ruby => Some(tree_sitter_ruby::LANGUAGE.into()),
+        #[cfg(feature = "haskell")]
+        Language::Haskell => Some(tree_sitter_haskell::LANGUAGE.into()),
+        #[cfg(feature = "lua")]
+        Language::Lua => Some(tree_sitter_lua::LANGUAGE.into()),
+        #[cfg(feature = "scala")]
+        Language::Scala => Some(tree_sitter_scala::LANGUAGE.into()),
         _ => None,
     }
 }
@@ -204,7 +251,7 @@ pub fn get_extractor(_lang: Language) -> Option<TreeSitterExtractor> {
 #[cfg(all(test, feature = "tree-sitter"))]
 mod tests {
     use super::*;
-    use crate::config::{Pattern, PatternCategory, Severity};
+    use crate::config::{Pattern, PatternCategory, RegexPattern, Severity};
 
     #[test]
     fn test_python_extractor() {
@@ -254,24 +301,21 @@ fn foo() -> Option<()> {
     }
 
     #[test]
-    fn test_unsupported_language() {
-        let extractor = get_extractor(Language::Go);
+    fn test_unsupported_language_unknown() {
+        let extractor = get_extractor(Language::Unknown);
         assert!(extractor.is_none());
     }
 
-    // AST query tests are marked as ignore for now
-    // The query syntax needs to be debugged with proper tree-sitter queries
     #[test]
-    #[ignore = "AST query syntax needs refinement"]
     fn test_ast_query_not_implemented() {
         let mut extractor = get_extractor(Language::Python).expect("Python extractor");
 
         let patterns = vec![Pattern {
-            regex: "raise NotImplementedError".to_string(),
+            regex: RegexPattern::new("raise NotImplementedError".to_string()).unwrap(),
             severity: Severity::Critical,
             message: "NotImplementedError stub detected".to_string(),
             category: PatternCategory::Stub,
-            ast_query: Some("(raise_statement)".to_string()),
+            ast_query: Some("(raise_statement) @stub".to_string()),
             languages: vec!["Python".to_string()],
         }];
 
@@ -286,16 +330,15 @@ def process_data(data):
     }
 
     #[test]
-    #[ignore = "AST query syntax needs refinement"]
     fn test_ast_query_pass() {
         let mut extractor = get_extractor(Language::Python).expect("Python extractor");
 
         let patterns = vec![Pattern {
-            regex: "pass$".to_string(),
+            regex: RegexPattern::new("pass$".to_string()).unwrap(),
             severity: Severity::Medium,
             message: "Function body contains only 'pass' statement".to_string(),
             category: PatternCategory::Stub,
-            ast_query: Some("(pass_statement)".to_string()),
+            ast_query: Some("(pass_statement) @stub".to_string()),
             languages: vec!["Python".to_string()],
         }];
 
@@ -310,16 +353,15 @@ def stub_function():
     }
 
     #[test]
-    #[ignore = "AST query syntax needs refinement"]
     fn test_ast_query_todo_macro() {
         let mut extractor = get_extractor(Language::Rust).expect("Rust extractor");
 
         let patterns = vec![Pattern {
-            regex: "todo!".to_string(),
+            regex: RegexPattern::new("todo!".to_string()).unwrap(),
             severity: Severity::Critical,
             message: "todo!() macro stub detected".to_string(),
             category: PatternCategory::Stub,
-            ast_query: Some("(macro_invocation)".to_string()),
+            ast_query: Some("(macro_invocation) @stub".to_string()),
             languages: vec!["Rust".to_string()],
         }];
 

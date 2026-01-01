@@ -18,7 +18,7 @@ use std::collections::HashMap;
 use std::path::Path;
 
 /// A comment extracted from source code.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
 pub struct Comment {
     /// Line number (1-indexed).
     pub line: usize,
@@ -29,7 +29,7 @@ pub struct Comment {
 }
 
 /// A single slop finding.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize)]
 pub struct Finding {
     /// File path.
     pub file: String,
@@ -46,15 +46,13 @@ pub struct Finding {
     /// The matched text.
     pub match_text: String,
     /// The regex pattern that matched.
-    #[allow(dead_code)]
     pub pattern_regex: String,
 }
 
 /// Result of scanning a single file.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize)]
 pub struct FileScanResult {
     /// File path.
-    #[allow(dead_code)]
     pub path: String,
     /// All findings in this file.
     pub findings: Vec<Finding>,
@@ -63,7 +61,7 @@ pub struct FileScanResult {
 }
 
 /// Summary of a scan operation.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize)]
 pub struct ScanSummary {
     /// Number of files scanned.
     pub files_scanned: usize,
@@ -99,8 +97,14 @@ impl ScanSummary {
             summary.total_score += result.score;
 
             for finding in &result.findings {
-                *summary.by_severity.entry(finding.severity.clone()).or_insert(0) += 1;
-                *summary.by_category.entry(finding.category.clone()).or_insert(0) += 1;
+                *summary
+                    .by_severity
+                    .entry(finding.severity.clone())
+                    .or_insert(0) += 1;
+                *summary
+                    .by_category
+                    .entry(finding.category.clone())
+                    .or_insert(0) += 1;
             }
         }
 
@@ -139,6 +143,16 @@ pub enum Language {
     Php,
     /// Swift.
     Swift,
+    /// Haskell.
+    Haskell,
+    /// Lua.
+    Lua,
+    /// Perl.
+    Perl,
+    /// R.
+    R,
+    /// Scala.
+    Scala,
     /// Shell scripts.
     Shell,
     /// Unknown language.
@@ -165,6 +179,11 @@ impl Language {
                 "rb" => Language::Ruby,
                 "php" => Language::Php,
                 "swift" => Language::Swift,
+                "hs" => Language::Haskell,
+                "lua" => Language::Lua,
+                "pl" | "pm" => Language::Perl,
+                "r" | "R" => Language::R,
+                "scala" => Language::Scala,
                 "sh" | "bash" | "zsh" | "fish" => Language::Shell,
                 _ => Language::Unknown,
             })
@@ -172,17 +191,36 @@ impl Language {
     }
 
     /// Returns true if tree-sitter supports this language.
-    #[cfg(feature = "tree-sitter")]
     pub fn has_tree_sitter(self) -> bool {
-        matches!(
-            self,
-            Language::Python
-                | Language::JavaScript
-                | Language::Jsx
-                | Language::TypeScript
-                | Language::Tsx
-                | Language::Rust
-        )
+        match self {
+            #[cfg(feature = "python")]
+            Language::Python => true,
+            #[cfg(feature = "javascript")]
+            Language::JavaScript | Language::Jsx => true,
+            #[cfg(feature = "typescript")]
+            Language::TypeScript | Language::Tsx => true,
+            #[cfg(feature = "rust")]
+            Language::Rust => true,
+            #[cfg(feature = "go")]
+            Language::Go => true,
+            #[cfg(feature = "java")]
+            Language::Java => true,
+            #[cfg(feature = "cpp")]
+            Language::CCpp => true,
+            #[cfg(feature = "c-sharp")]
+            Language::CSharp => true,
+            #[cfg(feature = "php")]
+            Language::Php => true,
+            #[cfg(feature = "ruby")]
+            Language::Ruby => true,
+            #[cfg(feature = "haskell")]
+            Language::Haskell => true,
+            #[cfg(feature = "lua")]
+            Language::Lua => true,
+            #[cfg(feature = "scala")]
+            Language::Scala => true,
+            _ => false,
+        }
     }
 
     /// Returns true if tree-sitter supports this language.
@@ -220,7 +258,8 @@ impl Scanner {
         if lang.has_tree_sitter() {
             if let Some(mut extractor) = self::tree_sitter::get_extractor(lang) {
                 // Collect pattern references for AST detection
-                let patterns: Vec<&Pattern> = self.registry.patterns.iter().map(|p| &p.pattern).collect();
+                let patterns: Vec<&Pattern> =
+                    self.registry.patterns.iter().map(|p| &p.pattern).collect();
                 // Convert Vec<&Pattern> to a slice that lives long enough
                 let pattern_refs: Vec<Pattern> = patterns.iter().map(|p| (**p).clone()).collect();
                 let ast_findings = extractor.extract_ast_findings(content, &pattern_refs);
@@ -277,7 +316,7 @@ impl Scanner {
                             category: pattern.pattern.category.clone(),
                             message: pattern.pattern.message.clone(),
                             match_text: mat.as_str().to_string(),
-                            pattern_regex: pattern.pattern.regex.clone(),
+                            pattern_regex: pattern.pattern.regex.to_string(),
                         });
                     }
                 }
@@ -295,11 +334,12 @@ impl Scanner {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::RegexPattern;
 
     fn test_patterns() -> Vec<Pattern> {
         vec![
             Pattern {
-                regex: "(?i)TODO:".to_string(),
+                regex: RegexPattern::new("(?i)TODO:".to_string()).unwrap(),
                 severity: Severity::Medium,
                 message: "Placeholder comment found".to_string(),
                 category: PatternCategory::Placeholder,
@@ -307,7 +347,7 @@ mod tests {
                 languages: vec![],
             },
             Pattern {
-                regex: "(?i)for now".to_string(),
+                regex: RegexPattern::new("(?i)for now".to_string()).unwrap(),
                 severity: Severity::Low,
                 message: "Deferral phrase detected".to_string(),
                 category: PatternCategory::Deferral,
@@ -343,8 +383,14 @@ mod tests {
     fn test_language_detection() {
         assert_eq!(Language::from_path(Path::new("test.py")), Language::Python);
         assert_eq!(Language::from_path(Path::new("test.rs")), Language::Rust);
-        assert_eq!(Language::from_path(Path::new("test.js")), Language::JavaScript);
+        assert_eq!(
+            Language::from_path(Path::new("test.js")),
+            Language::JavaScript
+        );
         assert_eq!(Language::from_path(Path::new("test.tsx")), Language::Tsx);
-        assert_eq!(Language::from_path(Path::new("test.xyz")), Language::Unknown);
+        assert_eq!(
+            Language::from_path(Path::new("test.xyz")),
+            Language::Unknown
+        );
     }
 }
