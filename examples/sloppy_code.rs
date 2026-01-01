@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Example Rust code with detected AI shortcuts
 
 fn main() {
