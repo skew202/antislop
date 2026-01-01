@@ -21,18 +21,12 @@ multiple-versions = "warn"
 wildcards = "allow"
 highlight = "all"
 
-# Allow specific duplicate transitive dependencies
-[[bans.duplicate]]
-name = "thiserror-impl"
-allowed = true
-
-[[bans.duplicate]]
-name = "syn"
-allowed = true
-
-[[bans.duplicate]]
-name = "serde_json"
-allowed = true
+# Allow specific duplicate transitive dependencies (common in Rust ecosystem)
+skip = [
+    { crate = "thiserror-impl", reason = "transitive dependency of thiserror, has multiple versions" },
+    { crate = "syn", reason = "common proc-macro dependency, has multiple versions" },
+    { crate = "serde_json", reason = "common dependency, has multiple versions" },
+]
 
 [sources]
 unknown-registry = "deny"
