@@ -18,10 +18,6 @@
           "type": "toml",
           "path": "Cargo.toml",
           "xpath": "workspace.dependencies.antislop"
-        },
-        {
-          "type": "markdown",
-          "path": "CHANGELOG.md"
         }
       ]
     },
