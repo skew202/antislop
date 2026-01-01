@@ -1,0 +1,100 @@
+---
+source: tests/snapshot_tests.rs
+expression: stable_result
+---
+{
+  "path": "test.py",
+  "findings": [
+    {
+      "file": "test.py",
+      "line": 3,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder comment: untracked TODO found",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)TODO:"
+    },
+    {
+      "file": "test.py",
+      "line": 3,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO with explicit implementation note",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)TODO: implement"
+    },
+    {
+      "file": "test.py",
+      "line": 3,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO implementation marker",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)to.?do:? implement"
+    },
+    {
+      "file": "test.py",
+      "line": 4,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder comment: FIXME indicates incomplete work",
+      "match_text": "FIXME:",
+      "pattern_regex": "(?i)FIXME:"
+    },
+    {
+      "file": "test.py",
+      "line": 7,
+      "column": 11,
+      "severity": "low",
+      "category": "deferral",
+      "message": "Deferral: temporary solution with no plan to revisit",
+      "match_text": "for now",
+      "pattern_regex": "(?i)for now"
+    },
+    {
+      "file": "test.py",
+      "line": 7,
+      "column": 19,
+      "severity": "medium",
+      "category": "hedging",
+      "message": "Hedging: overconfident comment - verify claim before shipping",
+      "match_text": "just",
+      "pattern_regex": "(?i)\\b(obviously|clearly|simply|just|easy|trivial|basically|of course|naturally)\\b"
+    },
+    {
+      "file": "test.py",
+      "line": 11,
+      "column": 11,
+      "severity": "low",
+      "category": "hedging",
+      "message": "Hedging: uncertainty in code comments",
+      "match_text": "hopefully",
+      "pattern_regex": "(?i)hopefully"
+    },
+    {
+      "file": "test.py",
+      "line": 11,
+      "column": 11,
+      "severity": "medium",
+      "category": "hedging",
+      "message": "Hedging: developer hopes code works instead of knowing",
+      "match_text": "hopefully this work",
+      "pattern_regex": "(?i)hopefully.*work"
+    },
+    {
+      "file": "test.py",
+      "line": 12,
+      "column": 9,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Function body contains only 'pass' statement",
+      "match_text": "pass",
+      "pattern_regex": "pass$"
+    }
+  ],
+  "score": 57
+}

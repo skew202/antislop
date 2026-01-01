@@ -1,0 +1,9 @@
+---
+source: tests/snapshot_tests.rs
+expression: stable_result
+---
+{
+  "path": "clean.py",
+  "findings": [],
+  "score": 0
+}

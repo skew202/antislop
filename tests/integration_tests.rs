@@ -20,7 +20,10 @@ fn antislop_bin() -> String {
             .current_dir("..")
             .status()
             .expect("Failed to build antislop");
-        assert!(status.success(), "Failed to build antislop for integration tests");
+        assert!(
+            status.success(),
+            "Failed to build antislop for integration tests"
+        );
     }
     path.to_string_lossy().to_string()
 }
@@ -37,17 +40,20 @@ fn test_clean_code() {
     )
     .unwrap();
 
-    let output = Command::new(&antislop_bin())
+    let output = Command::new(antislop_bin())
         .arg(file.to_string_lossy().as_ref())
         .output()
         .unwrap()
         .stdout;
 
     let text = String::from_utf8_lossy(&output);
-    if !text.contains("No AI slop detected") && !text.contains("Clean code") && !text.contains("✓") {
+    if !text.contains("No AI slop detected") && !text.contains("Clean code") && !text.contains("✓")
+    {
         eprintln!("Output was: {:?}", text);
     }
-    assert!(text.contains("No AI slop detected") || text.contains("Clean code") || text.contains("✓"));
+    assert!(
+        text.contains("No AI slop detected") || text.contains("Clean code") || text.contains("✓")
+    );
 }
 
 #[test]
@@ -63,7 +69,7 @@ fn test_todo_detection() {
     )
     .unwrap();
 
-    let output = Command::new(&antislop_bin())
+    let output = Command::new(antislop_bin())
         .arg(file.to_string_lossy().as_ref())
         .output()
         .unwrap()
@@ -78,7 +84,7 @@ fn test_todo_detection() {
 
 #[test]
 fn test_help() {
-    let output = Command::new(&antislop_bin())
+    let output = Command::new(antislop_bin())
         .arg("--help")
         .output()
         .unwrap()
@@ -91,7 +97,7 @@ fn test_help() {
 
 #[test]
 fn test_version() {
-    let output = Command::new(&antislop_bin())
+    let output = Command::new(antislop_bin())
         .arg("--version")
         .output()
         .unwrap()
@@ -103,7 +109,7 @@ fn test_version() {
 
 #[test]
 fn test_list_languages() {
-    let output = Command::new(&antislop_bin())
+    let output = Command::new(antislop_bin())
         .arg("--list-languages")
         .output()
         .unwrap()
@@ -113,4 +119,39 @@ fn test_list_languages() {
     assert!(text.contains("Python"));
     assert!(text.contains("Rust"));
     assert!(text.contains("JavaScript"));
+}
+
+#[test]
+fn test_nonexistent_file() {
+    let output = Command::new(antislop_bin())
+        .arg("nonexistent_file_definitely_does_not_exist.rs")
+        .output()
+        .unwrap();
+
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("No such file")
+            || stderr.contains("not found")
+            || stderr.to_lowercase().contains("error")
+            || stderr.contains("No files found")
+    );
+}
+
+#[test]
+fn test_sarif_output_flag() {
+    let temp = TempDir::new().unwrap();
+    let file = temp.path().join("sarif_test.py");
+    fs::write(&file, "def foo():\n    # TODO: fix me\n    pass").unwrap();
+
+    let output = Command::new(antislop_bin())
+        .arg("--format")
+        .arg("sarif")
+        .arg(file.to_string_lossy().as_ref())
+        .output()
+        .unwrap();
+
+    let text = String::from_utf8_lossy(&output.stdout);
+    assert!(text.contains("\"version\": \"2.1.0\""));
+    assert!(text.contains("\"ruleId\": \"placeholder\""));
 }
