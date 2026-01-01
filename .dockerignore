@@ -1,13 +1,59 @@
+# Build artifacts (also in .gitignore)
 target/
+
+# Docker-specific
 Dockerfile
 .dockerignore
+
+# CI/CD (not needed in container)
 .github/
+
+# Git (not needed in container)
 .git/
 .gitignore
+
+# Docs (not needed for build)
 *.md
+docs/
+book.toml
+
+# Development config (not needed for build)
 cliff.toml
 deny.toml
 dist.toml
+.editorconfig
+.pre-commit-config.yaml
+.pre-commit-hooks.yaml
+
+# Development/Testing (not needed in container)
+tests/
+benches/
+examples/
 fuzz/
 scripts/
-.editorconfig
+defaults/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python (not needed for Rust build)
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node (not needed for Rust build)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Misc
+.claude/
+*.log
+.env
+.env.*
+Cargo.lock
