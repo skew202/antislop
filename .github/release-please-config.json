@@ -1,43 +1,24 @@
 {
   "packages": {
     ".": {
+      "release-type": "rust",
       "component": "core",
-      "include-component-in-tag": false,
-      "extra-files": [
-        {
-          "type": "toml",
-          "path": "Cargo.toml",
-          "xpath": "package.version"
-        },
-        {
-          "type": "toml",
-          "path": "crates/antislop-lsp/Cargo.toml",
-          "xpath": "package.version"
-        }
-      ]
+      "include-component-in-tag": false
     },
     "packages/antislop": {
+      "release-type": "node",
       "component": "npm",
-      "include-component-in-tag": false,
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "packages/antislop/package.json"
-        }
-      ]
+      "include-component-in-tag": false
     },
     "editors/vscode": {
+      "release-type": "node",
       "component": "vscode",
-      "include-component-in-tag": false,
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "editors/vscode/package.json"
-        }
-      ]
+      "include-component-in-tag": false
     }
   },
-  "release-type": "rust",
+  "plugins": [
+    "cargo-workspace"
+  ],
   "changelog-sections": [
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
@@ -55,6 +36,5 @@
   "changelog-footer": "\n\n---\n\n**[Full Changelog]**(https://github.com/skew202/antislop/compare/${previousTag}...${tag})",
   "version-label": "## ${version} (${date})",
   "pull-request-title-pattern": "Release ${version} 🚀",
-  "separate-pull-requests": false,
-  "versioning": "default"
+  "separate-pull-requests": false
 }
