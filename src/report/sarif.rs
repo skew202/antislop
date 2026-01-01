@@ -11,7 +11,9 @@ pub fn report_sarif(results: &[Finding], _summary: &ScanSummary) -> Result<()> {
     for finding in results {
         let rule_id = format!("{:?}", finding.category).to_lowercase();
 
-        let artifact_location = ArtifactLocation::builder().uri(finding.file.clone()).build();
+        let artifact_location = ArtifactLocation::builder()
+            .uri(finding.file.clone())
+            .build();
         let region = Region::builder()
             .start_line(finding.line as i64)
             .start_column(finding.column as i64)

@@ -24,15 +24,15 @@ highlight = "all"
 # Allow specific duplicate transitive dependencies
 [[bans.duplicate]]
 name = "thiserror-impl"
-allow-duplicates = true
+allowed = true
 
 [[bans.duplicate]]
 name = "syn"
-allow-duplicates = true
+allowed = true
 
 [[bans.duplicate]]
 name = "serde_json"
-allow-duplicates = true
+allowed = true
 
 [sources]
 unknown-registry = "deny"
