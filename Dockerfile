@@ -1,3 +1,4 @@
+# Build stage
 FROM rust:1.85 AS builder
 WORKDIR /usr/src/antislop
 
@@ -9,9 +10,36 @@ COPY crates ./crates
 COPY src ./src
 
 # Build release binary
-RUN cargo build --release
+RUN cargo build --release && strip /usr/src/antislop/target/release/antislop
 
-FROM debian:bookworm-slim
-COPY --from=builder /usr/src/antislop/target/release/antislop /usr/local/bin/antislop
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+# Runtime stage - minimal attack surface
+FROM debian:bookworm-slim@sha256:8a20f05f59b0d16c43fe97c82afc718453ca57cbac5b1db1f1a568eeb7b4d0f6 AS runtime
+
+# Install only runtime dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* /usr/share/man/*
+
+# Create non-root user for security
+RUN useradd -m -u 1000 -s /usr/sbin/nologin -c "Antislop user" antislop
+
+# Copy binary from builder and set permissions
+COPY --from=builder --chown=antislop:antislop /usr/src/antislop/target/release/antislop /usr/local/bin/antislop
+
+# Set security-focused filesystem options
+RUN chmod 755 /usr/local/bin/antislop && \
+    mkdir -p /data && \
+    chown -R antislop:antislop /data
+
+# Switch to non-root user
+USER antislop
+
+# Set working directory
+WORKDIR /data
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD antislop --version || exit 1
+
+# Run as non-root with minimal privileges
 ENTRYPOINT ["antislop"]
