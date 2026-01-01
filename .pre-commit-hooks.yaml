@@ -1,0 +1,7 @@
+- id: antislop
+  name: antislop
+  description: Detect AI-generated code slop
+  entry: antislop
+  language: rust
+  files: \.(rs|py|js|ts|jsx|tsx|go|java|kt|c|cpp|h|hpp|cs|php|rb|swift|sh)$
+  args: []
