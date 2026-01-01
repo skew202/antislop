@@ -13,11 +13,6 @@
           "type": "toml",
           "path": "crates/antislop-lsp/Cargo.toml",
           "xpath": "package.version"
-        },
-        {
-          "type": "toml",
-          "path": "Cargo.toml",
-          "xpath": "workspace.dependencies.antislop"
         }
       ]
     },
