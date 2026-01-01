@@ -4,7 +4,7 @@ const https = require('https');
 const os = require('os');
 const { execSync } = require('child_process');
 
-const VERSION = "v0.1.0";
+const VERSION = "v0.2.0";
 const BIN_DIR = path.join(__dirname, 'bin');
 const BIN_NAME = os.platform() === 'win32' ? 'antislop.exe' : 'antislop';
 
