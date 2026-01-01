@@ -25,6 +25,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run cargo-dist
-        uses: axodotdev/cargo-dist-action@v0.14.1
+        uses: axodotdev/cargo-dist@v0.14.1
         with:
           dist-version: 0.14.1

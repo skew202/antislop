@@ -1,4 +1,4 @@
-FROM rust:1.85 as builder
+FROM rust:1.85 AS builder
 WORKDIR /usr/src/antislop
 
 # Copy manifests first for better caching
