@@ -6,7 +6,7 @@ Thank you for your interest in contributing to Antislop!
 
 ```bash
 # Clone the repository
-git clone https://github.com/user/antislop.git
+git clone https://github.com/skew202/antislop.git
 cd antislop
 
 # Install Rust if you haven't already
@@ -23,17 +23,36 @@ cargo clippy --all-features -- -D warnings
 cargo fmt
 ```
 
+## Quality Requirements
+
+All contributions must pass:
+
+| Check | Command | Required |
+|-------|---------|----------|
+| Format | `cargo fmt --check` | ✓ |
+| Clippy | `cargo clippy -- -D warnings` | ✓ |
+| Tests | `cargo test --all-features` | ✓ |
+| Docs | `cargo doc --no-deps` | ✓ |
+
+See [QA_STRATEGY.md](QA_STRATEGY.md) for our complete quality assurance approach.
+
 ## Running Tests
 
 ```bash
 # Run all tests
 cargo test --all-features
 
-# Run tests with output
-cargo test --all-features -- --nocapture
+# Run unit tests only
+cargo test --lib
 
-# Run specific test
-cargo test test_name -- --exact
+# Run integration tests
+cargo test --test integration_tests
+
+# Run property-based tests
+cargo test --test property_tests
+
+# Update snapshots
+cargo insta review
 ```
 
 ## Code Style
@@ -42,6 +61,7 @@ cargo test test_name -- --exact
 - No clippy warnings allowed
 - Document all public APIs with `///` docs
 - Write tests for new functionality
+- Add property tests for edge cases
 
 ## Submitting Changes
 
@@ -53,15 +73,19 @@ cargo test test_name -- --exact
 
 ## Adding New Patterns
 
-Edit `config/default.toml` to add new slop detection patterns. Each pattern needs:
-- `regex`: The pattern to match (supports `(?i)` for case-insensitive)
-- `severity`: One of: low, medium, high, critical
-- `message`: Human-readable description
-- `category`: One of: placeholder, deferral, hedging, stub
+1.  **Check Pattern Hygiene**: Ensure your pattern is **MECE** with standard linters.
+    *   Run `python3 scripts/check_overlap.py` to verify no overlap.
+    *   If `pylint`, `eslint`, or `clippy` catches it by default, do NOT add it.
+2.  **Edit Config**: Edit `config/default.toml` (or `config/patterns/*.toml`) to add new patterns. Each pattern needs:
+    *   `regex`: The pattern to match (supports `(?i)` for case-insensitive)
+    *   `severity`: One of: low, medium, high, critical
+    *   `message`: Human-readable description
+    *   `category`: One of: placeholder, deferral, hedging, stub
 
 ## Adding Language Support
 
 1. Add the language to `Language` enum in `src/detector/mod.rs`
 2. Add tree-sitter grammar in `Cargo.toml` (optional)
 3. Update `src/detector/tree_sitter.rs` with language support
-4. Add tests in `src/detector/tree_sitter.rs`
+4. Add tests for the new language
+5. Update `docs/architecture.md` language table
