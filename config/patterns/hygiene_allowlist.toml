@@ -1,0 +1,16 @@
+# Patterns allowed to overlap with standard linters
+# Justification: Antislop treats these as 'AI Slop' signals even if linters flag them as info/warnings.
+
+allowed_overlaps = [
+    "(?i)TODO:",
+    "(?i)FIXME:",
+    "(?i)HACK:",
+    "(?i)XXX",
+    "unwrap!", 
+    "todo!",
+    "(?i)TODO: implement",
+    "(?i)FIXME: implement",
+    "(?i)pass.*#.*TODO",
+    "(?i)pass.*#.*FIXME",
+    "(?i)\"\"\"(\\s*|\\s*TODO.*|\\s*FIXME.*|\\s*pass\\s*|\\s*\\.\\.\\.\\s*)\"\"\"",
+]
