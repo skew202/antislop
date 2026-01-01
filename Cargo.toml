@@ -78,7 +78,7 @@ tree-sitter-scala = { version = "0.23", optional = true }
 # Note: kotlin, perl, r, swift have tree-sitter version conflicts and are disabled
 
 [dev-dependencies]
-criterion = { version = "0.5", features = ["html_reports"] }
+criterion = { version = "0.8", features = ["html_reports"] }
 snapbox = "0.6"
 tempfile = "3.13"
 proptest = "1.4"
