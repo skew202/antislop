@@ -1,5 +1,6 @@
 {
-  ".": "0.2.0",
+  ".": "0.2.1",
   "packages/antislop": "0.2.0",
-  "editors/vscode": "0.2.0"
+  "editors/vscode": "0.2.1",
+  "crates/antislop-lsp": "0.2.1"
 }
