@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/skew202/antislop/actions/workflows/ci.yml/badge.svg)](https://github.com/skew202/antislop/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/antislop.svg)](https://crates.io/crates/antislop)
+[![npm](https://img.shields.io/npm/v/antislop.svg)](https://www.npmjs.com/package/antislop)
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://skew202.github.io/antislop/antislop/)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](https://github.com/skew202/antislop)
 
@@ -98,6 +99,9 @@ Antislop uses tree-sitter AST parsing for accurate detection. Regex-only mode is
 ### From Pre-built Binaries (Recommended)
 
 ```bash
+# via npm (downloads platform-specific binary)
+npm install -g antislop
+
 # via cargo-dist (Shell)
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/skew202/antislop/releases/latest/download/antislop-installer.sh | sh
 
