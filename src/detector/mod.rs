@@ -393,4 +393,157 @@ mod tests {
             Language::Unknown
         );
     }
+
+    #[test]
+    fn test_language_detection_all_types() {
+        // Test more file extensions
+        assert_eq!(
+            Language::from_path(Path::new("test.ts")),
+            Language::TypeScript
+        );
+        assert_eq!(Language::from_path(Path::new("test.jsx")), Language::Jsx);
+        assert_eq!(Language::from_path(Path::new("test.go")), Language::Go);
+        assert_eq!(Language::from_path(Path::new("test.java")), Language::Java);
+        assert_eq!(Language::from_path(Path::new("test.kt")), Language::Kotlin);
+        assert_eq!(Language::from_path(Path::new("test.kts")), Language::Kotlin);
+        assert_eq!(Language::from_path(Path::new("test.c")), Language::CCpp);
+        assert_eq!(Language::from_path(Path::new("test.cpp")), Language::CCpp);
+        assert_eq!(Language::from_path(Path::new("test.cs")), Language::CSharp);
+        assert_eq!(Language::from_path(Path::new("test.rb")), Language::Ruby);
+        assert_eq!(Language::from_path(Path::new("test.php")), Language::Php);
+        assert_eq!(
+            Language::from_path(Path::new("test.swift")),
+            Language::Swift
+        );
+        assert_eq!(Language::from_path(Path::new("test.hs")), Language::Haskell);
+        assert_eq!(Language::from_path(Path::new("test.lua")), Language::Lua);
+        assert_eq!(Language::from_path(Path::new("test.pl")), Language::Perl);
+        assert_eq!(Language::from_path(Path::new("test.pm")), Language::Perl);
+        assert_eq!(
+            Language::from_path(Path::new("test.scala")),
+            Language::Scala
+        );
+        assert_eq!(Language::from_path(Path::new("test.sh")), Language::Shell);
+        assert_eq!(Language::from_path(Path::new("test.bash")), Language::Shell);
+        assert_eq!(Language::from_path(Path::new("test.zsh")), Language::Shell);
+        assert_eq!(Language::from_path(Path::new("test.fish")), Language::Shell);
+    }
+
+    #[test]
+    fn test_language_from_path_no_extension() {
+        // Test paths without extension
+        assert_eq!(
+            Language::from_path(Path::new("Makefile")),
+            Language::Unknown
+        );
+        assert_eq!(
+            Language::from_path(Path::new(".gitignore")),
+            Language::Unknown
+        );
+        assert_eq!(Language::from_path(Path::new("test")), Language::Unknown);
+    }
+
+    #[test]
+    fn test_comment_struct() {
+        let comment = Comment {
+            line: 10,
+            column: 5,
+            content: "TODO: implement this".to_string(),
+        };
+        assert_eq!(comment.line, 10);
+        assert_eq!(comment.column, 5);
+        assert_eq!(comment.content, "TODO: implement this");
+    }
+
+    #[test]
+    fn test_finding_struct() {
+        let finding = Finding {
+            file: "test.py".to_string(),
+            line: 10,
+            column: 5,
+            severity: Severity::Medium,
+            category: PatternCategory::Placeholder,
+            message: "TODO comment found".to_string(),
+            match_text: "TODO".to_string(),
+            pattern_regex: "(?i)todo".to_string(),
+        };
+        assert_eq!(finding.file, "test.py");
+        assert_eq!(finding.line, 10);
+        assert_eq!(finding.severity, Severity::Medium);
+        assert_eq!(finding.category, PatternCategory::Placeholder);
+    }
+
+    #[test]
+    fn test_file_scan_result_struct() {
+        let result = FileScanResult {
+            path: "test.py".to_string(),
+            findings: vec![],
+            score: 0,
+        };
+        assert_eq!(result.path, "test.py");
+        assert!(result.findings.is_empty());
+        assert_eq!(result.score, 0);
+    }
+
+    #[test]
+    fn test_scan_summary_new_empty() {
+        let results = vec![];
+        let summary = ScanSummary::new(&results);
+        assert_eq!(summary.files_scanned, 0);
+        assert_eq!(summary.files_with_findings, 0);
+        assert_eq!(summary.total_findings, 0);
+        assert_eq!(summary.total_score, 0);
+    }
+
+    #[test]
+    fn test_scan_summary_new_with_results() {
+        let results = vec![FileScanResult {
+            path: "test.py".to_string(),
+            findings: vec![Finding {
+                file: "test.py".to_string(),
+                line: 1,
+                column: 1,
+                severity: Severity::Medium,
+                category: PatternCategory::Placeholder,
+                message: "TODO".to_string(),
+                match_text: "TODO".to_string(),
+                pattern_regex: "(?i)todo".to_string(),
+            }],
+            score: 5,
+        }];
+        let summary = ScanSummary::new(&results);
+        assert_eq!(summary.files_scanned, 1);
+        assert_eq!(summary.files_with_findings, 1);
+        assert_eq!(summary.total_findings, 1);
+        assert_eq!(summary.total_score, 5);
+        assert_eq!(*summary.by_severity.get(&Severity::Medium).unwrap(), 1);
+        assert_eq!(
+            *summary
+                .by_category
+                .get(&PatternCategory::Placeholder)
+                .unwrap(),
+            1
+        );
+    }
+
+    #[test]
+    fn test_scan_summary_new_empty_results() {
+        let results = vec![
+            FileScanResult {
+                path: "clean.py".to_string(),
+                findings: vec![],
+                score: 0,
+            },
+            FileScanResult {
+                path: "sloppy.py".to_string(),
+                findings: vec![],
+                score: 0,
+            },
+        ];
+        let summary = ScanSummary::new(&results);
+        assert_eq!(summary.files_scanned, 2);
+        assert_eq!(summary.files_with_findings, 0);
+        assert_eq!(summary.total_findings, 0);
+        assert_eq!(summary.total_score, 0);
+    }
 }

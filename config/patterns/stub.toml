@@ -170,9 +170,21 @@ category = "stub"
 
 # Hardcoded placeholder values
 [[patterns]]
+regex = "(?i)hardcoded (address|config|directory|endpoint|filename|filepath|host|path|port|setting|string|uri|url)"
+severity = "medium"
+message = "Stub: hardcoded path/url/config in code"
+category = "stub"
+
+[[patterns]]
 regex = "(?i)hardcoded.*valu"
 severity = "medium"
 message = "Stub: hardcoded placeholder value"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)\\bhardcoded\\b"
+severity = "low"
+message = "Stub: hardcoded something (review if path/config)"
 category = "stub"
 
 [[patterns]]
@@ -218,4 +230,108 @@ category = "stub"
 regex = "(?i)template.*code"
 severity = "medium"
 message = "Stub: template code not customized"
+category = "stub"
+
+# Standalone MOCK/FAKE/DUMMY in comments (common slop patterns)
+# These match specific patterns that indicate production code slop, not test utilities
+
+# Mock variations - comprehensive word family
+[[patterns]]
+regex = "(?i)\\bmock(ing|ed)? (action|algorithm|assertion|assessment|action|behavior|batch|boundary|calculation|check|classification|client|computation|confidence|constraint|detection|identification|data|evaluation|endpoint|estimate|filter|function|handler|input|identification|limit|logic|measurement|method|metric|noise|operation|output|path|pipeline|prediction|probability|process|query|rating|recognition|request|req|response|res|result|return|route|score|search|server|service|sort|stat|statistics|stream|test|threshold|transaction|umap|uri|url|validation|value|verification|workflow)"
+severity = "medium"
+message = "Stub: mock implementation/placeholder in production code"
+category = "stub"
+
+# Fake variations
+[[patterns]]
+regex = "(?i)\\bfak(e|ing|ed) (algorithm|auth|client|credential|data|function|implementation|input|key|output|payload|request|req|response|resp|result|return|secret|token|user|value)"
+severity = "medium"
+message = "Stub: fake implementation/placeholder in production code"
+category = "stub"
+
+# Dummy variations
+[[patterns]]
+regex = "(?i)\\bdumm(y|ies|ing|ed) (argument|class|data|entry|filler|input|item|object|output|param|placeholder|record|result|struct|type|value|variable)"
+severity = "medium"
+message = "Stub: dummy value in production code"
+category = "stub"
+
+# Placeholder variations
+[[patterns]]
+regex = "(?i)\\bplace(-| )hold(er|ing)? (class|code|content|data|function|implementation|logic|method|string|text|value)"
+severity = "medium"
+message = "Stub: explicit placeholder in code"
+category = "stub"
+
+# Synthetic/generated/test data synonyms
+[[patterns]]
+regex = "(?i)\\b(demo|example|generated|sample|synthetic|test) (data|input|payload|response|result|value)"
+severity = "medium"
+message = "Stub: synthetic/sample data in production code"
+category = "stub"
+
+# Bogus/spurious/bog markers
+[[patterns]]
+regex = "(?i)\\b(bog|bogus|spurious) (calc|computation|data|logic|result|value)"
+severity = "medium"
+message = "Stub: bogus/spurious data marker in code"
+category = "stub"
+
+# Intercalary/simulated/emulated
+[[patterns]]
+regex = "(?i)\\b(emulat(ed|ing)?|emulat(ing|ed)?|interim|provisional|simulat(ed|ing)?|tentative) (data|implementation|logic|result|value)"
+severity = "medium"
+message = "Stub: simulated/emulated data in production code"
+category = "stub"
+
+# Arbitrary/made-up/random values
+[[patterns]]
+regex = "(?i)\\b(ad.?hoc|arbitrary|made.?up|random) (choice|constant|data|number|selection|string|value)"
+severity = "medium"
+message = "Stub: arbitrary/random value in production code"
+category = "stub"
+
+# Placeholder return values
+[[patterns]]
+regex = "(?i)\\b(return|set|assign) (a )?(dummy|fake|mock|placeholder|bogus|arbitrary|random|temp|temporary)"
+severity = "medium"
+message = "Stub: placeholder return value"
+category = "stub"
+
+# Common uppercase markers (all caps indicates sloppiness)
+# Note: Not using (?i) - we want to specifically catch ALL CAPS versions
+[[patterns]]
+regex = "MOCK [A-Z0-9_]"
+severity = "medium"
+message = "Stub: MOCK marker in all caps (likely slop)"
+category = "stub"
+
+[[patterns]]
+regex = "FAKE [A-Z0-9_]"
+severity = "medium"
+message = "Stub: FAKE marker in all caps (likely slop)"
+category = "stub"
+
+[[patterns]]
+regex = "DUMMY [A-Z0-9_]"
+severity = "medium"
+message = "Stub: DUMMY marker in all caps (likely slop)"
+category = "stub"
+
+[[patterns]]
+regex = "PLACEHOLDER [A-Z0-9_]"
+severity = "medium"
+message = "Stub: PLACEHOLDER marker in all caps (likely slop)"
+category = "stub"
+
+[[patterns]]
+regex = "TODO [A-Z0-9_]"
+severity = "medium"
+message = "Stub: TODO placeholder in all caps"
+category = "stub"
+
+[[patterns]]
+regex = "XXX [A-Z0-9_]"
+severity = "high"
+message = "Stub: XXX marker in all caps (attention needed)"
 category = "stub"

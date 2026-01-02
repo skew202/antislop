@@ -314,4 +314,87 @@ mod tests {
             panic!("Pattern validation failed: {}", e);
         }
     }
+
+    #[test]
+    fn test_config_from_toml_str() {
+        let toml = r#"
+            exclude_patterns = ["*.test.rs"]
+            file_extensions = [".py", ".rs"]
+        "#;
+        let config = Config::from_toml_str(toml).unwrap();
+        assert_eq!(config.exclude_patterns.len(), 1);
+        assert_eq!(config.file_extensions.len(), 2);
+    }
+
+    #[test]
+    fn test_config_from_toml_str_invalid() {
+        let toml = r#"
+            exclude_patterns = ["*.test.rs"
+            file_extensions = [".py"]
+        "#; // Missing closing bracket
+        let result = Config::from_toml_str(toml);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_pattern_category_default() {
+        let category = PatternCategory::default();
+        assert_eq!(category, PatternCategory::Placeholder);
+    }
+
+    #[test]
+    fn test_severity_default() {
+        let severity = Severity::default();
+        assert_eq!(severity, Severity::Medium);
+    }
+
+    #[test]
+    fn test_severity_as_str() {
+        assert_eq!(Severity::Low.as_str(), "LOW");
+        assert_eq!(Severity::Medium.as_str(), "MEDIUM");
+        assert_eq!(Severity::High.as_str(), "HIGH");
+        assert_eq!(Severity::Critical.as_str(), "CRITICAL");
+    }
+
+    #[test]
+    fn test_regex_pattern_new() {
+        assert!(RegexPattern::new("(?i)test".to_string()).is_ok());
+        assert!(RegexPattern::new("(?i)test(".to_string()).is_err());
+    }
+
+    #[test]
+    fn test_regex_pattern_deref() {
+        let pattern = RegexPattern::new("test".to_string()).unwrap();
+        assert_eq!(&*pattern, "test");
+    }
+
+    #[test]
+    fn test_regex_pattern_from_string() {
+        let s = String::from("test");
+        let pattern: RegexPattern = s.clone().try_into().unwrap();
+        let back: String = pattern.into();
+        assert_eq!(back, "test");
+    }
+
+    #[test]
+    fn test_patterns_for_category() {
+        let config = Config::default();
+        let placeholder_patterns = config.patterns_for_category(&PatternCategory::Placeholder);
+        assert!(!placeholder_patterns.is_empty());
+
+        let deferral_patterns = config.patterns_for_category(&PatternCategory::Deferral);
+        assert!(!deferral_patterns.is_empty());
+    }
+
+    #[test]
+    fn test_load_or_default_with_none() {
+        let config = Config::load_or_default(None);
+        assert!(!config.patterns.is_empty());
+    }
+
+    #[test]
+    fn test_load_or_default_with_empty_path() {
+        let config = Config::load_or_default(Some(Path::new("/nonexistent/path.toml")));
+        assert!(!config.patterns.is_empty());
+    }
 }

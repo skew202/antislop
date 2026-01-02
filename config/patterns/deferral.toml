@@ -155,3 +155,23 @@ regex = "(?i)prototyp(e|ing|es)"
 severity = "low"
 message = "Deferral: prototype code in production"
 category = "deferral"
+
+# Production deferral phrases (not just "a real production")
+[[patterns]]
+regex = "(?i)in production (this would|would be|will be|this should|should be|we will|we need to)"
+severity = "medium"
+message = "Deferral: production code promised later"
+category = "deferral"
+
+# "this would/should" deferral phrases
+[[patterns]]
+regex = "(?i)this (would|should) be (in )?production"
+severity = "medium"
+message = "Deferral: deferring to 'production' implementation"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)this (would|should) (be |get |have )"
+severity = "low"
+message = "Deferral: speculative code comment"
+category = "deferral"

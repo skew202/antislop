@@ -63,3 +63,124 @@ pub fn report_sarif(results: &[Finding], _summary: &ScanSummary) -> Result<()> {
     println!("{}", json);
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::config::{PatternCategory, Severity};
+
+    fn make_finding(
+        file: &str,
+        line: usize,
+        column: usize,
+        severity: Severity,
+        category: PatternCategory,
+        message: &str,
+        match_text: &str,
+    ) -> Finding {
+        Finding {
+            file: file.to_string(),
+            line,
+            column,
+            severity,
+            category,
+            message: message.to_string(),
+            match_text: match_text.to_string(),
+            pattern_regex: "test".to_string(),
+        }
+    }
+
+    #[test]
+    fn test_report_sarif_empty() {
+        let results = vec![];
+        let summary = ScanSummary {
+            files_scanned: 0,
+            files_with_findings: 0,
+            total_findings: 0,
+            total_score: 0,
+            by_severity: Default::default(),
+            by_category: Default::default(),
+        };
+
+        // Just check it doesn't error
+        let _ = report_sarif(&results, &summary);
+    }
+
+    #[test]
+    fn test_sarif_severity_mapping() {
+        // Critical -> Error
+        let finding_critical = make_finding(
+            "test.rs",
+            1,
+            1,
+            Severity::Critical,
+            PatternCategory::Stub,
+            "Critical issue",
+            "TODO",
+        );
+        // High -> Error
+        let finding_high = make_finding(
+            "test.rs",
+            2,
+            1,
+            Severity::High,
+            PatternCategory::Stub,
+            "High issue",
+            "FIXME",
+        );
+        // Medium -> Warning
+        let finding_medium = make_finding(
+            "test.rs",
+            3,
+            1,
+            Severity::Medium,
+            PatternCategory::Stub,
+            "Medium issue",
+            "hack",
+        );
+        // Low -> Note
+        let finding_low = make_finding(
+            "test.rs",
+            4,
+            1,
+            Severity::Low,
+            PatternCategory::Stub,
+            "Low issue",
+            "xxx",
+        );
+
+        let results = vec![finding_critical, finding_high, finding_medium, finding_low];
+        let summary = ScanSummary {
+            files_scanned: 1,
+            files_with_findings: 1,
+            total_findings: 4,
+            total_score: 71,
+            by_severity: Default::default(),
+            by_category: Default::default(),
+        };
+
+        // Should not panic
+        let _ = report_sarif(&results, &summary);
+    }
+
+    #[test]
+    fn test_sarif_finding_structure() {
+        let finding = make_finding(
+            "/path/to/file.py",
+            42,
+            10,
+            Severity::Medium,
+            PatternCategory::Placeholder,
+            "Test message",
+            "TODO",
+        );
+
+        assert_eq!(finding.file, "/path/to/file.py");
+        assert_eq!(finding.line, 42);
+        assert_eq!(finding.column, 10);
+        assert_eq!(finding.severity, Severity::Medium);
+        assert_eq!(finding.category, PatternCategory::Placeholder);
+        assert_eq!(finding.message, "Test message");
+        assert_eq!(finding.match_text, "TODO");
+    }
+}

@@ -80,4 +80,50 @@ mod tests {
         let result = RegexPattern::new("(?i)TODO:(".to_string());
         assert!(result.is_err());
     }
+
+    #[test]
+    fn test_by_severity() {
+        let patterns = vec![
+            Pattern {
+                regex: RegexPattern::new("(?i)HIGH:".to_string()).unwrap(),
+                severity: Severity::High,
+                message: "HIGH".to_string(),
+                category: PatternCategory::Stub,
+                ast_query: None,
+                languages: vec![],
+            },
+            Pattern {
+                regex: RegexPattern::new("(?i)MEDIUM:".to_string()).unwrap(),
+                severity: Severity::Medium,
+                message: "MEDIUM".to_string(),
+                category: PatternCategory::Stub,
+                ast_query: None,
+                languages: vec![],
+            },
+            Pattern {
+                regex: RegexPattern::new("(?i)LOW:".to_string()).unwrap(),
+                severity: Severity::Low,
+                message: "LOW".to_string(),
+                category: PatternCategory::Stub,
+                ast_query: None,
+                languages: vec![],
+            },
+        ];
+
+        let registry = PatternRegistry::new(patterns).unwrap();
+        let high_patterns = registry.by_severity(Severity::High);
+        assert_eq!(high_patterns.len(), 1);
+        assert_eq!(high_patterns[0].pattern.severity, Severity::High);
+
+        let medium_patterns = registry.by_severity(Severity::Medium);
+        assert_eq!(medium_patterns.len(), 1);
+        assert_eq!(medium_patterns[0].pattern.severity, Severity::Medium);
+
+        let low_patterns = registry.by_severity(Severity::Low);
+        assert_eq!(low_patterns.len(), 1);
+        assert_eq!(low_patterns[0].pattern.severity, Severity::Low);
+
+        let critical_patterns = registry.by_severity(Severity::Critical);
+        assert_eq!(critical_patterns.len(), 0);
+    }
 }
