@@ -1,31 +1,32 @@
+//! Snapshot tests for antislop.
+//!
+//! # Error Handling in Tests
+//!
+//! These tests use `.expect()` instead of `.unwrap()` for slightly better error messages.
+//! Test failures are acceptable to panic since they indicate bugs in the code.
+//!
+//! # Snapshot Stability
+//!
+//! All snapshots normalize file paths to avoid environment-specific differences.
+
 use antislop::{config::Config, Scanner};
 use insta::assert_json_snapshot;
-use std::fs;
-use tempfile::tempdir;
 
 #[test]
 fn test_json_output_snapshot() {
-    let dir = tempdir().unwrap();
-    let file_path = dir.path().join("test.py");
-    fs::write(
-        &file_path,
-        "def foo():\n    # TODO: implement this\n    pass",
-    )
-    .unwrap();
-
     let config = Config::default();
     let scanner = Scanner::new(config.patterns).expect("Scanner creation failed");
-    let content = fs::read_to_string(&file_path).unwrap();
-    let results = scanner.scan_file(file_path.to_str().unwrap(), &content);
 
-    // Filter out absolute paths to make snapshot stable
-    let mut stable_result = results.clone();
-    stable_result.path = "test.py".to_string();
-    for finding in &mut stable_result.findings {
+    let code = "def foo():\n    # TODO: implement this\n    pass";
+    let mut results = scanner.scan_file("test.py", code);
+
+    // Normalize paths for snapshot stability
+    results.path = "test.py".to_string();
+    for finding in &mut results.findings {
         finding.file = "test.py".to_string();
     }
 
-    assert_json_snapshot!(stable_result);
+    assert_json_snapshot!(results);
 }
 
 #[test]
@@ -50,16 +51,15 @@ def process_data(data):
     return None
 "#;
 
-    let results = scanner.scan_file("test.py", sloppy_code);
+    let mut results = scanner.scan_file("test.py", sloppy_code);
 
-    // Stabilize results for snapshot
-    let mut stable_result = results.clone();
-    stable_result.path = "test.py".to_string();
-    for finding in &mut stable_result.findings {
+    // Normalize paths for snapshot stability
+    results.path = "test.py".to_string();
+    for finding in &mut results.findings {
         finding.file = "test.py".to_string();
     }
 
-    assert_json_snapshot!("multiple_findings", stable_result);
+    assert_json_snapshot!("multiple_findings", results);
 }
 
 #[test]
@@ -78,11 +78,61 @@ def multiply(x: float, y: float) -> float:
     return x * y
 "#;
 
-    let results = scanner.scan_file("clean.py", clean_code);
+    let mut results = scanner.scan_file("clean.py", clean_code);
 
-    // Stabilize results for snapshot
-    let mut stable_result = results.clone();
-    stable_result.path = "clean.py".to_string();
+    // Normalize paths for snapshot stability
+    results.path = "clean.py".to_string();
 
-    assert_json_snapshot!("clean_code", stable_result);
+    assert_json_snapshot!("clean_code", results);
+}
+
+#[test]
+fn test_severity_levels_snapshot() {
+    let config = Config::default();
+    let scanner = Scanner::new(config.patterns).expect("Scanner creation failed");
+
+    // Code with different severity levels
+    let mixed_code = r#"
+def critical_function():
+    # CRITICAL: security vulnerability - fix immediately
+    # HACK: this is a quick workaround
+    # FIXME: refactor this later
+    # TODO: implement properly
+    pass
+"#;
+
+    let mut results = scanner.scan_file("severity.py", mixed_code);
+
+    // Normalize paths for snapshot stability
+    results.path = "severity.py".to_string();
+    for finding in &mut results.findings {
+        finding.file = "severity.py".to_string();
+    }
+
+    assert_json_snapshot!("severity_levels", results);
+}
+
+#[test]
+fn test_stub_patterns_snapshot() {
+    let config = Config::default();
+    let scanner = Scanner::new(config.patterns).expect("Scanner creation failed");
+
+    // Code with stub patterns
+    let stub_code = r#"
+def mock_data():
+    # MOCK: returns fake data for testing
+    # DUMMY: placeholder implementation
+    data = simulate_result()
+    return data
+"#;
+
+    let mut results = scanner.scan_file("stub.py", stub_code);
+
+    // Normalize paths for snapshot stability
+    results.path = "stub.py".to_string();
+    for finding in &mut results.findings {
+        finding.file = "stub.py".to_string();
+    }
+
+    assert_json_snapshot!("stub_patterns", results);
 }

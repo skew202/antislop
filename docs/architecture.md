@@ -31,7 +31,7 @@ Parallel file traversal with gitignore support using the `ignore` crate.
 ### `detector`
 Core detection engine with:
 - Pattern registry and compilation
-- Tree-sitter integration for accurate comment extraction (13+ languages)
+- Tree-sitter integration for accurate comment extraction (15+ languages)
 - AST-level slop detection via tree-sitter queries
 - Regex fallback for languages without tree-sitter support
 - Language detection from file extensions
@@ -58,15 +58,17 @@ Antislop uses a **MECE (Mutually Exclusive, Collectively Exhaustive)** strategy 
 | Haskell | ✓ | ✓ | `haskell` |
 | Java | ✓ | ✓ | `java` |
 | JavaScript | ✓ | ✓ | `javascript` |
-| Kotlin | ✗ | ✓ | — |
+| JSX | ✓ | ✓ | `javascript` |
+| Kotlin | ✓ | ✓ | `kotlin` |
 | Lua | ✓ | ✓ | `lua` |
 | Perl | ✗ | ✓ | — |
-| PHP | ✗ | ✓ | — |
+| PHP | ✓ | ✓ | `php` |
 | Python | ✓ | ✓ | `python` |
 | R | ✗ | ✓ | — |
 | Ruby | ✓ | ✓ | `ruby` |
 | Rust | ✓ | ✓ | `rust` |
 | Scala | ✓ | ✓ | `scala` |
-| Shell | ✗ | ✓ | — |
+| Shell (bash/sh/zsh/fish) | ✗ | ✓ | — |
 | Swift | ✗ | ✓ | — |
 | TypeScript | ✓ | ✓ | `typescript` |
+| TSX | ✓ | ✓ | `typescript` |
