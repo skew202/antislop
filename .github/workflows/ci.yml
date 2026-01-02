@@ -113,7 +113,6 @@ jobs:
           context: .
           tags: antislop:test
           load: true
-          cache: false
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
