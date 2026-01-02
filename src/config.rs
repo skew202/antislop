@@ -284,19 +284,48 @@ mod tests {
     #[test]
     fn test_default_config_loads() {
         let config = Config::default();
-        assert!(!config.patterns.is_empty());
-        assert!(config
-            .patterns
-            .iter()
-            .any(|p| p.category == PatternCategory::Placeholder));
-        assert!(config
-            .patterns
-            .iter()
-            .any(|p| p.category == PatternCategory::Deferral));
-        assert!(config
-            .patterns
-            .iter()
-            .any(|p| p.category == PatternCategory::Hedging));
+        // Should have patterns loaded
+        assert!(
+            !config.patterns.is_empty(),
+            "Default config should have patterns"
+        );
+        // Check each category exists
+        assert!(
+            config
+                .patterns
+                .iter()
+                .any(|p| p.category == PatternCategory::Placeholder),
+            "Should have Placeholder patterns"
+        );
+        assert!(
+            config
+                .patterns
+                .iter()
+                .any(|p| p.category == PatternCategory::Deferral),
+            "Should have Deferral patterns"
+        );
+        assert!(
+            config
+                .patterns
+                .iter()
+                .any(|p| p.category == PatternCategory::Hedging),
+            "Should have Hedging patterns"
+        );
+        assert!(
+            config
+                .patterns
+                .iter()
+                .any(|p| p.category == PatternCategory::Stub),
+            "Should have Stub patterns"
+        );
+        // Verify at least one TODO pattern exists
+        assert!(
+            config
+                .patterns
+                .iter()
+                .any(|p| { p.regex.contains("TODO") || p.regex.contains("todo") }),
+            "Should have TODO pattern"
+        );
     }
 
     #[test]

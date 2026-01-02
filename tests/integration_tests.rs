@@ -42,16 +42,20 @@ fn test_clean_code() {
     let output = Command::new(antislop_bin())
         .arg(file.to_string_lossy().as_ref())
         .output()
-        .unwrap()
-        .stdout;
+        .unwrap();
 
-    let text = String::from_utf8_lossy(&output);
-    if !text.contains("No AI slop detected") && !text.contains("Clean code") && !text.contains("✓")
-    {
-        eprintln!("Output was: {:?}", text);
-    }
+    // Clean code should exit with success
     assert!(
-        text.contains("No AI slop detected") || text.contains("Clean code") || text.contains("✓")
+        output.status.success(),
+        "Clean code should exit successfully: {:?}",
+        output.status
+    );
+    // Output should indicate no findings
+    let text = String::from_utf8_lossy(&output.stdout);
+    assert!(
+        text.contains("✓") || text.contains("Clean") || text.contains("No AI slop"),
+        "Expected clean code indicator, got: {}",
+        text
     );
 }
 
@@ -71,14 +75,15 @@ fn test_todo_detection() {
     let output = Command::new(antislop_bin())
         .arg(file.to_string_lossy().as_ref())
         .output()
-        .unwrap()
-        .stdout;
+        .unwrap();
 
-    let text = String::from_utf8_lossy(&output);
-    if !text.contains("TODO") && !text.contains("placeholder") {
-        eprintln!("Output was: {:?}", text);
-    }
-    assert!(text.contains("TODO") || text.contains("placeholder") || text.contains("MEDIUM"));
+    let text = String::from_utf8_lossy(&output.stdout);
+    // TODO detection should find "placeholder" category or "TODO" text
+    assert!(
+        text.contains("TODO") || text.contains("placeholder"),
+        "Expected TODO detection, got: {}",
+        text
+    );
 }
 
 #[test]
@@ -151,8 +156,16 @@ fn test_sarif_output_flag() {
         .unwrap();
 
     let text = String::from_utf8_lossy(&output.stdout);
-    assert!(text.contains("\"version\": \"2.1.0\""));
-    assert!(text.contains("\"ruleId\": \"placeholder\""));
+    // Validate SARIF structure by parsing as JSON
+    let json: serde_json::Value =
+        serde_json::from_str(&text).expect("SARIF output should be valid JSON");
+    // Check SARIF version
+    assert_eq!(json["version"], "2.1.0");
+    // Check runs array exists and has at least one run
+    assert!(json["runs"].as_array().is_some_and(|r| !r.is_empty()));
+    // Check that results exist
+    let run = &json["runs"][0];
+    assert!(run["results"].as_array().is_some_and(|r| !r.is_empty()));
 }
 
 // Tests for mock/fake/dummy patterns
@@ -438,7 +451,8 @@ fn test_mock_test_helper_not_flagged() {
     let text = String::from_utf8_lossy(&output);
 
     // mock_test_helper contains "test" so it should NOT trigger our new mock patterns
-    // It might trigger the old mock.*data pattern if "data" is present
-    // But "mock_test_helper" should be safe
-    assert!(!text.contains("mock implementation") || text.contains("MockSuite"));
+    // The specific "mock implementation" message should not appear
+    if text.contains("mock implementation") {
+        panic!("False positive: mock_test_helper should not be flagged as mock implementation");
+    }
 }

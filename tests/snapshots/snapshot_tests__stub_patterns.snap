@@ -1,0 +1,60 @@
+---
+source: tests/snapshot_tests.rs
+expression: stable_result
+---
+{
+  "path": "stub.py",
+  "findings": [
+    {
+      "file": "stub.py",
+      "line": 3,
+      "column": 21,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub: fake data in implementation",
+      "match_text": "fake data",
+      "pattern_regex": "(?i)fake.*data"
+    },
+    {
+      "file": "stub.py",
+      "line": 3,
+      "column": 7,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub: mock data in production code",
+      "match_text": "MOCK: returns fake data",
+      "pattern_regex": "(?i)mock.*data"
+    },
+    {
+      "file": "stub.py",
+      "line": 3,
+      "column": 21,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub: fake implementation/placeholder in production code",
+      "match_text": "fake data",
+      "pattern_regex": "(?i)\\bfak(e|ing|ed) (algorithm|auth|client|credential|data|function|implementation|input|key|output|payload|request|req|response|resp|result|return|secret|token|user|value)"
+    },
+    {
+      "file": "stub.py",
+      "line": 4,
+      "column": 7,
+      "severity": "medium",
+      "category": "deferral",
+      "message": "Deferral: dummy implementation placeholder",
+      "match_text": "DUMMY: placeholder implement",
+      "pattern_regex": "(?i)dummy.*implement"
+    },
+    {
+      "file": "stub.py",
+      "line": 4,
+      "column": 14,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub indicator: placeholder code instead of implementation",
+      "match_text": "placeholder",
+      "pattern_regex": "(?i)placeholder|stub"
+    }
+  ],
+  "score": 25
+}

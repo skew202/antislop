@@ -36,17 +36,26 @@ See [QA_STRATEGY.md](https://github.com/skew202/antislop/blob/main/QA_STRATEGY.m
 ## Running Tests
 
 ```bash
-# All tests
-cargo test --all-features
+# All tests (99 total)
+cargo test --all
 
-# Unit tests only
+# Unit tests only (51 tests)
 cargo test --lib
 
-# Integration tests
+# Integration tests (19 tests)
 cargo test --test integration_tests
 
-# Property-based tests
+# Property-based tests (5 tests)
 cargo test --test property_tests
+
+# Snapshot tests (5 tests)
+cargo test --test snapshot_tests
+
+# Edge case tests (9 tests)
+cargo test --test edge_cases
+
+# CLI output tests (9 tests)
+cargo test --test cli_output_tests
 
 # Update snapshots
 cargo insta review

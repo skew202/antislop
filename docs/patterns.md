@@ -21,6 +21,9 @@ Language indicating temporary solutions:
 - `quick implement` - Euphemism for incomplete
 - `simplif` - Often skips edge cases
 - `shortcut` - Creates technical debt
+- `in production this would` - Indicates prototype code
+- `this should be` - Indicates incomplete implementation
+- `this would be` - Defers proper implementation
 
 ## Hedging
 
@@ -37,8 +40,14 @@ Uncertainty language in comments:
 
 Empty or placeholder implementations:
 
+- `MOCK` - Mock implementation in production code
+- `FAKE` - Fake data or implementation
+- `DUMMY` - Dummy value or placeholder
+- `SIMULATED` - Simulated result for testing
 - `placeholder`, `stub` - Instead of actual implementation
 - `not implemented`, `unimplemented` - Explicitly unimplemented code
+- `hardcoded path` - Hardcoded file paths or URLs
+- `magic number` - Unt constants without explanation
 
 ## Adding Custom Patterns
 

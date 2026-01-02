@@ -298,6 +298,8 @@ mod tests {
     use super::*;
     use std::collections::HashMap;
 
+    // Helper to create test findings
+    // Note: Consider moving to common test utilities if duplicated elsewhere
     fn make_finding(
         file: &str,
         line: usize,
@@ -359,9 +361,9 @@ mod tests {
         )];
         let summary = make_summary(5, 1);
 
-        // Just check it doesn't error - output goes to stdout
+        // Verify report_json doesn't panic
+        // report_json writes to stdout; capturing it is complex in unit tests
         let _ = reporter.report_json(&results, &summary);
-        // If we got here without panic, test passes
     }
 
     #[test]
@@ -370,7 +372,7 @@ mod tests {
         let results = vec![];
         let summary = make_summary(0, 0);
 
-        // Just check it doesn't error
+        // Verify empty results don't panic
         let _ = reporter.report_json(&results, &summary);
     }
 
