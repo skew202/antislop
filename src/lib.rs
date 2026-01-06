@@ -26,6 +26,7 @@
 
 pub mod config;
 pub mod detector;
+pub mod filename_checker;
 pub mod report;
 pub mod walker;
 
@@ -34,6 +35,9 @@ pub use config::{Config, Pattern, PatternCategory, Severity};
 
 #[doc(inline)]
 pub use detector::{Comment, FileScanResult, Finding, ScanSummary, Scanner};
+
+#[doc(inline)]
+pub use filename_checker::{FilenameCheckConfig, FilenameChecker};
 
 #[doc(inline)]
 pub use report::{Format, Reporter};
