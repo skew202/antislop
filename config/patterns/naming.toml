@@ -1,0 +1,257 @@
+# Naming convention patterns
+# These detect filename patterns that often indicate AI-generated "alternatives"
+# This file is only used when filename checking is enabled via config
+
+# Suffixes that suggest AI-generated duplicates/alternatives
+[[patterns]]
+regex = "(?i)_real\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_real' suffix suggests this is an 'alternative' implementation"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_fixed\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_fixed' suffix suggests previous version had bugs"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_new\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_new' suffix suggests backup/old file pattern"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_old\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_old' suffix suggests deprecated file"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_v2\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_v2' suffix suggests versioned alternative"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_v3\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_v3' suffix suggests versioned alternative"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_v4\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_v4' suffix suggests versioned alternative"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_alt\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_alt' suffix suggests alternative implementation"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_alternative\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_alternative' suffix suggests alternative implementation"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_enhanced\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_enhanced' suffix suggests AI-improved 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_improved\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_improved' suffix suggests AI-improved 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_optimized\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_optimized' suffix suggests AI-optimized 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_refactored\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_refactored' suffix suggests AI-refactored 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_revised\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_revised' suffix suggests AI-revised 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_updated\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_updated' suffix suggests AI-updated 'alternative'"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_rewrite\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_rewrite' suffix suggests AI rewrite"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_backup\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_backup' should be in version control, not codebase"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_bak\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_bak' should be in version control, not codebase"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_orig\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_orig' suffix suggests original file backup"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_original\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_original' suffix suggests original file backup"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_tmp\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_tmp' suffix indicates temporary code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_temp\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_temp' suffix indicates temporary code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_test\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: '_test' suffix suggests test code that should be in test directory"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_demo\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: '_demo' suffix suggests demo code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_example\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: '_example' suffix suggests example code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_sample\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: '_sample' suffix suggests sample code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_wip\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_wip' suffix indicates work-in-progress"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)_draft\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: '_draft' suffix indicates draft code"
+category = "namingconvention"
+
+# Prefixes that suggest AI-generated duplicates
+[[patterns]]
+regex = "(?i)^old_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: 'old_' prefix suggests deprecated file"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^new_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'new_' prefix suggests AI-generated replacement"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^fixed_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'fixed_' prefix suggests AI-generated fix"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^backup_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: 'backup_' prefix should be in version control"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^tmp_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'tmp_' prefix indicates temporary code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^temp_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'temp_' prefix indicates temporary code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^test_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: 'test_' prefix suggests test code that should be in test directory"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^demo_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "medium"
+message = "Potential duplicate: 'demo_' prefix suggests demo code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^example_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: 'example_' prefix suggests example code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^sample_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "low"
+message = "Potential duplicate: 'sample_' prefix suggests sample code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^wip_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'wip_' prefix indicates work-in-progress"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^draft_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'draft_' prefix indicates draft code"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^revised_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'revised_' prefix suggests AI-revised version"
+category = "namingconvention"
+
+[[patterns]]
+regex = "(?i)^updated_.*\\.(rs|py|js|ts|go|java|rb|php|cs)$"
+severity = "high"
+message = "Potential duplicate: 'updated_' prefix suggests AI-updated version"
+category = "namingconvention"

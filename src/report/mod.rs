@@ -119,6 +119,7 @@ impl Reporter {
                 PatternCategory::Deferral => "\x1b[95m",    // bright magenta
                 PatternCategory::Hedging => "\x1b[93m",     // bright yellow
                 PatternCategory::Stub => "\x1b[91m",        // bright red
+                PatternCategory::NamingConvention => "\x1b[38;5;214m", // orange
             }
         };
 
@@ -211,6 +212,7 @@ impl Reporter {
                 PatternCategory::Stub,
                 PatternCategory::Deferral,
                 PatternCategory::Hedging,
+                PatternCategory::NamingConvention,
             ] {
                 if let Some(&count) = summary.by_category.get(&category) {
                     let color = match category {
@@ -218,6 +220,7 @@ impl Reporter {
                         PatternCategory::Stub => "\x1b[91m",
                         PatternCategory::Deferral => "\x1b[95m",
                         PatternCategory::Hedging => "\x1b[93m",
+                        PatternCategory::NamingConvention => "\x1b[38;5;214m",
                     };
                     write!(
                         handle,

@@ -34,6 +34,7 @@ impl PatternsDirectory {
                 ("hedging", include_str!("../config/patterns/hedging.toml")),
                 ("stub", include_str!("../config/patterns/stub.toml")),
                 ("ast", include_str!("../config/patterns/ast.toml")),
+                ("naming", include_str!("../config/patterns/naming.toml")),
             ],
         }
     }
@@ -155,6 +156,8 @@ pub enum PatternCategory {
     Hedging,
     /// Stub code: empty implementations.
     Stub,
+    /// Filename convention violations: inconsistent naming, suspicious suffixes.
+    NamingConvention,
 }
 
 /// A single slop detection pattern.

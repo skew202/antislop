@@ -2,7 +2,7 @@
 //!
 //! A blazing-fast, multi-language linter for detecting AI-generated code slop.
 
-use antislop::{Config, Format, Reporter, Scanner, Walker, CONFIG_FILES, VERSION};
+use antislop::{Config, FilenameChecker, FilenameCheckConfig, Format, Reporter, Scanner, Walker, CONFIG_FILES, VERSION};
 use anyhow::{Context, Result};
 use clap::{CommandFactory, Parser};
 use clap_complete::{generate, Shell};
@@ -57,6 +57,10 @@ struct Args {
     /// Print default configuration
     #[arg(long)]
     print_config: bool,
+
+    /// Disable filename convention checking
+    #[arg(long)]
+    no_filename_check: bool,
 }
 
 fn main() -> Result<()> {
@@ -104,8 +108,37 @@ fn main() -> Result<()> {
     let mut scan_results = Vec::new();
     let mut has_errors = false;
 
+    // Set up filename checker for convention analysis (disabled by default)
+    let filename_check_config = FilenameCheckConfig {
+        check_duplicates: false,    // Requires opt-in via config
+        min_files_for_convention: 5, // Need 5+ files to establish pattern
+        convention_threshold: 0.7,  // 70% must follow convention
+    };
+
+    // Extract naming patterns for duplicate detection
+    let naming_patterns: Vec<_> = config
+        .patterns
+        .iter()
+        .filter(|p| p.category == antislop::PatternCategory::NamingConvention)
+        .cloned()
+        .collect();
+
+    let mut filename_checker = if args.no_filename_check {
+        None
+    } else {
+        Some(FilenameChecker::with_config_and_patterns(
+            filename_check_config,
+            &naming_patterns,
+        ))
+    };
+
     for entry in &entries {
         let path = entry.path.to_string_lossy().to_string();
+
+        // Add to filename checker for convention analysis
+        if let Some(ref mut checker) = filename_checker {
+            checker.add_file(&entry.path);
+        }
 
         let content = match fs::read_to_string(&entry.path) {
             Ok(c) => c,
@@ -127,12 +160,60 @@ fn main() -> Result<()> {
         scan_results.push(result);
     }
 
+    // Check for naming convention violations
+    let filename_findings = if let Some(ref checker) = filename_checker {
+        checker.check()
+    } else {
+        Vec::new()
+    };
+    for finding in &filename_findings {
+        all_findings.push(finding.clone());
+    }
+
+    // Recalculate summary including filename findings
     let summary = antislop::ScanSummary::new(&scan_results);
-    let exit_code = if summary.total_score > 0 || has_errors {
+
+    // Add filename findings to the total score
+    let filename_score: u32 = filename_findings.iter().map(|f| f.severity.score()).sum();
+    let total_with_filenames = summary.total_score + filename_score;
+    let exit_code = if total_with_filenames > 0 || has_errors {
         1
     } else {
         0
     };
+
+    // Create a modified summary that includes filename findings
+    let mut summary_with_filenames = summary.clone();
+    summary_with_filenames.total_score = total_with_filenames;
+    summary_with_filenames.total_findings += filename_findings.len();
+
+    // Add filename findings to category counts
+    for finding in &filename_findings {
+        *summary_with_filenames
+            .by_category
+            .entry(finding.category.clone())
+            .or_insert(0) += 1;
+        *summary_with_filenames
+            .by_severity
+            .entry(finding.severity.clone())
+            .or_insert(0) += 1;
+    }
+
+    // Update files_with_findings if filename findings exist in previously clean files
+    if !filename_findings.is_empty() {
+        let files_with_filename_issues: std::collections::HashSet<_> =
+            filename_findings.iter().map(|f| f.file.clone()).collect();
+        let files_with_content_issues: std::collections::HashSet<_> = scan_results
+            .iter()
+            .filter(|r| !r.findings.is_empty())
+            .map(|r| r.path.clone())
+            .collect();
+
+        let total_files_with_issues = files_with_filename_issues
+            .union(&files_with_content_issues)
+            .count();
+        summary_with_filenames.files_with_findings = total_files_with_issues;
+    }
 
     let format = if let Some(fmt) = args.format {
         match fmt.as_str() {
@@ -150,7 +231,7 @@ fn main() -> Result<()> {
 
     all_findings.sort_by_key(|f| (f.file.clone(), f.line));
 
-    reporter.report(all_findings, summary)?;
+    reporter.report(all_findings, summary_with_filenames)?;
 
     if exit_code != 0 {
         std::process::exit(exit_code);

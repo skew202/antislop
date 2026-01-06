@@ -456,3 +456,162 @@ fn test_mock_test_helper_not_flagged() {
         panic!("False positive: mock_test_helper should not be flagged as mock implementation");
     }
 }
+
+// Tests for filename convention checking
+// Note: Filename checking is now more conservative and requires:
+// - 5+ files to establish a convention (to avoid false positives)
+// - 70% threshold for dominant convention
+// - Duplicate detection is opt-in (disabled by default)
+//
+// These tests reflect the "learn from existing code" philosophy rather than
+// enforcing opinions.
+
+#[test]
+fn test_no_convention_break_with_few_files() {
+    let temp = TempDir::new().unwrap();
+    let dir = temp.path();
+
+    // Only 4 files - not enough to establish convention (threshold is 5)
+    fs::write(dir.join("module_one.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_two.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_three.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("moduleFour.rs"), "fn main() {}\n").unwrap();
+
+    let output = Command::new(antislop_bin())
+        .arg(dir)
+        .output()
+        .unwrap()
+        .stdout;
+
+    let text = String::from_utf8_lossy(&output);
+    // Should NOT detect convention break with only 4 files (threshold is 5)
+    assert!(
+        !text.contains("convention") || text.contains("No AI slop"),
+        "Should not flag convention break with only 4 files, got: {}",
+        text
+    );
+}
+
+#[test]
+fn test_convention_break_detection() {
+    let temp = TempDir::new().unwrap();
+    let dir = temp.path();
+
+    // Need 5+ files to establish convention, then an outlier
+    // 5 snake_case + 1 camelCase = 83% snake -> above 70% threshold
+    fs::write(dir.join("module_one.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_two.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_three.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_four.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_five.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("moduleSix.rs"), "fn main() {}\n").unwrap(); // Outlier
+
+    let output = Command::new(antislop_bin())
+        .arg(dir)
+        .output()
+        .unwrap()
+        .stdout;
+
+    let text = String::from_utf8_lossy(&output);
+    // Should detect convention break
+    assert!(
+        text.contains("convention") || text.contains("naming") || text.contains("moduleSix"),
+        "Expected convention break detection, got: {}",
+        text
+    );
+}
+
+#[test]
+fn test_convention_break_pascal_to_snake() {
+    let temp = TempDir::new().unwrap();
+    let dir = temp.path();
+
+    // Need 5+ files to establish convention
+    fs::write(dir.join("ModuleOne.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("ModuleTwo.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("ModuleThree.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("ModuleFour.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("ModuleFive.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_six.rs"), "fn main() {}\n").unwrap(); // Outlier
+
+    let output = Command::new(antislop_bin())
+        .arg(dir)
+        .output()
+        .unwrap()
+        .stdout;
+
+    let text = String::from_utf8_lossy(&output);
+    // Should detect convention break
+    assert!(
+        text.contains("convention") || text.contains("naming"),
+        "Expected convention break detection, got: {}",
+        text
+    );
+}
+
+#[test]
+fn test_independent_conventions_per_directory() {
+    let temp = TempDir::new().unwrap();
+    let src = temp.path().join("src");
+    let tests = temp.path().join("tests");
+    fs::create_dir(&src).unwrap();
+    fs::create_dir(&tests).unwrap();
+
+    // src uses snake_case (need 5+ files)
+    fs::write(src.join("module_one.rs"), "fn main() {}\n").unwrap();
+    fs::write(src.join("module_two.rs"), "fn main() {}\n").unwrap();
+    fs::write(src.join("module_three.rs"), "fn main() {}\n").unwrap();
+    fs::write(src.join("module_four.rs"), "fn main() {}\n").unwrap();
+    fs::write(src.join("module_five.rs"), "fn main() {}\n").unwrap();
+
+    // tests uses PascalCase (need 5+ files)
+    fs::write(tests.join("TestOne.rs"), "fn main() {}\n").unwrap();
+    fs::write(tests.join("TestTwo.rs"), "fn main() {}\n").unwrap();
+    fs::write(tests.join("TestThree.rs"), "fn main() {}\n").unwrap();
+    fs::write(tests.join("TestFour.rs"), "fn main() {}\n").unwrap();
+    fs::write(tests.join("TestFive.rs"), "fn main() {}\n").unwrap();
+
+    let output = Command::new(antislop_bin())
+        .arg(temp.path())
+        .output()
+        .unwrap()
+        .stdout;
+
+    let text = String::from_utf8_lossy(&output);
+    // Should NOT detect convention breaks - each dir follows its own convention
+    assert!(
+        !text.contains("convention break") || text.contains("No AI slop"),
+        "Different directories should have independent conventions, got: {}",
+        text
+    );
+}
+
+#[test]
+fn test_filename_check_can_be_disabled() {
+    let temp = TempDir::new().unwrap();
+    let dir = temp.path();
+
+    // Files that would trigger convention violations
+    fs::write(dir.join("module_one.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_two.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_three.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_four.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("module_five.rs"), "fn main() {}\n").unwrap();
+    fs::write(dir.join("moduleSix.rs"), "fn main() {}\n").unwrap();
+
+    // With --no-filename-check, should not detect naming issues
+    let output = Command::new(antislop_bin())
+        .arg("--no-filename-check")
+        .arg(dir)
+        .output()
+        .unwrap()
+        .stdout;
+
+    let text = String::from_utf8_lossy(&output);
+    // Should NOT detect convention break when disabled
+    assert!(
+        !text.contains("convention") || text.contains("No AI slop"),
+        "With --no-filename-check, should not flag naming issues, got: {}",
+        text
+    );
+}
