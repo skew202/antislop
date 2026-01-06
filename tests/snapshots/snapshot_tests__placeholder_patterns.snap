@@ -1,0 +1,160 @@
+---
+source: tests/snapshot_tests.rs
+expression: results
+---
+{
+  "path": "placeholder.py",
+  "findings": [
+    {
+      "file": "placeholder.py",
+      "line": 3,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder comment: untracked TODO found",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)TODO:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 3,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO with explicit implementation note",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)TODO: implement"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 3,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO implementation marker",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)to.?do:? implement"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 4,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder comment: FIXME indicates incomplete work",
+      "match_text": "FIXME:",
+      "pattern_regex": "(?i)FIXME:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 5,
+      "column": 7,
+      "severity": "high",
+      "category": "placeholder",
+      "message": "Placeholder comment: HACK indicates poor solution",
+      "match_text": "HACK:",
+      "pattern_regex": "(?i)HACK:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 5,
+      "column": 30,
+      "severity": "low",
+      "category": "deferral",
+      "message": "Deferral: temporary solution with no plan to revisit",
+      "match_text": "for now",
+      "pattern_regex": "(?i)for now"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 5,
+      "column": 7,
+      "severity": "medium",
+      "category": "hedging",
+      "message": "Hedging: apologetic comment - fix the issue instead of apologizing",
+      "match_text": "HACK",
+      "pattern_regex": "(?i)\\b(sorry|hack|hacky|ugly|bad|terrible|awful|gross|yuck|forgive|quick.?and.?dirty)\\b"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 6,
+      "column": 7,
+      "severity": "high",
+      "category": "placeholder",
+      "message": "Critical marker: XXX indicates urgent problems",
+      "match_text": "XXX",
+      "pattern_regex": "(?i)XXX"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 7,
+      "column": 7,
+      "severity": "low",
+      "category": "placeholder",
+      "message": "Unnecessary NOTE comment (code should be self-documenting)",
+      "match_text": "NOTE: important reminder",
+      "pattern_regex": "(?i)NOTE:.*(important|reminder)"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 10,
+      "column": 3,
+      "severity": "low",
+      "category": "placeholder",
+      "message": "Review marker: code marked for review but not resolved",
+      "match_text": "REVIEW:",
+      "pattern_regex": "(?i)REVIEW:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 11,
+      "column": 3,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "BUG marker: known issue documented but not fixed",
+      "match_text": "BUG:",
+      "pattern_regex": "(?i)BUG:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 11,
+      "column": 8,
+      "severity": "medium",
+      "category": "hedging",
+      "message": "Hedging: known issue in code",
+      "match_text": "known issue",
+      "pattern_regex": "(?i)known.?issue"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 12,
+      "column": 3,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Cleanup marker: technical debt acknowledged but not addressed",
+      "match_text": "CLEANUP:",
+      "pattern_regex": "(?i)CLEANUP:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 13,
+      "column": 3,
+      "severity": "low",
+      "category": "placeholder",
+      "message": "Refactor marker: code identified as needing refactoring",
+      "match_text": "REFACTOR:",
+      "pattern_regex": "(?i)REFACTOR:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 8,
+      "column": 5,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Function body contains only 'pass' statement",
+      "match_text": "pass",
+      "pattern_regex": "pass$"
+    }
+  ],
+  "score": 99
+}
