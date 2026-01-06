@@ -1,6 +1,6 @@
 ---
 source: tests/snapshot_tests.rs
-expression: stable_result
+expression: results
 ---
 {
   "path": "clean.py",

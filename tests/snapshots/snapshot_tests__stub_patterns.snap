@@ -1,6 +1,6 @@
 ---
 source: tests/snapshot_tests.rs
-expression: stable_result
+expression: results
 ---
 {
   "path": "stub.py",
@@ -8,6 +8,36 @@ expression: stable_result
     {
       "file": "stub.py",
       "line": 3,
+      "column": 7,
+      "severity": "critical",
+      "category": "stub",
+      "message": "Stub: explicitly unimplemented code",
+      "match_text": "not implemented",
+      "pattern_regex": "(?i)not implemented|unimplemented"
+    },
+    {
+      "file": "stub.py",
+      "line": 3,
+      "column": 7,
+      "severity": "critical",
+      "category": "stub",
+      "message": "Stub: code explicitly not implemented",
+      "match_text": "not implement",
+      "pattern_regex": "(?i)not.?implement"
+    },
+    {
+      "file": "stub.py",
+      "line": 6,
+      "column": 3,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub indicator: placeholder code instead of implementation",
+      "match_text": "placeholder",
+      "pattern_regex": "(?i)placeholder|stub"
+    },
+    {
+      "file": "stub.py",
+      "line": 8,
       "column": 21,
       "severity": "medium",
       "category": "stub",
@@ -17,7 +47,7 @@ expression: stable_result
     },
     {
       "file": "stub.py",
-      "line": 3,
+      "line": 8,
       "column": 7,
       "severity": "medium",
       "category": "stub",
@@ -27,7 +57,7 @@ expression: stable_result
     },
     {
       "file": "stub.py",
-      "line": 3,
+      "line": 8,
       "column": 21,
       "severity": "medium",
       "category": "stub",
@@ -37,7 +67,7 @@ expression: stable_result
     },
     {
       "file": "stub.py",
-      "line": 4,
+      "line": 9,
       "column": 7,
       "severity": "medium",
       "category": "deferral",
@@ -47,14 +77,104 @@ expression: stable_result
     },
     {
       "file": "stub.py",
-      "line": 4,
+      "line": 9,
       "column": 14,
       "severity": "medium",
       "category": "stub",
       "message": "Stub indicator: placeholder code instead of implementation",
       "match_text": "placeholder",
       "pattern_regex": "(?i)placeholder|stub"
+    },
+    {
+      "file": "stub.py",
+      "line": 10,
+      "column": 13,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub: simulated/emulated data in production code",
+      "match_text": "simulated result",
+      "pattern_regex": "(?i)\\b(emulat(ed|ing)?|emulat(ing|ed)?|interim|provisional|simulat(ed|ing)?|tentative) (data|implementation|logic|result|value)"
+    },
+    {
+      "file": "stub.py",
+      "line": 13,
+      "column": 7,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Stub: hardcoded path/url/config in code",
+      "match_text": "hardcoded path",
+      "pattern_regex": "(?i)hardcoded (address|config|directory|endpoint|filename|filepath|host|path|port|setting|string|uri|url)"
+    },
+    {
+      "file": "stub.py",
+      "line": 13,
+      "column": 7,
+      "severity": "low",
+      "category": "stub",
+      "message": "Stub: hardcoded something (review if path/config)",
+      "match_text": "hardcoded",
+      "pattern_regex": "(?i)\\bhardcoded\\b"
+    },
+    {
+      "file": "stub.py",
+      "line": 16,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder comment: untracked TODO found",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)TODO:"
+    },
+    {
+      "file": "stub.py",
+      "line": 16,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO with explicit implementation note",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)TODO: implement"
+    },
+    {
+      "file": "stub.py",
+      "line": 16,
+      "column": 7,
+      "severity": "high",
+      "category": "stub",
+      "message": "Stub: TODO implementation marker",
+      "match_text": "TODO: implement",
+      "pattern_regex": "(?i)to.?do:? implement"
+    },
+    {
+      "file": "stub.py",
+      "line": 19,
+      "column": 3,
+      "severity": "low",
+      "category": "stub",
+      "message": "Stub: magic number warning",
+      "match_text": "magic number",
+      "pattern_regex": "(?i)magic number"
+    },
+    {
+      "file": "stub.py",
+      "line": 4,
+      "column": 5,
+      "severity": "critical",
+      "category": "stub",
+      "message": "NotImplementedError stub detected",
+      "match_text": "raise NotImplementedError",
+      "pattern_regex": "raise NotImplementedError"
+    },
+    {
+      "file": "stub.py",
+      "line": 17,
+      "column": 5,
+      "severity": "medium",
+      "category": "stub",
+      "message": "Function body contains only 'pass' statement",
+      "match_text": "pass",
+      "pattern_regex": "pass$"
     }
   ],
-  "score": 25
+  "score": 232
 }

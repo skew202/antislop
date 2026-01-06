@@ -245,3 +245,31 @@ regex = "(?i)\\b(sorry|hack|hacky|ugly|bad|terrible|awful|gross|yuck|forgive|qui
 severity = "medium"
 message = "Hedging: apologetic comment - fix the issue instead of apologizing"
 category = "hedging"
+
+# Can't easily / Cannot easily - indicates incomplete implementation
+[[patterns]]
+regex = "(?i)(can'?t|cannot) (easily|readily|simply|quickly) (inject|parse|extract|detect|implement|handle|access|modify|validate)"
+severity = "medium"
+message = "Hedging: admits something can't be done easily - suggests incomplete implementation"
+category = "hedging"
+
+# Let's in comments - suggests provisional/exploratory code
+[[patterns]]
+regex = "(?i)let'?s (just|for now|quickly|temporarily|keep|use|try|assume)"
+severity = "low"
+message = "Hedging: 'let's' in comments suggests provisional or temporary code"
+category = "hedging"
+
+# Let's general catch
+[[patterns]]
+regex = "(?i)# let'?s "
+severity = "low"
+message = "Hedging: 'let's' comment often indicates exploratory or incomplete code"
+category = "hedging"
+
+# But let's log/keep/use - deferral pattern
+[[patterns]]
+regex = "(?i)but let'?s (log|keep|use|try|ignore|skip|handle|assume)"
+severity = "low"
+message = "Hedging: 'but let's' indicates compromise or deferral in implementation"
+category = "hedging"

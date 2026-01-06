@@ -1,7 +1,6 @@
 ---
 source: tests/snapshot_tests.rs
-assertion_line: 28
-expression: stable_result
+expression: results
 ---
 {
   "path": "test.py",
