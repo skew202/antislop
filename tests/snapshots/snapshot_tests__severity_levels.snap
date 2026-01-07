@@ -11,29 +11,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "placeholder",
-      "message": "Placeholder comment: HACK indicates poor solution",
+      "message": "Placeholder: HACK marker",
       "match_text": "HACK:",
-      "pattern_regex": "(?i)HACK:"
-    },
-    {
-      "file": "severity.py",
-      "line": 4,
-      "column": 13,
-      "severity": "low",
-      "category": "placeholder",
-      "message": "Meta-comment: unnecessary description of what code is",
-      "match_text": "this is a ",
-      "pattern_regex": "(?i)THIS IS A "
-    },
-    {
-      "file": "severity.py",
-      "line": 4,
-      "column": 7,
-      "severity": "medium",
-      "category": "hedging",
-      "message": "Hedging: apologetic comment - fix the issue instead of apologizing",
-      "match_text": "HACK",
-      "pattern_regex": "(?i)\\b(sorry|hack|hacky|ugly|bad|terrible|awful|gross|yuck|forgive|quick.?and.?dirty)\\b"
+      "pattern_regex": "(?i)\\bHACK\\s*:"
     },
     {
       "file": "severity.py",
@@ -41,9 +21,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: FIXME indicates incomplete work",
+      "message": "Placeholder: FIXME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)FIXME:"
+      "pattern_regex": "(?i)\\bFIXME\\s*:"
+    },
+    {
+      "file": "severity.py",
+      "line": 5,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: FIX ME marker",
+      "match_text": "FIXME:",
+      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:"
     },
     {
       "file": "severity.py",
@@ -51,9 +41,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: untracked TODO found",
+      "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)TODO:"
+      "pattern_regex": "(?i)\\bTODO\\s*:"
+    },
+    {
+      "file": "severity.py",
+      "line": 6,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: TO DO marker",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
     },
     {
       "file": "severity.py",
@@ -61,19 +61,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "stub",
-      "message": "Stub: TODO with explicit implementation note",
+      "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO: implement"
-    },
-    {
-      "file": "severity.py",
-      "line": 6,
-      "column": 7,
-      "severity": "high",
-      "category": "stub",
-      "message": "Stub: TODO implementation marker",
-      "match_text": "TODO: implement",
-      "pattern_regex": "(?i)to.?do:? implement"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
     },
     {
       "file": "severity.py",
@@ -86,5 +76,5 @@ expression: results
       "pattern_regex": "pass$"
     }
   ],
-  "score": 66
+  "score": 55
 }

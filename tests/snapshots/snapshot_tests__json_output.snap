@@ -11,9 +11,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: untracked TODO found",
+      "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)TODO:"
+      "pattern_regex": "(?i)\\bTODO\\s*:"
+    },
+    {
+      "file": "test.py",
+      "line": 2,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: TO DO marker",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
     },
     {
       "file": "test.py",
@@ -21,19 +31,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "stub",
-      "message": "Stub: TODO with explicit implementation note",
+      "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO: implement"
-    },
-    {
-      "file": "test.py",
-      "line": 2,
-      "column": 7,
-      "severity": "high",
-      "category": "stub",
-      "message": "Stub: TODO implementation marker",
-      "match_text": "TODO: implement",
-      "pattern_regex": "(?i)to.?do:? implement"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
     },
     {
       "file": "test.py",
@@ -46,5 +46,5 @@ expression: results
       "pattern_regex": "pass$"
     }
   ],
-  "score": 40
+  "score": 30
 }

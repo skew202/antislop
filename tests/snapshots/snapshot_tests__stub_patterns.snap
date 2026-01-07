@@ -11,109 +11,9 @@ expression: results
       "column": 7,
       "severity": "critical",
       "category": "stub",
-      "message": "Stub: explicitly unimplemented code",
-      "match_text": "not implemented",
-      "pattern_regex": "(?i)not implemented|unimplemented"
-    },
-    {
-      "file": "stub.py",
-      "line": 3,
-      "column": 7,
-      "severity": "critical",
-      "category": "stub",
       "message": "Stub: code explicitly not implemented",
       "match_text": "not implement",
-      "pattern_regex": "(?i)not.?implement"
-    },
-    {
-      "file": "stub.py",
-      "line": 6,
-      "column": 3,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub indicator: placeholder code instead of implementation",
-      "match_text": "placeholder",
-      "pattern_regex": "(?i)placeholder|stub"
-    },
-    {
-      "file": "stub.py",
-      "line": 8,
-      "column": 21,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub: fake data in implementation",
-      "match_text": "fake data",
-      "pattern_regex": "(?i)fake.*data"
-    },
-    {
-      "file": "stub.py",
-      "line": 8,
-      "column": 7,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub: mock data in production code",
-      "match_text": "MOCK: returns fake data",
-      "pattern_regex": "(?i)mock.*data"
-    },
-    {
-      "file": "stub.py",
-      "line": 8,
-      "column": 21,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub: fake implementation/placeholder in production code",
-      "match_text": "fake data",
-      "pattern_regex": "(?i)\\bfak(e|ing|ed) (algorithm|auth|client|credential|data|function|implementation|input|key|output|payload|request|req|response|resp|result|return|secret|token|user|value)"
-    },
-    {
-      "file": "stub.py",
-      "line": 9,
-      "column": 7,
-      "severity": "medium",
-      "category": "deferral",
-      "message": "Deferral: dummy implementation placeholder",
-      "match_text": "DUMMY: placeholder implement",
-      "pattern_regex": "(?i)dummy.*implement"
-    },
-    {
-      "file": "stub.py",
-      "line": 9,
-      "column": 14,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub indicator: placeholder code instead of implementation",
-      "match_text": "placeholder",
-      "pattern_regex": "(?i)placeholder|stub"
-    },
-    {
-      "file": "stub.py",
-      "line": 10,
-      "column": 13,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub: simulated/emulated data in production code",
-      "match_text": "simulated result",
-      "pattern_regex": "(?i)\\b(emulat(ed|ing)?|emulat(ing|ed)?|interim|provisional|simulat(ed|ing)?|tentative) (data|implementation|logic|result|value)"
-    },
-    {
-      "file": "stub.py",
-      "line": 13,
-      "column": 7,
-      "severity": "medium",
-      "category": "stub",
-      "message": "Stub: hardcoded path/url/config in code",
-      "match_text": "hardcoded path",
-      "pattern_regex": "(?i)hardcoded (address|config|directory|endpoint|filename|filepath|host|path|port|setting|string|uri|url)"
-    },
-    {
-      "file": "stub.py",
-      "line": 13,
-      "column": 7,
-      "severity": "low",
-      "category": "stub",
-      "message": "Stub: hardcoded something (review if path/config)",
-      "match_text": "hardcoded",
-      "pattern_regex": "(?i)\\bhardcoded\\b"
+      "pattern_regex": "(?i)not\\s*implement"
     },
     {
       "file": "stub.py",
@@ -121,9 +21,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: untracked TODO found",
+      "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)TODO:"
+      "pattern_regex": "(?i)\\bTODO\\s*:"
+    },
+    {
+      "file": "stub.py",
+      "line": 16,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: TO DO marker",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
     },
     {
       "file": "stub.py",
@@ -131,29 +41,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "stub",
-      "message": "Stub: TODO with explicit implementation note",
+      "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO: implement"
-    },
-    {
-      "file": "stub.py",
-      "line": 16,
-      "column": 7,
-      "severity": "high",
-      "category": "stub",
-      "message": "Stub: TODO implementation marker",
-      "match_text": "TODO: implement",
-      "pattern_regex": "(?i)to.?do:? implement"
-    },
-    {
-      "file": "stub.py",
-      "line": 19,
-      "column": 3,
-      "severity": "low",
-      "category": "stub",
-      "message": "Stub: magic number warning",
-      "match_text": "magic number",
-      "pattern_regex": "(?i)magic number"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
     },
     {
       "file": "stub.py",
@@ -176,5 +66,5 @@ expression: results
       "pattern_regex": "pass$"
     }
   ],
-  "score": 232
+  "score": 130
 }

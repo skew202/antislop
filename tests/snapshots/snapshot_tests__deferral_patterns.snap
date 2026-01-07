@@ -7,183 +7,13 @@ expression: results
   "findings": [
     {
       "file": "deferral.py",
-      "line": 2,
-      "column": 24,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: temporary solution with no plan to revisit",
-      "match_text": "for now",
-      "pattern_regex": "(?i)for now"
-    },
-    {
-      "file": "deferral.py",
-      "line": 2,
-      "column": 3,
-      "severity": "medium",
-      "category": "deferral",
-      "message": "Deferral: 'quick implementation' is a euphemism for incomplete",
-      "match_text": "Quick implement",
-      "pattern_regex": "(?i)quick.*implement"
-    },
-    {
-      "file": "deferral.py",
-      "line": 4,
-      "column": 7,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: temporary code tends to become permanent",
-      "match_text": "temporary",
-      "pattern_regex": "(?i)temp(orary)?"
-    },
-    {
-      "file": "deferral.py",
-      "line": 7,
-      "column": 7,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: naive approach warning",
-      "match_text": "naive approach",
-      "pattern_regex": "(?i)naive.*approach"
-    },
-    {
-      "file": "deferral.py",
-      "line": 10,
-      "column": 7,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: work in progress marker",
-      "match_text": "WIP",
-      "pattern_regex": "(?i)\\bWIP\\b"
-    },
-    {
-      "file": "deferral.py",
-      "line": 10,
-      "column": 12,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: incomplete in-progress code",
-      "match_text": "in progress",
-      "pattern_regex": "(?i)in.?progress"
-    },
-    {
-      "file": "deferral.py",
-      "line": 13,
-      "column": 3,
-      "severity": "medium",
-      "category": "deferral",
-      "message": "Deferral: deferring to 'production' implementation",
-      "match_text": "This should be in production",
-      "pattern_regex": "(?i)this (would|should) be (in )?production"
-    },
-    {
-      "file": "deferral.py",
-      "line": 13,
-      "column": 3,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: speculative code comment",
-      "match_text": "This should be ",
-      "pattern_regex": "(?i)this (would|should) (be |get |have )"
-    },
-    {
-      "file": "deferral.py",
       "line": 14,
       "column": 3,
       "severity": "medium",
       "category": "deferral",
       "message": "Deferral: production code promised later",
       "match_text": "In production this would",
-      "pattern_regex": "(?i)in production (this would|would be|will be|this should|should be|we will|we need to)"
-    },
-    {
-      "file": "deferral.py",
-      "line": 14,
-      "column": 17,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: speculative code comment",
-      "match_text": "this would be ",
-      "pattern_regex": "(?i)this (would|should) (be |get |have )"
-    },
-    {
-      "file": "deferral.py",
-      "line": 17,
-      "column": 3,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: phased implementation without phase 2",
-      "match_text": "phase 1",
-      "pattern_regex": "(?i)phase [12]"
-    },
-    {
-      "file": "deferral.py",
-      "line": 18,
-      "column": 3,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: future work explicitly deferred",
-      "match_text": "future work",
-      "pattern_regex": "(?i)future.?work"
-    },
-    {
-      "file": "deferral.py",
-      "line": 19,
-      "column": 3,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: 'coming soon' features never arrive",
-      "match_text": "coming soon",
-      "pattern_regex": "(?i)coming.?soon"
-    },
-    {
-      "file": "deferral.py",
-      "line": 21,
-      "column": 15,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: temporary solution with no plan to revisit",
-      "match_text": "for now",
-      "pattern_regex": "(?i)for now"
-    },
-    {
-      "file": "deferral.py",
-      "line": 21,
-      "column": 7,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: simplification often skips edge cases",
-      "match_text": "simplif",
-      "pattern_regex": "(?i)simplif"
-    },
-    {
-      "file": "deferral.py",
-      "line": 22,
-      "column": 23,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: temporary solution with no plan to revisit",
-      "match_text": "for now",
-      "pattern_regex": "(?i)for now"
-    },
-    {
-      "file": "deferral.py",
-      "line": 22,
-      "column": 14,
-      "severity": "medium",
-      "category": "deferral",
-      "message": "Deferral: shortcuts create technical debt",
-      "match_text": "shortcut",
-      "pattern_regex": "(?i)shortcut"
-    },
-    {
-      "file": "deferral.py",
-      "line": 22,
-      "column": 7,
-      "severity": "medium",
-      "category": "hedging",
-      "message": "Hedging: overconfident comment - verify claim before shipping",
-      "match_text": "just",
-      "pattern_regex": "(?i)\\b(obviously|clearly|simply|just|easy|trivial|basically|of course|naturally)\\b"
+      "pattern_regex": "(?i)in production.*(would|should|will|need to)"
     },
     {
       "file": "deferral.py",
@@ -196,5 +26,5 @@ expression: results
       "pattern_regex": "pass$"
     }
   ],
-  "score": 43
+  "score": 10
 }

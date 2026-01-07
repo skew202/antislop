@@ -26,15 +26,8 @@ impl PatternsDirectory {
     const fn new() -> Self {
         Self {
             files: &[
-                (
-                    "placeholder",
-                    include_str!("../config/patterns/placeholder.toml"),
-                ),
-                ("deferral", include_str!("../config/patterns/deferral.toml")),
-                ("hedging", include_str!("../config/patterns/hedging.toml")),
-                ("stub", include_str!("../config/patterns/stub.toml")),
+                ("core", include_str!("../config/patterns/core.toml")),
                 ("ast", include_str!("../config/patterns/ast.toml")),
-                ("naming", include_str!("../config/patterns/naming.toml")),
             ],
         }
     }
@@ -293,6 +286,7 @@ mod tests {
             "Default config should have patterns"
         );
         // Check each category exists
+        // Check each category exists
         assert!(
             config
                 .patterns
@@ -300,20 +294,8 @@ mod tests {
                 .any(|p| p.category == PatternCategory::Placeholder),
             "Should have Placeholder patterns"
         );
-        assert!(
-            config
-                .patterns
-                .iter()
-                .any(|p| p.category == PatternCategory::Deferral),
-            "Should have Deferral patterns"
-        );
-        assert!(
-            config
-                .patterns
-                .iter()
-                .any(|p| p.category == PatternCategory::Hedging),
-            "Should have Hedging patterns"
-        );
+        // Note: Other categories (Deferral, Hedging) are now in profiles,
+        // so they may not be present in the minimal default config.
         assert!(
             config
                 .patterns
@@ -414,8 +396,8 @@ mod tests {
         let placeholder_patterns = config.patterns_for_category(&PatternCategory::Placeholder);
         assert!(!placeholder_patterns.is_empty());
 
-        let deferral_patterns = config.patterns_for_category(&PatternCategory::Deferral);
-        assert!(!deferral_patterns.is_empty());
+        let stub_patterns = config.patterns_for_category(&PatternCategory::Stub);
+        assert!(!stub_patterns.is_empty());
     }
 
     #[test]
