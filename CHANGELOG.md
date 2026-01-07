@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/skew202/antislop/compare/v0.2.1...v0.3.0) (2026-01-07)
+
+
+### Features
+
+* add filename convention checking for AI-generated duplicates ([9f6d2e0](https://github.com/skew202/antislop/commit/9f6d2e04aeff886b708b145fb4b0d2c26050cd69))
+* v0.3.0 Unix Philosophy Redesign ([aaee8c3](https://github.com/skew202/antislop/commit/aaee8c38672fb1192da5d89ff9fee47989f81072))
+
+
+### Bug Fixes
+
+* **ci:** exclude source files with intentional pattern docs from antislop scan ([aba8487](https://github.com/skew202/antislop/commit/aba84873a879a94544b1483e9b4c1e72b683646b))
+* **ci:** Resolve CI failures and test suite issues ([931c37c](https://github.com/skew202/antislop/commit/931c37c0acdb06892192f49bb0532b8c1a445118))
+* reduce keywords to 5 for crates.io limit ([e356186](https://github.com/skew202/antislop/commit/e356186a372fa70add21bbe27f67471bcbe66b4f))
+
+
+### Documentation
+
+* improve license section in README ([ee9f21a](https://github.com/skew202/antislop/commit/ee9f21ae9c85684bd72acd5368bb100f353bfbd3))
+* Update README with profile philosophy and CI examples ([1aaaf3e](https://github.com/skew202/antislop/commit/1aaaf3e8771540e181d69e53f31478f27f4d0786))
+
+
+### Tests
+
+* add 9 CLI output tests to improve mutation score ([8ba26f1](https://github.com/skew202/antislop/commit/8ba26f13920be863f04636c2742e9ca044ca2405))
+* add hedging patterns and reorganize snapshot tests ([bf8a91f](https://github.com/skew202/antislop/commit/bf8a91f70558641f680f55faac719d1461225bfa))
+* improve coverage from 52% to 89% ([7b8da59](https://github.com/skew202/antislop/commit/7b8da59a36e30e57bdeaee6932231f517fce5c87))
+
+
+### Miscellaneous
+
+* bump npm package version to 0.2.1 ([7d009f4](https://github.com/skew202/antislop/commit/7d009f4dbd3239b92beabd2e76971b1b6e515f90))
+* **deps:** update all cargo dependencies ([cf50817](https://github.com/skew202/antislop/commit/cf5081720e25dd50e5a5f3e8af39507427556762))
+* ignore cargo-mutants output directories ([d0e1d31](https://github.com/skew202/antislop/commit/d0e1d31db40ee44f7de96a5ad5fb04ca8b667aec))
+* integrate antislop into CI and pre-commit hooks ([b099754](https://github.com/skew202/antislop/commit/b09975473877027de7b11e663443c84880a74f20))
+* release v0.2.2 ([f8ed149](https://github.com/skew202/antislop/commit/f8ed14906761cc0751f4c916d2ddb1966706a050))
+* remove deprecated 'command' parameter from release-please ([ee9f21a](https://github.com/skew202/antislop/commit/ee9f21ae9c85684bd72acd5368bb100f353bfbd3))
+* update actions/checkout v4-&gt;v6, @types/vscode 1.75-&gt;1.107 ([ae37f47](https://github.com/skew202/antislop/commit/ae37f4710db7d39bc94e656c306e7eb6376557e9))
+
+
+### CI/CD
+
+* add publish workflow for manual and auto-trigger ([a30cd12](https://github.com/skew202/antislop/commit/a30cd12712314632bc0cbe8d287dbe980a47e072))
+* remove deprecated cache option from docker build ([7007813](https://github.com/skew202/antislop/commit/7007813cf06d4682f40bce7c584ad75f188e949b))
+
 ## [0.2.1](https://github.com/skew202/antislop/compare/v0.2.0...v0.2.1) (2026-01-01)
 
 
