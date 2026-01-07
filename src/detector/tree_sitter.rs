@@ -95,12 +95,25 @@ impl TreeSitterExtractor {
             let mut cursor = QueryCursor::new();
             let mut matches = cursor.matches(&query, tree.root_node(), source.as_bytes());
 
+            // Compile the regex for this pattern once (for validation)
+            let regex = match regex::Regex::new(&pattern.regex) {
+                Ok(r) => r,
+                Err(_) => continue,
+            };
+
             while let Some(mat) = matches.next() {
                 for capture in mat.captures {
                     let node = capture.node;
+                    let text = node.utf8_text(source.as_bytes()).unwrap_or("").to_string();
+
+                    // Verify the regex also matches the matched text
+                    // This prevents false positives from overly broad AST queries
+                    if !regex.is_match(&text) {
+                        continue;
+                    }
+
                     let line = node.start_position().row + 1;
                     let column = node.start_position().column + 1;
-                    let text = node.utf8_text(source.as_bytes()).unwrap_or("").to_string();
 
                     findings.push(Finding {
                         file: String::new(), // Caller will set

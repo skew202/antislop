@@ -134,6 +134,42 @@ antislop --json
 antislop -c custom-config.toml
 ```
 
+### Profiles
+
+Antislop uses a **minimal core** by default. Extend it with profiles:
+
+- **Core** (Always on): Universal stubs & critical placeholders
+- **Standard** (`--profile antislop-standard`): Recommended baseline (deferrals, hedging)
+- **Strict** (`--profile antislop-strict`): Maximum coverage
+
+```bash
+# Recommended baseline
+antislop --profile antislop-standard src/
+antislop --profile my-project src/
+```
+
+### Built-in Profiles
+
+| Profile | Patterns | Description |
+|---------|----------|-------------|
+| `antislop-standard` | 15 | Language-agnostic base (stubs, deferrals, hedging) |
+| `no-stubs` | 8 | Strict anti-stub patterns |
+| `strict-comments` | 16 | No deferral language allowed |
+
+Create custom profiles in `.antislop/profiles/` or extend existing ones:
+
+```toml
+[metadata]
+name = "my-project"
+extends = ["antislop-standard"]
+
+[[patterns]]
+regex = '(?i)my-custom-pattern'
+severity = "high"
+message = "Custom rule"
+category = "deferral"
+```
+
 ## Installation Options
 
 Antislop is modular. You can optimize for binary size by choosing specific languages:

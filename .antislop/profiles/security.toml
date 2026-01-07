@@ -1,0 +1,69 @@
+# Security & Safety Profile
+#
+# Detects usage of unsafe code, potential secrets, and risky patterns.
+# Useful for security audits and high-reliability codebases.
+
+[metadata]
+name = "security"
+version = "1.0.0"
+description = "Security and safety pattern detection (unsafe, secrets, unwrap)"
+author = "antislop-community"
+
+# Secrets Detection
+[[patterns]]
+regex = "(?i)(password|secret|api_key|token)\\s*=\\s*[\"'][^\"']{8,}[\"']"
+severity = "critical"
+message = "Security: Potential hardcoded secret/password"
+category = "stub"
+
+# Rust Safety
+[[patterns]]
+regex = 'unsafe\s*\{'
+severity = "critical"
+message = "Safety: unsafe block used - verify invariants"
+category = "stub"
+languages = ["Rust"]
+
+[[patterns]]
+regex = '\.unwrap\(\)'
+severity = "high"
+message = "Safety: .unwrap() used - potential panic point"
+category = "stub"
+languages = ["Rust"]
+
+[[patterns]]
+regex = 'mem::transmute'
+severity = "critical"
+message = "Safety: mem::transmute is extremely dangerous"
+category = "stub"
+languages = ["Rust"]
+
+# Python Safety
+[[patterns]]
+regex = 'eval\('
+severity = "critical"
+message = "Safety: eval() is dangerous"
+category = "stub"
+languages = ["Python", "JavaScript", "TypeScript"]
+
+[[patterns]]
+regex = 'exec\('
+severity = "critical"
+message = "Safety: exec() is dangerous"
+category = "stub"
+languages = ["Python"]
+
+# C/C++ Safety
+[[patterns]]
+regex = 'strcpy\('
+severity = "critical"
+message = "Safety: strcpy is unsafe buffer overflow risk"
+category = "stub"
+languages = ["C", "C++"]
+
+[[patterns]]
+regex = 'gets\('
+severity = "critical"
+message = "Safety: gets is extremely unsafe"
+category = "stub"
+languages = ["C", "C++"]

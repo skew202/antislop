@@ -1,0 +1,108 @@
+# Strict Comments Profile
+#
+# This profile detects deferral language and temporary code markers.
+# It follows the MECE principle - patterns NOT caught by standard linters.
+
+[metadata]
+name = "strict-comments"
+version = "1.0.0"
+description = "No temporary or deferral comments allowed"
+author = "antislop-community"
+
+# Deferral patterns - NOT caught by standard linters
+[[patterns]]
+regex = "(?i)for now"
+severity = "high"
+message = "Deferral: 'for now' becomes forever"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)temporary"
+severity = "high"
+message = "Deferral: temporary code is permanent"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)quick.*fix"
+severity = "high"
+message = "Deferral: quick fixes accumulate technical debt"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)quick.*implement"
+severity = "medium"
+message = "Deferral: quick implementation warning"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)WIP"
+severity = "medium"
+message = "Deferral: work-in-progress marker in production"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)work in progress"
+severity = "medium"
+message = "Deferral: WIP comment in production code"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)phase [12]\b'
+severity = "low"
+message = "Deferral: phase marker indicates incomplete implementation"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)basic.*implement"
+severity = "low"
+message = "Deferral: basic implementation may be incomplete"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)simple.*implement"
+severity = "low"
+message = "Deferral: simple implementations often miss edge cases"
+category = "deferral"
+
+[[patterns]]
+regex = "(?i)minimal.*implement"
+severity = "low"
+message = "Deferral: minimal may mean incomplete"
+category = "deferral"
+
+# Hedging patterns
+[[patterns]]
+regex = "(?i)hopefully.*work"
+severity = "medium"
+message = "Hedging: developer hopes code works instead of knowing"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)should.*work"
+severity = "low"
+message = "Hedging: unsure if code actually works"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)seems.*work"
+severity = "medium"
+message = "Hedging: 'seems to work' instead of verified working"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)appears.*work"
+severity = "medium"
+message = "Hedging: appears to work without proper testing"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)good enough"
+severity = "medium"
+message = "Hedging: 'good enough' is the enemy of quality"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)can'?t.*easily"
+severity = "low"
+message = "Hedging: admits something can't be done easily"
+category = "hedging"

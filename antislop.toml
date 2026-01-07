@@ -1,0 +1,30 @@
+# Antislop Self-Configuration
+# This configures how antislop scans itself.
+
+# Default profile for development
+default_profile = "antislop-standard"
+
+# Files to exclude from scanning
+# Prevents recursion and scanning of intentional "slop" in tests/examples
+exclude = [
+    ".git/**",
+    "target/**",
+    "node_modules/**",
+    "vendor/**",
+    
+    # Exclude examples and tests as they contain intentional findings
+    "examples/**",
+    "tests/**",
+    "benches/**",
+    
+    # Exclude pattern definitions (regexes look like slop)
+    "config/patterns/**",
+    ".antislop/profiles/**",
+    
+    # Exclude generated files
+    "*.lock",
+    "Cargo.lock",
+]
+
+# Configure scanner behavior
+max_file_size_kb = 1024

@@ -72,8 +72,12 @@ fn extract_duplicate_prefixes(patterns: &[Pattern]) -> Vec<String> {
                 let prefix_end = after_start.find('_')?;
                 let prefix = &after_start[..prefix_end];
                 // Remove (?i) and other regex constructs
-                let prefix = prefix.replace("(?i)", "").replace("[^]", "").replace("^", "");
-                if !prefix.is_empty() && prefix.chars().all(|c| c.is_ascii_alphabetic() || c == '_') {
+                let prefix = prefix
+                    .replace("(?i)", "")
+                    .replace("[^]", "")
+                    .replace("^", "");
+                if !prefix.is_empty() && prefix.chars().all(|c| c.is_ascii_alphabetic() || c == '_')
+                {
                     return Some(format!("_{}", prefix));
                 }
             }
@@ -130,7 +134,10 @@ impl NamingConvention {
         if stem.contains('_') {
             // Verify it's actually snake_case (all lowercase segments)
             let segments: Vec<&str> = stem.split('_').collect();
-            if segments.iter().all(|s| s.chars().all(|c| c.is_lowercase() || c.is_ascii_digit())) {
+            if segments
+                .iter()
+                .all(|s| s.chars().all(|c| c.is_lowercase() || c.is_ascii_digit()))
+            {
                 return NamingConvention::SnakeCase;
             }
         }
@@ -282,10 +289,7 @@ impl FilenameChecker {
 
         // Group for convention analysis
         if let Some(group) = FileGroup::from_path(path) {
-            self.grouped_files
-                .entry(group)
-                .or_insert_with(Vec::new)
-                .push(path_str);
+            self.grouped_files.entry(group).or_default().push(path_str);
         }
     }
 
@@ -313,12 +317,12 @@ impl FilenameChecker {
         for path in &self.all_files {
             let path_obj = Path::new(path);
             if let Some(dir) = path_obj.parent().and_then(|p| p.to_str()) {
-                by_dir.entry(dir).or_insert_with(Vec::new).push(path);
+                by_dir.entry(dir).or_default().push(path);
             }
         }
 
         // Check each directory for duplicate patterns
-        for (_dir, files) in &by_dir {
+        for files in by_dir.values() {
             let stems: Vec<(&str, &str)> = files
                 .iter()
                 .filter_map(|path| {
@@ -342,9 +346,9 @@ impl FilenameChecker {
                             .unwrap_or(&stem_lower);
 
                         // Check if base file exists with same extension
-                        let base_exists = stems.iter().any(|(s, e)| {
-                            *s == base && e == ext && *s != *stem
-                        });
+                        let base_exists = stems
+                            .iter()
+                            .any(|(s, e)| *s == base && e == ext && *s != *stem);
 
                         if base_exists {
                             // Find the actual file path that contains this stem
@@ -382,9 +386,9 @@ impl FilenameChecker {
                             .unwrap_or(&stem_lower);
 
                         // Check if base file exists with same extension
-                        let base_exists = stems.iter().any(|(s, e)| {
-                            *s == base && e == ext && *s != *stem
-                        });
+                        let base_exists = stems
+                            .iter()
+                            .any(|(s, e)| *s == base && e == ext && *s != *stem);
 
                         if base_exists {
                             // Find the actual file path that contains this stem
@@ -421,7 +425,7 @@ impl FilenameChecker {
     fn check_convention_breaks(&self) -> Vec<Finding> {
         let mut findings = Vec::new();
 
-        for (_group, files) in &self.grouped_files {
+        for files in self.grouped_files.values() {
             // Need minimum files to establish a convention
             if files.len() < self.config.min_files_for_convention {
                 continue;
@@ -477,9 +481,7 @@ impl FilenameChecker {
                         category: crate::config::PatternCategory::NamingConvention,
                         message: format!(
                             "Naming inconsistency: '{}' uses {:?} but project uses {:?}",
-                            filename,
-                            *convention,
-                            dominant_convention
+                            filename, *convention, dominant_convention
                         )
                         .to_lowercase()
                         .replace("snakecase", "snake_case")
@@ -497,7 +499,10 @@ impl FilenameChecker {
     }
 
     /// Count occurrences of each naming convention.
-    fn count_conventions(&self, conventions: &[(NamingConvention, String)]) -> HashMap<NamingConvention, usize> {
+    fn count_conventions(
+        &self,
+        conventions: &[(NamingConvention, String)],
+    ) -> HashMap<NamingConvention, usize> {
         let mut counts = HashMap::new();
         for (convention, _) in conventions {
             *counts.entry(*convention).or_insert(0) += 1;
@@ -518,21 +523,54 @@ mod tests {
 
     #[test]
     fn test_naming_convention_detection() {
-        assert_eq!(NamingConvention::detect("my_file"), NamingConvention::SnakeCase);
-        assert_eq!(NamingConvention::detect("myFile"), NamingConvention::CamelCase);
-        assert_eq!(NamingConvention::detect("MyFile"), NamingConvention::PascalCase);
-        assert_eq!(NamingConvention::detect("my-file"), NamingConvention::KebabCase);
-        assert_eq!(NamingConvention::detect("myfile"), NamingConvention::SnakeCase);
-        assert_eq!(NamingConvention::detect("MYFILE"), NamingConvention::PascalCase);
+        assert_eq!(
+            NamingConvention::detect("my_file"),
+            NamingConvention::SnakeCase
+        );
+        assert_eq!(
+            NamingConvention::detect("myFile"),
+            NamingConvention::CamelCase
+        );
+        assert_eq!(
+            NamingConvention::detect("MyFile"),
+            NamingConvention::PascalCase
+        );
+        assert_eq!(
+            NamingConvention::detect("my-file"),
+            NamingConvention::KebabCase
+        );
+        assert_eq!(
+            NamingConvention::detect("myfile"),
+            NamingConvention::SnakeCase
+        );
+        assert_eq!(
+            NamingConvention::detect("MYFILE"),
+            NamingConvention::PascalCase
+        );
     }
 
     #[test]
     fn test_expected_convention_for_language() {
-        assert_eq!(NamingConvention::expected_for_language("py"), Some(NamingConvention::SnakeCase));
-        assert_eq!(NamingConvention::expected_for_language("rs"), Some(NamingConvention::SnakeCase));
-        assert_eq!(NamingConvention::expected_for_language("go"), Some(NamingConvention::SnakeCase));
-        assert_eq!(NamingConvention::expected_for_language("java"), Some(NamingConvention::PascalCase));
-        assert_eq!(NamingConvention::expected_for_language("cs"), Some(NamingConvention::PascalCase));
+        assert_eq!(
+            NamingConvention::expected_for_language("py"),
+            Some(NamingConvention::SnakeCase)
+        );
+        assert_eq!(
+            NamingConvention::expected_for_language("rs"),
+            Some(NamingConvention::SnakeCase)
+        );
+        assert_eq!(
+            NamingConvention::expected_for_language("go"),
+            Some(NamingConvention::SnakeCase)
+        );
+        assert_eq!(
+            NamingConvention::expected_for_language("java"),
+            Some(NamingConvention::PascalCase)
+        );
+        assert_eq!(
+            NamingConvention::expected_for_language("cs"),
+            Some(NamingConvention::PascalCase)
+        );
         assert_eq!(NamingConvention::expected_for_language("js"), None);
         assert_eq!(NamingConvention::expected_for_language("ts"), None);
     }
@@ -548,7 +586,8 @@ mod tests {
         // Create mock patterns for testing
         let patterns = vec![
             Pattern {
-                regex: crate::config::RegexPattern::new("(?i)_real\\.(rs|py)".to_string()).expect("valid regex"),
+                regex: crate::config::RegexPattern::new("(?i)_real\\.(rs|py)".to_string())
+                    .expect("valid regex"),
                 severity: Severity::High,
                 message: "test".to_string(),
                 category: PatternCategory::NamingConvention,
@@ -556,7 +595,8 @@ mod tests {
                 languages: vec![],
             },
             Pattern {
-                regex: crate::config::RegexPattern::new("(?i)_new\\.(rs|py)".to_string()).expect("valid regex"),
+                regex: crate::config::RegexPattern::new("(?i)_new\\.(rs|py)".to_string())
+                    .expect("valid regex"),
                 severity: Severity::High,
                 message: "test".to_string(),
                 category: PatternCategory::NamingConvention,
@@ -687,16 +727,15 @@ mod tests {
         };
 
         // Create mock patterns for testing
-        let patterns = vec![
-            Pattern {
-                regex: crate::config::RegexPattern::new("(?i)_real\\.(rs|py)".to_string()).expect("valid regex"),
-                severity: Severity::High,
-                message: "test".to_string(),
-                category: PatternCategory::NamingConvention,
-                ast_query: None,
-                languages: vec![],
-            },
-        ];
+        let patterns = vec![Pattern {
+            regex: crate::config::RegexPattern::new("(?i)_real\\.(rs|py)".to_string())
+                .expect("valid regex"),
+            severity: Severity::High,
+            message: "test".to_string(),
+            category: PatternCategory::NamingConvention,
+            ast_query: None,
+            languages: vec![],
+        }];
 
         let mut checker = FilenameChecker::with_config_and_patterns(config, &patterns);
 

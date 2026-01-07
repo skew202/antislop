@@ -58,3 +58,52 @@ category = "deferral"
 | medium | 5 |
 | high | 15 |
 | critical | 50 |
+
+## Community Profiles
+
+Profiles are reusable pattern collections stored in `.antislop/profiles/`.
+
+### Profile Locations
+
+Antislop searches for profiles in:
+1. `.antislop/profiles/<name>.toml` (project-local)
+2. `~/.config/antislop/profiles/<name>.toml` (user)
+3. `~/.cache/antislop/profiles/<name>.toml` (cached remote)
+
+### Built-in Profiles
+
+| Profile | Description |
+|---------|-------------|
+| `antislop-standard` | Language-agnostic base config (recommended) |
+| `no-stubs` | Strict anti-stub patterns |
+| `strict-comments` | No deferral language allowed |
+
+### Profile Format
+
+```toml
+[metadata]
+name = "my-profile"
+version = "1.0.0"
+description = "My custom patterns"
+extends = ["antislop-standard"]  # Optional: inherit from other profiles
+
+[[patterns]]
+regex = '(?i)my pattern'
+severity = "medium"
+message = "Description"
+category = "deferral"
+```
+
+### Using Profiles
+
+```bash
+# Load by name
+antislop --profile antislop-standard src/
+
+# Load from file
+antislop --profile ./my-profile.toml src/
+
+# Load from URL (cached for 24h)
+antislop --profile https://example.com/profile.toml src/
+```
+

@@ -26,11 +26,58 @@ antislop --json src/
 antislop --format sarif > results.sarif
 ```
 
+## Profiles
+
+Antislop follows the Unix philosophy: **minimal defaults**, extensible via profiles.
+
+By default, only **Core** patterns (stubs, critical placeholders) are enabled.
+For most projects, we recommend the `antislop-standard` profile.
+
+```bash
+# Recommended baseline (Standard profile)
+antislop --profile antislop-standard src/
+
+# Strict checking (All patterns)
+antislop --profile antislop-strict src/
+
+# List available profiles
+antislop --list-profiles
+```
+
+## Category Control
+
+Fine-tune your scan by enabling/disabling specific pattern categories:
+
+```bash
+# Disable specific categories
+antislop --disable hedging src/
+antislop --disable hedging,deferral src/
+
+# Only scan specific categories
+antislop --only stub src/
+antislop --only stub,placeholder src/
+```
+
+## Profile Management
+
+```bash
+# Load a local profile file
+antislop --profile .antislop/profiles/custom.toml src/
+
+# Load a remote profile
+antislop --profile https://example.com/profiles/strict.toml src/
+```
+
 ## Options
 
 | Option | Description |
 |--------|-------------|
 | `-c, --config <FILE>` | Path to config file |
+| `--profile <NAME>` | Load a community profile (file, URL, or name) |
+| `--list-profiles` | List available profiles |
+| `--disable <CATS>` | Disable categories (comma-separated) |
+| `--only <CATS>` | Only enable categories (comma-separated) |
+| `--list-profiles` | List available profiles |
 | `--json` | Output in JSON format |
 | `--format <FMT>` | Output format: `text`, `json`, `sarif` |
 | `-m, --max-size <KB>` | Maximum file size to scan (default: 1024) |

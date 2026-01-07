@@ -1,0 +1,18 @@
+# Combined Profile
+#
+# This profile extends both no-stubs and strict-comments profiles,
+# demonstrating the extends feature.
+
+[metadata]
+name = "combined"
+version = "1.0.0"
+description = "Combined profile extending both no-stubs and strict-comments"
+author = "antislop-community"
+extends = ["no-stubs", "strict-comments"]
+
+# Additional patterns specific to this profile
+[[patterns]]
+regex = '(?i)debug'
+severity = "medium"
+message = "Debug code: remove debug statements before commit"
+category = "deferral"
