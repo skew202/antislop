@@ -17,6 +17,14 @@ exclude = [
     "tests/**",
     "benches/**",
     
+    # Exclude source files with intentional pattern documentation/definitions
+    # These contain examples of slop patterns in documentation comments
+    "src/lib.rs",          # Doc examples of slop categories
+    "src/config.rs",       # PatternCategory doc comments with examples
+    "src/bin/antislop.rs", # CLI help text references
+    "src/detector/**",     # Pattern definitions and test patterns
+    "src/profile/**",      # TODO comments for future implementation
+    
     # Exclude pattern definitions (regexes look like slop)
     "config/patterns/**",
     ".antislop/profiles/**",
