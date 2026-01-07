@@ -136,38 +136,38 @@ antislop -c custom-config.toml
 
 ### Profiles
 
-Antislop uses a **minimal core** by default. Extend it with profiles:
+Antislop follows a **Zero False Positive** philosophy for its default core.
 
-- **Core** (Always on): Universal stubs & critical placeholders
-- **Standard** (`--profile antislop-standard`): Recommended baseline (deferrals, hedging)
-- **Strict** (`--profile antislop-strict`): Maximum coverage
+- **Core** (Default): Critical stubs & placeholders only. Zero false positives.
+- **trict** (`--profile antislop-strict`): Maximum coverage. Detects all forms of slop.
+- **Standard** (`--profile antislop-standard`): **Recommended Baseline**. Adds checks for deferrals ("for now"), hedging ("should work"), and dummy data.
+- **Strict** (`--profile antislop-strict`): Maximum coverage.
 
 ```bash
-# Recommended baseline
+# Recommended for most projects
 antislop --profile antislop-standard src/
-antislop --profile my-project src/
 ```
 
-### Built-in Profiles
+| Profile | Focus | Best For |
+|:--------|:------|:---------|
+| **Core** | `TODO`, `FIXME`, Stubs | CI Pipelines (Blocker) |
+| **Standard** | + Deferrals, Hedging, Mock Data | Daily Development |
+| **Strict** | + Nitpicks, Style Enforced | Code Audits |
 
-| Profile | Patterns | Description |
-|---------|----------|-------------|
-| `antislop-standard` | 15 | Language-agnostic base (stubs, deferrals, hedging) |
-| `no-stubs` | 8 | Strict anti-stub patterns |
-| `strict-comments` | 16 | No deferral language allowed |
+### CI/CD Integration
 
-Create custom profiles in `.antislop/profiles/` or extend existing ones:
+**GitHub Actions Example:**
 
-```toml
-[metadata]
-name = "my-project"
-extends = ["antislop-standard"]
-
-[[patterns]]
-regex = '(?i)my-custom-pattern'
-severity = "high"
-message = "Custom rule"
-category = "deferral"
+```yaml
+jobs:
+  antislop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Antislop
+        run: curl -sSf https://raw.githubusercontent.com/skew202/antislop/main/install.sh | sh
+      - name: Run Scan
+        run: antislop --profile antislop-standard .
 ```
 
 ## Installation Options
