@@ -2,6 +2,13 @@ repos:
   # Rust formatting
   - repo: local
     hooks:
+      - id: antislop
+        name: antislop
+        entry: ./target/debug/antislop --profile antislop-standard
+        language: system
+        files: \.(rs|py|js|ts|go)$
+        exclude: ^(examples/|tests/|benches/)
+
       - id: cargo-fmt
         name: cargo fmt
         entry: cargo fmt --all --
