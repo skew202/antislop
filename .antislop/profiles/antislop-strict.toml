@@ -1,0 +1,307 @@
+# Antislop Strict
+#
+# Maximum coverage - all patterns enabled.
+# Use when you want to catch EVERYTHING.
+#
+# Usage: antislop --profile antislop-strict src/
+#
+# WARNING: May produce many findings on large codebases.
+# Consider using --disable <category> to reduce noise.
+
+[metadata]
+name = "antislop-strict"
+version = "1.0.0"
+description = "Strict profile - maximum coverage, all patterns"
+author = "antislop-community"
+url = "https://github.com/skew202/antislop"
+extends = ["antislop-standard", "security"]
+
+# =============================================================================
+# ALL DEFERRAL PATTERNS
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)for\s+the\s+time\s+being'
+severity = "low"
+message = "Deferral: for the time being"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)naive\s*implement'
+severity = "low"
+message = "Deferral: naive implementation"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)brute.?force'
+severity = "medium"
+message = "Deferral: brute force approach"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)in.?progress'
+severity = "low"
+message = "Deferral: in progress"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)coming.?soon'
+severity = "low"
+message = "Deferral: coming soon"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)future.?work'
+severity = "low"
+message = "Deferral: future work"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)phase\s*[12]'
+severity = "low"
+message = "Deferral: phase marker"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)simplif'
+severity = "low"
+message = "Deferral: simplification"
+category = "deferral"
+
+# =============================================================================
+# ALL HEDGING PATTERNS
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)hopefully'
+severity = "low"
+message = "Hedging: hopefully"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)approximately'
+severity = "low"
+message = "Hedging: approximately"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)about \d+'
+severity = "low"
+message = "Hedging: approximate numeric value"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)roughly'
+severity = "low"
+message = "Hedging: roughly"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)this\s+is\s+a\s+simple'
+severity = "low"
+message = "Hedging: 'simple' trap"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)basic\s+implement'
+severity = "low"
+message = "Hedging: basic implementation"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)minimal\s+implement'
+severity = "low"
+message = "Hedging: minimal implementation"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)untest'
+severity = "medium"
+message = "Hedging: untested"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)needs.?test'
+severity = "low"
+message = "Hedging: needs testing"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)assum'
+severity = "low"
+message = "Hedging: assumption"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)guess'
+severity = "low"
+message = "Hedging: guessing"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)might\s+cause'
+severity = "low"
+message = "Hedging: might cause"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)known.?issue'
+severity = "medium"
+message = "Hedging: known issue"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)limitation'
+severity = "low"
+message = "Hedging: limitation"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)edge.?case.*not.?handle'
+severity = "medium"
+message = "Hedging: unhandled edge case"
+category = "hedging"
+
+[[patterns]]
+regex = "(?i)let's\\s+(just|for now|quickly)"
+severity = "low"
+message = "Hedging: let's provisional"
+category = "hedging"
+
+# =============================================================================
+# ALL STUB PATTERNS
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)abstract\s*method'
+severity = "medium"
+message = "Stub: abstract method"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)subclass\s*implement'
+severity = "medium"
+message = "Stub: subclass implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)example\s*implement'
+severity = "medium"
+message = "Stub: example implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)template\s*code'
+severity = "medium"
+message = "Stub: template code"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)partial\s*implement'
+severity = "high"
+message = "Stub: partial implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)fallback\s*implement'
+severity = "low"
+message = "Stub: fallback implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)default\s*implement'
+severity = "low"
+message = "Stub: default implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)magic\s*number'
+severity = "low"
+message = "Stub: magic number"
+category = "stub"
+
+# =============================================================================
+# PLACEHOLDERS (Extended)
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)REVIEW:'
+severity = "low"
+message = "Placeholder: review marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)CLEANUP:'
+severity = "medium"
+message = "Placeholder: cleanup marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)REFACTOR:'
+severity = "low"
+message = "Placeholder: refactor marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)LEGACY:'
+severity = "low"
+message = "Placeholder: legacy marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)DEPRECATED:'
+severity = "medium"
+message = "Placeholder: deprecated marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)THIS\s+IS\s+A\s+'
+severity = "low"
+message = "Placeholder: meta-comment"
+category = "placeholder"
+
+# =============================================================================
+# NAMING CONVENTIONS (Filename patterns)
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)_v[234]\.'
+severity = "high"
+message = "Naming: versioned file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_old\.'
+severity = "medium"
+message = "Naming: _old file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_new\.'
+severity = "high"
+message = "Naming: _new file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_backup\.'
+severity = "medium"
+message = "Naming: _backup file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_tmp\.'
+severity = "high"
+message = "Naming: _tmp file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_wip\.'
+severity = "high"
+message = "Naming: _wip file suffix"
+category = "namingconvention"
+
+[[patterns]]
+regex = '(?i)_draft\.'
+severity = "high"
+message = "Naming: _draft file suffix"
+category = "namingconvention"

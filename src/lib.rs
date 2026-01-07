@@ -27,6 +27,7 @@
 pub mod config;
 pub mod detector;
 pub mod filename_checker;
+pub mod profile;
 pub mod report;
 pub mod walker;
 
@@ -44,6 +45,9 @@ pub use report::{Format, Reporter};
 
 #[doc(inline)]
 pub use walker::Walker;
+
+#[doc(inline)]
+pub use profile::{Profile, ProfileLoader, ProfileSource};
 
 /// Result type for antislop operations.
 pub type Result<T> = std::result::Result<T, Error>;

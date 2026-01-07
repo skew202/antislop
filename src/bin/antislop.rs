@@ -2,7 +2,10 @@
 //!
 //! A blazing-fast, multi-language linter for detecting AI-generated code slop.
 
-use antislop::{Config, FilenameChecker, FilenameCheckConfig, Format, Reporter, Scanner, Walker, CONFIG_FILES, VERSION};
+use antislop::{
+    Config, FilenameCheckConfig, FilenameChecker, Format, Profile, ProfileLoader, ProfileSource,
+    Reporter, Scanner, Walker, CONFIG_FILES, VERSION,
+};
 use anyhow::{Context, Result};
 use clap::{CommandFactory, Parser};
 use clap_complete::{generate, Shell};
@@ -61,6 +64,22 @@ struct Args {
     /// Disable filename convention checking
     #[arg(long)]
     no_filename_check: bool,
+
+    /// Load a community profile (file path, URL, or profile name)
+    #[arg(long, value_name = "PROFILE")]
+    profile: Option<String>,
+
+    /// Print available profiles
+    #[arg(long)]
+    list_profiles: bool,
+
+    /// Disable pattern categories (comma-separated: placeholder,stub,deferral,hedging)
+    #[arg(long, value_delimiter = ',', value_name = "CATEGORIES")]
+    disable: Option<Vec<String>>,
+
+    /// Only enable specific categories (comma-separated: placeholder,stub,deferral,hedging)
+    #[arg(long, value_delimiter = ',', value_name = "CATEGORIES")]
+    only: Option<Vec<String>>,
 }
 
 fn main() -> Result<()> {
@@ -73,6 +92,11 @@ fn main() -> Result<()> {
 
     if args.print_config {
         print_default_config();
+        return Ok(());
+    }
+
+    if args.list_profiles {
+        print_profiles()?;
         return Ok(());
     }
 
@@ -94,6 +118,59 @@ fn main() -> Result<()> {
         .validate_patterns()
         .context("Invalid pattern in configuration")?;
 
+    // Load and merge profile if specified
+    if let Some(ref profile_source) = args.profile {
+        let profile = load_profile(profile_source)?;
+        let pattern_count = profile.patterns.len();
+        let profile_name = profile.metadata.name.clone();
+        let profile_version = profile.metadata.version.clone();
+
+        // Merge profile patterns with config patterns
+        for pattern in profile.patterns {
+            config.patterns.push(pattern);
+        }
+        if args.verbose >= 1 {
+            eprintln!("Loaded profile: {} (v{})", profile_name, profile_version);
+            eprintln!("  {} patterns from profile", pattern_count);
+        }
+    }
+
+    // Apply category filters (--disable and --only)
+    let original_count = config.patterns.len();
+    if let Some(ref only_categories) = args.only {
+        // Keep only patterns matching specified categories
+        let categories: Vec<_> = only_categories
+            .iter()
+            .filter_map(|s| parse_category(s))
+            .collect();
+        config.patterns.retain(|p| categories.contains(&p.category));
+        if args.verbose >= 1 {
+            eprintln!(
+                "Filtered to {} categories: {} -> {} patterns",
+                only_categories.join(","),
+                original_count,
+                config.patterns.len()
+            );
+        }
+    } else if let Some(ref disable_categories) = args.disable {
+        // Remove patterns matching specified categories
+        let categories: Vec<_> = disable_categories
+            .iter()
+            .filter_map(|s| parse_category(s))
+            .collect();
+        config
+            .patterns
+            .retain(|p| !categories.contains(&p.category));
+        if args.verbose >= 1 {
+            eprintln!(
+                "Disabled {} categories: {} -> {} patterns",
+                disable_categories.join(","),
+                original_count,
+                config.patterns.len()
+            );
+        }
+    }
+
     let scanner = Scanner::new(config.patterns.clone()).context("Failed to initialize scanner")?;
 
     let walker = Walker::new(&config);
@@ -110,9 +187,9 @@ fn main() -> Result<()> {
 
     // Set up filename checker for convention analysis (disabled by default)
     let filename_check_config = FilenameCheckConfig {
-        check_duplicates: false,    // Requires opt-in via config
+        check_duplicates: false,     // Requires opt-in via config
         min_files_for_convention: 5, // Need 5+ files to establish pattern
-        convention_threshold: 0.7,  // 70% must follow convention
+        convention_threshold: 0.7,   // 70% must follow convention
     };
 
     // Extract naming patterns for duplicate detection
@@ -262,7 +339,8 @@ fn load_config(path: &Option<PathBuf>) -> Result<Config> {
 
     for name in CONFIG_FILES {
         let p = PathBuf::from(name);
-        if p.exists() {
+        // Check if path exists AND is a file (not a directory)
+        if p.exists() && p.is_file() {
             return Config::load(&p).context("Failed to load config");
         }
     }
@@ -299,4 +377,62 @@ fn generate_completions(shell: Shell) {
     let mut cmd = Args::command();
     let name = "antislop".to_string();
     generate(shell, &mut cmd, name, &mut io::stdout());
+}
+
+fn load_profile(source: &str) -> Result<Profile> {
+    let profile_source = ProfileSource::parse(source).context("Failed to parse profile source")?;
+
+    let loader = ProfileLoader::new().context("Failed to initialize profile loader")?;
+
+    loader
+        .load(&profile_source)
+        .context(format!("Failed to load profile from '{}'", source))
+}
+
+fn print_profiles() -> Result<()> {
+    let loader = ProfileLoader::new().context("Failed to initialize profile loader")?;
+
+    let profiles = loader.list_available();
+
+    if profiles.is_empty() {
+        println!("No profiles found.");
+        println!();
+        println!("Profile search locations:");
+        println!("  - .antislop/profiles/*.toml (project-local)");
+        println!("  - ~/.config/antislop/profiles/*.toml (user)");
+        println!("  - ~/.cache/antislop/profiles/*.toml (cached)");
+        println!();
+        println!("You can also load profiles directly:");
+        println!("  antislop --profile /path/to/profile.toml");
+        println!("  antislop --profile https://example.com/profile.toml");
+    } else {
+        println!("Available profiles:");
+        println!();
+        for profile in profiles {
+            println!("  {} (v{})", profile.name, profile.version);
+            if !profile.description.is_empty() {
+                println!("    {}", profile.description);
+            }
+            println!("    Source: {}", profile.source.display());
+            println!();
+        }
+    }
+
+    Ok(())
+}
+
+/// Parse a category string into a PatternCategory enum.
+fn parse_category(s: &str) -> Option<antislop::PatternCategory> {
+    use antislop::PatternCategory;
+    match s.to_lowercase().as_str() {
+        "placeholder" => Some(PatternCategory::Placeholder),
+        "deferral" => Some(PatternCategory::Deferral),
+        "hedging" => Some(PatternCategory::Hedging),
+        "stub" => Some(PatternCategory::Stub),
+        "namingconvention" | "naming" => Some(PatternCategory::NamingConvention),
+        _ => {
+            eprintln!("Warning: unknown category '{}', ignoring", s);
+            None
+        }
+    }
 }

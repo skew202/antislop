@@ -1,0 +1,186 @@
+# Antislop Standard
+#
+# Recommended baseline configuration for agentic AI engineers.
+# Extends Core with common deferral, hedging, and stub patterns.
+#
+# Usage: antislop --profile antislop-standard src/
+# Or set in config: default_profile = "antislop-standard"
+
+[metadata]
+name = "antislop-standard"
+version = "1.0.0"
+description = "Standard profile - balanced coverage for most projects"
+author = "antislop-community"
+url = "https://github.com/skew202/antislop"
+
+# =============================================================================
+# STUBS - Common stub patterns
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)\b(placeholder|stub)\b'
+severity = "medium"
+message = "Stub: placeholder/stub keyword"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)pass\s*#.*TODO'
+severity = "high"
+message = "Stub: pass with TODO comment"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)pass\s*#.*implement'
+severity = "high"
+message = "Stub: pass with implement comment"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)incomplete'
+severity = "high"
+message = "Stub: incomplete marker"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)needs.?implement'
+severity = "high"
+message = "Stub: needs implementation"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)missing logic'
+severity = "high"
+message = "Stub: missing logic"
+category = "stub"
+
+# Top mock/fake patterns
+[[patterns]]
+regex = '(?i)\bmock.*(data|response|result|value)'
+severity = "medium"
+message = "Stub: mock data in code"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)\bfake.*(data|response|result|value)'
+severity = "medium"
+message = "Stub: fake data in code"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)\bdummy.*(data|value)'
+severity = "medium"
+message = "Stub: dummy data in code"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)\bhardcoded\b'
+severity = "low"
+message = "Stub: hardcoded value"
+category = "stub"
+
+# =============================================================================
+# DEFERRALS - Common deferral patterns
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)for\s+now'
+severity = "medium"
+message = "Deferral: 'for now' becomes forever"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)temporary'
+severity = "medium"
+message = "Deferral: temporary code"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)for\s+later'
+severity = "medium"
+message = "Deferral: deferred for later"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)quick\s*implement'
+severity = "medium"
+message = "Deferral: quick implementation"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)workaround'
+severity = "medium"
+message = "Deferral: workaround"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)\bWIP\b'
+severity = "medium"
+message = "Deferral: work in progress"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)shortcut'
+severity = "medium"
+message = "Deferral: shortcut"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)prototype'
+severity = "low"
+message = "Deferral: prototype code"
+category = "deferral"
+
+# =============================================================================
+# HEDGING - Common hedging patterns
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)hopefully.*work'
+severity = "medium"
+message = "Hedging: hopefully works"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)should\s+work'
+severity = "low"
+message = "Hedging: should work"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)seems\s+to\s+work'
+severity = "medium"
+message = "Hedging: seems to work"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)probably\s+work'
+severity = "medium"
+message = "Hedging: probably works"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)good\s*enough'
+severity = "medium"
+message = "Hedging: good enough"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)appears\s+to\s+work'
+severity = "medium"
+message = "Hedging: appears to work"
+category = "hedging"
+
+# Overconfident language
+# Note: 'just' removed - false positives with Rust Option patterns
+[[patterns]]
+regex = '(?i)\b(obviously|clearly|simply|easy|trivial)\b'
+severity = "low"
+message = "Hedging: overconfident language"
+category = "hedging"
+
+# Apologetic language
+[[patterns]]
+regex = '(?i)\b(sorry|hacky|ugly|terrible)\b'
+severity = "medium"
+message = "Hedging: apologetic comment"
+category = "hedging"

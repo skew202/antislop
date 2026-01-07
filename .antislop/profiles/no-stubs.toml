@@ -1,0 +1,67 @@
+# No Stubs Profile
+#
+# This profile detects stub implementations and incomplete code.
+# It focuses on patterns that indicate AI-generated placeholder code.
+
+[metadata]
+name = "no-stubs"
+version = "1.0.0"
+description = "Strict patterns against stub implementations and incomplete code"
+author = "antislop-community"
+
+# Stub detection - NOT caught by standard linters
+[[patterns]]
+regex = "(?i)todo!\\(\\)"
+ast_query = "(macro_invocation) @stub"
+severity = "critical"
+message = "Stub: todo!() macro indicates incomplete implementation"
+category = "stub"
+languages = ["Rust"]
+
+[[patterns]]
+regex = "(?i)unimplemented!\\(\\)"
+ast_query = "(macro_invocation) @stub"
+severity = "critical"
+message = "Stub: unimplemented!() macro"
+category = "stub"
+languages = ["Rust"]
+
+[[patterns]]
+regex = "(?i)raise NotImplementedError"
+ast_query = "(raise_statement) @stub"
+severity = "critical"
+message = "Stub: NotImplementedError exception"
+category = "stub"
+languages = ["Python"]
+
+[[patterns]]
+regex = "(?i)TODO: implement"
+severity = "critical"
+message = "Stub: TODO with explicit implementation note"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)pass.*#.*TODO"
+severity = "high"
+message = "Stub: Python stub with TODO marker"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)\\.\\.\\.$"
+ast_query = "(expression_statement (ellipsis)) @stub"
+severity = "medium"
+message = "Stub: Ellipsis (...) used as placeholder"
+category = "stub"
+languages = ["Python"]
+
+[[patterns]]
+regex = "(?i)placeholder"
+severity = "high"
+message = "Stub: explicit placeholder comment"
+category = "stub"
+
+[[patterns]]
+regex = "(?i)notimplemented"
+severity = "critical"
+message = "Stub: NotImplemented code"
+category = "stub"

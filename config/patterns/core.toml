@@ -1,0 +1,190 @@
+# Antislop Core Patterns
+#
+# Minimal, universally-problematic patterns that load by default.
+# For more coverage, use --profile antislop-standard or antislop-strict.
+#
+# Philosophy:
+#   - Only patterns that should NEVER ship
+#   - Language-agnostic where possible
+#   - AST patterns for language-specific stubs
+
+# =============================================================================
+# STUBS - Language-Specific Stub Patterns (CRITICAL)
+# =============================================================================
+
+# Python stubs
+[[patterns]]
+regex = 'raise NotImplementedError'
+severity = "critical"
+message = "Stub: NotImplementedError raised"
+category = "stub"
+languages = ["Python"]
+
+[[patterns]]
+regex = 'NotImplementedError\(\)'
+severity = "critical"
+message = "Stub: NotImplementedError exception"
+category = "stub"
+languages = ["Python"]
+
+# Rust stubs
+[[patterns]]
+regex = 'todo!\('
+severity = "critical"
+message = "Stub: todo!() macro"
+category = "stub"
+languages = ["Rust"]
+
+[[patterns]]
+regex = 'unimplemented!\('
+severity = "critical"
+message = "Stub: unimplemented!() macro"
+category = "stub"
+languages = ["Rust"]
+
+# Go stubs
+[[patterns]]
+regex = 'panic\("not implemented'
+severity = "critical"
+message = "Stub: panic with not implemented"
+category = "stub"
+languages = ["Go"]
+
+# Java stubs
+[[patterns]]
+regex = 'throw new UnsupportedOperationException'
+severity = "critical"
+message = "Stub: UnsupportedOperationException"
+category = "stub"
+languages = ["Java", "Kotlin"]
+
+# JavaScript/TypeScript stubs
+[[patterns]]
+regex = 'throw new Error\([''"]not implemented'
+severity = "critical"
+message = "Stub: throw not implemented error"
+category = "stub"
+languages = ["JavaScript", "TypeScript"]
+
+# C++ stubs
+[[patterns]]
+regex = 'throw std::logic_error\([''"]not implemented'
+severity = "critical"
+message = "Stub: logic_error not implemented"
+category = "stub"
+languages = ["C++"]
+
+# Ruby stubs
+[[patterns]]
+regex = 'raise NotImplementedError'
+severity = "critical"
+message = "Stub: NotImplementedError raised"
+category = "stub"
+languages = ["Ruby"]
+
+# Generic stub markers (all languages)
+[[patterns]]
+regex = '(?i)not\s*implement'
+severity = "critical"
+message = "Stub: code explicitly not implemented"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)\bunimplemented\b'
+severity = "critical"
+message = "Stub: unimplemented marker"
+category = "stub"
+
+# =============================================================================
+# PLACEHOLDERS - TODO/FIXME/XXX Markers (HIGH/MEDIUM)
+# =============================================================================
+
+# Standard markers
+[[patterns]]
+regex = '(?i)\bTODO\s*:'
+severity = "medium"
+message = "Placeholder: TODO marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bTO\s*DO\s*:'
+severity = "medium"
+message = "Placeholder: TO DO marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bFIXME\s*:'
+severity = "medium"
+message = "Placeholder: FIXME marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bFIX\s*ME\s*:'
+severity = "medium"
+message = "Placeholder: FIX ME marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bXXX\b'
+severity = "high"
+message = "Placeholder: XXX critical marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bHACK\s*:'
+severity = "high"
+message = "Placeholder: HACK marker"
+category = "placeholder"
+
+[[patterns]]
+regex = '(?i)\bBUG\s*:'
+severity = "medium"
+message = "Placeholder: BUG marker"
+category = "placeholder"
+
+# Implementation stubs disguised as TODOs
+[[patterns]]
+regex = '(?i)TODO\s*:?\s*implement'
+severity = "high"
+message = "Stub: TODO with implementation note"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)FIXME\s*:?\s*implement'
+severity = "high"
+message = "Stub: FIXME with implementation note"
+category = "stub"
+
+# =============================================================================
+# CRITICAL DEFERRALS - Explicit Technical Debt (HIGH)
+# =============================================================================
+
+[[patterns]]
+regex = '(?i)quick\s*(fix|hack)'
+severity = "high"
+message = "Deferral: quick hack creates debt"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)dirty\s*hack'
+severity = "high"
+message = "Deferral: dirty hack admitted"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)in production.*(would|should|will|need to)'
+severity = "medium"
+message = "Deferral: production code promised later"
+category = "deferral"
+
+[[patterns]]
+regex = '(?i)in a real.*(app|production|world)'
+severity = "medium"
+message = "Hedging: code acknowledges it''s not production-ready"
+category = "hedging"
+
+[[patterns]]
+regex = '(?i)not\s*production\s*ready'
+severity = "medium"
+message = "Hedging: explicitly not production-ready"
+category = "hedging"

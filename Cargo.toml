@@ -19,6 +19,7 @@ rust-version = "1.85"
 [features]
 default = ["standard-langs", "parallel"]
 parallel = ["rayon"]
+remote-profiles = ["ureq"]
 
 # Grouped Features
 standard-langs = ["python", "javascript", "typescript", "rust", "go", "java", "cpp"]
@@ -46,11 +47,13 @@ scala = ["tree-sitter", "dep:tree-sitter-scala"]
 anyhow = "1.0"
 clap = { version = "4.5", features = ["derive", "cargo", "unicode"] }
 clap_complete = "4.5"
+dirs = "5"
 globset = "0.4"
 ignore = "0.4"
 owo-colors = "4.1"
 rayon = { version = "1.10", optional = true }
 regex = "1.11"
+semver = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde-sarif = "0.8"
@@ -59,6 +62,7 @@ thiserror = "2.0"
 toml = "0.8"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+ureq = { version = "2.11", optional = true, default-features = false, features = ["tls"] }
 
 # Tree-sitter core and language grammars
 tree-sitter = { version = "0.24", optional = true }
