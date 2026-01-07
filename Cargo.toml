@@ -86,7 +86,7 @@ criterion = { version = "0.8", features = ["html_reports"] }
 snapbox = "0.6"
 tempfile = "3.13"
 proptest = "1.4"
-insta = { version = "1.34", features = ["json"] }
+insta = { version = "1.46", features = ["json"] }
 
 [[bin]]
 name = "antislop"
