@@ -45,6 +45,11 @@ jobs:
       - name: Clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
 
+      - name: Run antislop
+        run: |
+          cargo install --path .
+          antislop --profile antislop-standard src/
+
       - name: Run tests
         run: cargo test --all-features --verbose
 
