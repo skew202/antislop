@@ -11,9 +11,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: untracked TODO found",
+      "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)TODO:"
+      "pattern_regex": "(?i)\\bTODO\\s*:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 3,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: TO DO marker",
+      "match_text": "TODO:",
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
     },
     {
       "file": "placeholder.py",
@@ -21,19 +31,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "stub",
-      "message": "Stub: TODO with explicit implementation note",
+      "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO: implement"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 3,
-      "column": 7,
-      "severity": "high",
-      "category": "stub",
-      "message": "Stub: TODO implementation marker",
-      "match_text": "TODO: implement",
-      "pattern_regex": "(?i)to.?do:? implement"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
     },
     {
       "file": "placeholder.py",
@@ -41,9 +41,19 @@ expression: results
       "column": 7,
       "severity": "medium",
       "category": "placeholder",
-      "message": "Placeholder comment: FIXME indicates incomplete work",
+      "message": "Placeholder: FIXME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)FIXME:"
+      "pattern_regex": "(?i)\\bFIXME\\s*:"
+    },
+    {
+      "file": "placeholder.py",
+      "line": 4,
+      "column": 7,
+      "severity": "medium",
+      "category": "placeholder",
+      "message": "Placeholder: FIX ME marker",
+      "match_text": "FIXME:",
+      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:"
     },
     {
       "file": "placeholder.py",
@@ -51,29 +61,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "placeholder",
-      "message": "Placeholder comment: HACK indicates poor solution",
+      "message": "Placeholder: HACK marker",
       "match_text": "HACK:",
-      "pattern_regex": "(?i)HACK:"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 5,
-      "column": 30,
-      "severity": "low",
-      "category": "deferral",
-      "message": "Deferral: temporary solution with no plan to revisit",
-      "match_text": "for now",
-      "pattern_regex": "(?i)for now"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 5,
-      "column": 7,
-      "severity": "medium",
-      "category": "hedging",
-      "message": "Hedging: apologetic comment - fix the issue instead of apologizing",
-      "match_text": "HACK",
-      "pattern_regex": "(?i)\\b(sorry|hack|hacky|ugly|bad|terrible|awful|gross|yuck|forgive|quick.?and.?dirty)\\b"
+      "pattern_regex": "(?i)\\bHACK\\s*:"
     },
     {
       "file": "placeholder.py",
@@ -81,29 +71,9 @@ expression: results
       "column": 7,
       "severity": "high",
       "category": "placeholder",
-      "message": "Critical marker: XXX indicates urgent problems",
+      "message": "Placeholder: XXX critical marker",
       "match_text": "XXX",
-      "pattern_regex": "(?i)XXX"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 7,
-      "column": 7,
-      "severity": "low",
-      "category": "placeholder",
-      "message": "Unnecessary NOTE comment (code should be self-documenting)",
-      "match_text": "NOTE: important reminder",
-      "pattern_regex": "(?i)NOTE:.*(important|reminder)"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 10,
-      "column": 3,
-      "severity": "low",
-      "category": "placeholder",
-      "message": "Review marker: code marked for review but not resolved",
-      "match_text": "REVIEW:",
-      "pattern_regex": "(?i)REVIEW:"
+      "pattern_regex": "(?i)\\bXXX\\b"
     },
     {
       "file": "placeholder.py",
@@ -111,39 +81,9 @@ expression: results
       "column": 3,
       "severity": "medium",
       "category": "placeholder",
-      "message": "BUG marker: known issue documented but not fixed",
+      "message": "Placeholder: BUG marker",
       "match_text": "BUG:",
-      "pattern_regex": "(?i)BUG:"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 11,
-      "column": 8,
-      "severity": "medium",
-      "category": "hedging",
-      "message": "Hedging: known issue in code",
-      "match_text": "known issue",
-      "pattern_regex": "(?i)known.?issue"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 12,
-      "column": 3,
-      "severity": "medium",
-      "category": "placeholder",
-      "message": "Cleanup marker: technical debt acknowledged but not addressed",
-      "match_text": "CLEANUP:",
-      "pattern_regex": "(?i)CLEANUP:"
-    },
-    {
-      "file": "placeholder.py",
-      "line": 13,
-      "column": 3,
-      "severity": "low",
-      "category": "placeholder",
-      "message": "Refactor marker: code identified as needing refactoring",
-      "match_text": "REFACTOR:",
-      "pattern_regex": "(?i)REFACTOR:"
+      "pattern_regex": "(?i)\\bBUG\\s*:"
     },
     {
       "file": "placeholder.py",
@@ -156,5 +96,5 @@ expression: results
       "pattern_regex": "pass$"
     }
   ],
-  "score": 99
+  "score": 75
 }

@@ -81,18 +81,18 @@ fn test_sarif_severity_levels_all_present() {
     let temp = TempDir::new().unwrap();
     let file = temp.path().join("test.py");
 
-    // Create code that triggers patterns at different severity levels
-    // CRITICAL: raise NotImplementedError (ast.toml)
-    // HIGH: XXX marker (placeholder.toml)
-    // MEDIUM: TODO: (placeholder.toml)
-    // LOW: for now (deferral.toml)
+    // Use standard profile to ensure we have patterns for all severity levels
+    // CRITICAL: raise NotImplementedError (core.toml - Python)
+    // HIGH: XXX marker (core.toml)
+    // MEDIUM: TODO: (core.toml)
+    // LOW: hardcoded (antislop-standard.toml)
     fs::write(
         &file,
         r#"def test():
     # TODO: implement this (MEDIUM)
-    # XXX urgent (HIGH)
-    # for now (LOW)
-    raise NotImplementedError  # CRITICAL
+    # XXX: urgent (HIGH)
+    # hardcoded value (LOW)
+    raise NotImplementedError() # CRITICAL
 "#,
     )
     .unwrap();
@@ -100,6 +100,8 @@ fn test_sarif_severity_levels_all_present() {
     let output = Command::new(antislop_bin())
         .arg("--format")
         .arg("sarif")
+        .arg("--profile")
+        .arg("antislop-standard")
         .arg(file.to_string_lossy().as_ref())
         .output()
         .unwrap();

@@ -12,6 +12,7 @@ version = "1.0.0"
 description = "Standard profile - balanced coverage for most projects"
 author = "antislop-community"
 url = "https://github.com/skew202/antislop"
+extends = ["core"]
 
 # =============================================================================
 # STUBS - Common stub patterns
@@ -76,6 +77,18 @@ category = "stub"
 regex = '(?i)\bhardcoded\b'
 severity = "low"
 message = "Stub: hardcoded value"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)simulated'
+severity = "medium"
+message = "Stub: simulated data"
+category = "stub"
+
+[[patterns]]
+regex = '(?i)magic\s*number'
+severity = "low"
+message = "Stub: magic number comment"
 category = "stub"
 
 # =============================================================================

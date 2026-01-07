@@ -60,7 +60,7 @@ languages = ["Java", "Kotlin"]
 
 # JavaScript/TypeScript stubs
 [[patterns]]
-regex = 'throw new Error\([''"]not implemented'
+regex = "throw new Error\\(['\"]not implemented"
 severity = "critical"
 message = "Stub: throw not implemented error"
 category = "stub"
@@ -68,7 +68,7 @@ languages = ["JavaScript", "TypeScript"]
 
 # C++ stubs
 [[patterns]]
-regex = 'throw std::logic_error\([''"]not implemented'
+regex = "throw std::logic_error\\(['\"]not implemented"
 severity = "critical"
 message = "Stub: logic_error not implemented"
 category = "stub"
