@@ -31,7 +31,7 @@ The binary will be available at `target/release/antislop`.
 
 ## Feature Flags
 
-Antislop is modular. Optimize for binary size by choosing specific languages:
+AntiSlop is modular. Optimize for binary size by choosing specific languages:
 
 ```bash
 # Default (Standard Languages)

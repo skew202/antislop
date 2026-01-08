@@ -23,7 +23,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* /usr/share/man/*
 
 # Create non-root user for security
-RUN useradd -m -u 1000 -s /usr/sbin/nologin -c "Antislop user" antislop
+RUN useradd -m -u 1000 -s /usr/sbin/nologin -c "AntiSlop user" antislop
 
 # Copy binary from builder and set permissions
 COPY --from=builder --chown=antislop:antislop /usr/src/antislop/target/release/antislop /usr/local/bin/antislop

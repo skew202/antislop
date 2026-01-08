@@ -1,4 +1,4 @@
-# antislop
+# AntiSlop
 
 [![CI](https://github.com/skew202/antislop/actions/workflows/ci.yml/badge.svg)](https://github.com/skew202/antislop/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/antislop.svg)](https://crates.io/crates/antislop)
@@ -8,11 +8,11 @@
 
 **A blazing-fast, multi-language linter for detecting AI-generated code slop.**
 
-Antislop helps you maintain code quality by identifying lazily generated code, deferrals, hedging, and placeholders often left behind by AI coding assistants.
+AntiSlop helps you maintain code quality by identifying lazily generated code, deferrals, hedging, and placeholders often left behind by AI coding assistants.
 
 ## What is Slop?
 
-AI models often produce code that works but is littered with signs of hesitation or incompleteness. Antislop detects:
+AI models often produce code that works but is littered with signs of hesitation or incompleteness. AntiSlop detects:
 
 - **Placeholders**: `TODO`, `FIXME`, `HACK`, `XXX` comments
 - **Deferrals**: "for now", "temporary fix", "quick implementation"
@@ -22,7 +22,7 @@ AI models often produce code that works but is littered with signs of hesitation
 
 ## Philosophy
 
-Antislop is built on **First Principles**:
+AntiSlop is built on **First Principles**:
 1.  **Code is Liability**: Every line of code is a future maintenance cost.
 2.  **Intent != Implementation**: Comments like `TODO` or `for now` signal a gap between what was intended and what was built.
 3.  **Speed is a Feature**: Verification must be instant to be useful.
@@ -32,13 +32,13 @@ We believe that AI generated code should be treated with **Zero Trust**. Verify 
 ### Pattern Hygiene (MECE)
 
 We follow a **Mutually Exclusive, Collectively Exhaustive** strategy with standard linters like MegaLinter.
-*   **Antislop**: Detects AI shortcuts (stubs, hallucinated API usage, hedging).
+*   **AntiSlop**: Detects AI shortcuts (stubs, hallucinated API usage, hedging).
 *   **Standard Linters**: Detect syntax errors, style issues, and bugs.
-*   **Rule**: If `eslint` or `clippy` catches it by default, Antislop will **not** cover it (unless explicitly whitelisted).
+*   **Rule**: If `eslint` or `clippy` catches it by default, AntiSlop will **not** cover it (unless explicitly whitelisted).
 
 ## Comparison
 
-| Feature | Antislop | Standard Linters (ESLint/Clippy) | AI Refactors |
+| Feature | AntiSlop | Standard Linters (ESLint/Clippy) | AI Refactors |
 |:--------|:---------|:---------------------------------|:-------------|
 | **Focus** | **Intent & Completeness** | Syntax & Best Practices | Improvements |
 | **Speed** | **Milliseconds** | Seconds/Minutes | Slow |
@@ -58,7 +58,7 @@ def calculate_user_metrics(user_id: str) -> dict:
     return {"score": 42, "level": "gold"}  # Placeholder values
 ```
 
-**Antislop catches what linters miss:**
+**AntiSlop catches what linters miss:**
 
 ```
 $ antislop --profile antislop-standard api/
@@ -105,11 +105,11 @@ api/metrics.py 5:47: HIGH [stub]
 ⚠⚠⚠ High slop detected - AI shortcuts found!
 ```
 
-**Zero false positives. Maximum signal.** Antislop finds the intent gaps that syntax checkers can't see.
+**Zero false positives. Maximum signal.** AntiSlop finds the intent gaps that syntax checkers can't see.
 
 ## Performance
 
-Antislop uses tree-sitter AST parsing for accurate detection. Regex-only mode is ~10x faster.
+AntiSlop uses tree-sitter AST parsing for accurate detection. Regex-only mode is ~10x faster.
 
 | Language | Mode | Time | Throughput |
 |:---------|:-----|:-----|:-----------|
@@ -175,7 +175,7 @@ antislop --hygiene-survey
 
 ### Profiles
 
-Antislop follows a **Zero False Positive** philosophy for its default core.
+AntiSlop follows a **Zero False Positive** philosophy for its default core.
 
 - **Core** (Default): Critical stubs & placeholders only. Zero false positives.
 - **trict** (`--profile antislop-strict`): Maximum coverage. Detects all forms of slop.
@@ -203,7 +203,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Antislop
+      - name: Install AntiSlop
         run: curl -sSf https://raw.githubusercontent.com/skew202/antislop/main/install.sh | sh
       - name: Run Scan
         run: antislop --profile antislop-standard .
@@ -211,7 +211,7 @@ jobs:
 
 ## Installation Options
 
-Antislop is modular. You can optimize for binary size by choosing specific languages:
+AntiSlop is modular. You can optimize for binary size by choosing specific languages:
 
 ```bash
 # Default (Standard Languages)

@@ -1,6 +1,6 @@
-# Contributing to Antislop
+# Contributing to AntiSlop
 
-Thank you for your interest in contributing to Antislop!
+Thank you for your interest in contributing to AntiSlop!
 
 ## Development Setup
 

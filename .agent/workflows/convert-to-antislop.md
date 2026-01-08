@@ -2,7 +2,7 @@
 description: Convert any agent instruction files (CLAUDE.md, cursor rules, AGENTS.md, codex.toml, etc.) to antislop profiles
 ---
 
-# Convert Agent Instructions to Antislop Profiles
+# Convert Agent Instructions to AntiSlop Profiles
 
 This skill teaches you how to find and convert AI coding agent instruction files into antislop detection profiles.
 
@@ -62,7 +62,7 @@ ls -la .cursor/ .claude/ .agent/ .gemini/ .openai/ 2>/dev/null
 
 Look for these keywords in the instruction files:
 
-| Keyword | Meaning | Antislop Severity |
+| Keyword | Meaning | AntiSlop Severity |
 |---------|---------|-------------------|
 | **MUST** | Required | high |
 | **NEVER** | Forbidden | critical |

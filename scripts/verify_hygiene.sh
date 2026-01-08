@@ -1,5 +1,5 @@
 #!/bin/bash
-# Verify Hygiene: Compare Antislop findings against standard linters (MECE check)
+# Verify Hygiene: Compare AntiSlop findings against standard linters (MECE check)
 # Usage: ./scripts/verify_hygiene.sh
 
 set -e
@@ -11,7 +11,7 @@ ESLINT="./node_modules/.bin/eslint"
 ANTISLOP="./target/release/antislop" # Assuming built
 
 echo "=== Hygiene Verification Suite ==="
-echo "Ensuring Antislop finds 'slop' that standard linters MISS."
+echo "Ensuring AntiSlop finds 'slop' that standard linters MISS."
 
 if [ ! -f "$ANTISLOP" ]; then
     echo "Building antislop..."
@@ -25,17 +25,17 @@ echo "Running Pylint on examples/sloppy_code.py..."
 $PYLINT examples/sloppy_code.py --disable=C,R,W > pylint_out.txt || true
 PYLINT_COUNT=$(grep -c "E:" pylint_out.txt || true)
 
-echo "Running Antislop on examples/sloppy_code.py..."
+echo "Running AntiSlop on examples/sloppy_code.py..."
 $ANTISLOP examples/sloppy_code.py --json > antislop_out.json || true
 SLOP_COUNT=$(grep -o "finding" antislop_out.json | wc -l)
 
 echo "Pylint Errors Found: $PYLINT_COUNT"
-echo "Antislop Findings:   $SLOP_COUNT"
+echo "AntiSlop Findings:   $SLOP_COUNT"
 
 if [ "$SLOP_COUNT" -gt 0 ]; then
-    echo "✅ Antislop found slop."
+    echo "✅ AntiSlop found slop."
 else
-    echo "❌ Antislop missed slop!"
+    echo "❌ AntiSlop missed slop!"
     exit 1
 fi
 
@@ -61,12 +61,12 @@ EOF
     $ESLINT examples/sloppy_code.js > eslint_out.txt || true
     ESLINT_COUNT=$(grep -c "error" eslint_out.txt || true)
     
-    echo "Running Antislop on examples/sloppy_code.js..."
+    echo "Running AntiSlop on examples/sloppy_code.js..."
     $ANTISLOP examples/sloppy_code.js --json > antislop_js.json || true
     SLOP_JS=$(grep -o "finding" antislop_js.json | wc -l)
     
     echo "ESLint Errors:     $ESLINT_COUNT"
-    echo "Antislop Findings: $SLOP_JS"
+    echo "AntiSlop Findings: $SLOP_JS"
     
     rm eslint.config.mjs
 else
@@ -77,15 +77,15 @@ fi
 echo -e "\n--- Rust Hygiene Check (vs Clippy) ---"
 # We need a cargo project for clippy checks on a single file usually, 
 # or we can use rustc -D warnings. 
-# For now, let's just check if Antislop finds unwrap which clippy allows by default
+# For now, let's just check if AntiSlop finds unwrap which clippy allows by default
 echo "Checking examples/sloppy_code.rs..."
 $ANTISLOP examples/sloppy_code.rs --json > antislop_rs.json || true
 SLOP_RS=$(grep -o "finding" antislop_rs.json | wc -l)
 
 if [ "$SLOP_RS" -gt 0 ]; then
-    echo "✅ Antislop found Rust slop (unwrap/unsafe)."
+    echo "✅ AntiSlop found Rust slop (unwrap/unsafe)."
 else
-    echo "❌ Antislop missed Rust slop!"
+    echo "❌ AntiSlop missed Rust slop!"
 fi
 
 # 4. TypeScript Hygiene Check
@@ -96,17 +96,17 @@ if [ -f "$TSC" ]; then
     $TSC --noEmit --allowJs --skipLibCheck examples/sloppy_code.ts 2> tsc_out.txt || true
     TSC_COUNT=$(grep -c "error" tsc_out.txt || true)
     
-    echo "Running Antislop on examples/sloppy_code.ts..."
+    echo "Running AntiSlop on examples/sloppy_code.ts..."
     $ANTISLOP examples/sloppy_code.ts --json > antislop_ts.json || true
     SLOP_TS=$(grep -o "finding" antislop_ts.json | wc -l)
     
     echo "TypeScript Errors: $TSC_COUNT"
-    echo "Antislop Findings: $SLOP_TS"
+    echo "AntiSlop Findings: $SLOP_TS"
     
     if [ "$SLOP_TS" -gt 0 ]; then
-        echo "✅ Antislop found TypeScript slop."
+        echo "✅ AntiSlop found TypeScript slop."
     else
-        echo "⚠️ Antislop found no TypeScript slop."
+        echo "⚠️ AntiSlop found no TypeScript slop."
     fi
 else
     echo "⚠️ tsc not installed, skipping TS check."
@@ -119,17 +119,17 @@ if command -v go &> /dev/null; then
     go vet examples/sloppy_code.go 2> govet_out.txt || true
     GOVET_COUNT=$(wc -l < govet_out.txt | tr -d ' ')
     
-    echo "Running Antislop on examples/sloppy_code.go..."
+    echo "Running AntiSlop on examples/sloppy_code.go..."
     $ANTISLOP examples/sloppy_code.go --json > antislop_go.json || true
     SLOP_GO=$(grep -o "finding" antislop_go.json | wc -l)
     
     echo "Go Vet Issues:     $GOVET_COUNT"
-    echo "Antislop Findings: $SLOP_GO"
+    echo "AntiSlop Findings: $SLOP_GO"
     
     if [ "$SLOP_GO" -gt 0 ]; then
-        echo "✅ Antislop found Go slop (panic/interface{})."
+        echo "✅ AntiSlop found Go slop (panic/interface{})."
     else
-        echo "⚠️ Antislop found no Go slop."
+        echo "⚠️ AntiSlop found no Go slop."
     fi
 else
     echo "⚠️ Go not installed, skipping Go check."

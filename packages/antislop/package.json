@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/skew202/antislop.git"
   },
-  "author": "Antislop Contributors",
+  "author": "AntiSlop Contributors",
   "license": "MIT OR Apache-2.0",
   "bugs": {
     "url": "https://github.com/skew202/antislop/issues"

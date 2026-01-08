@@ -1,6 +1,6 @@
 # Patterns
 
-Antislop detects four categories of slop patterns.
+AntiSlop detects four categories of slop patterns.
 
 ## Placeholder
 

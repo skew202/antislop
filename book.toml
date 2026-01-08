@@ -1,20 +1,13 @@
 [book]
-title = "Antislop"
-authors = ["Antislop Contributors"]
+authors = ["AntiSlop Contributors"]
 language = "en"
-multilingual = false
 src = "docs"
-
-[build]
-build-dir = "book"
-
-[preprocessor]
+title = "AntiSlop Documentation"
 
 [output.html]
-default-theme = "ayu"
-preferred-dark-theme = "ayu"
 git-repository-url = "https://github.com/skew202/antislop"
-edit-url-template = "https://github.com/skew202/antislop/edit/main/docs/{path}"
+site-url = "/antislop/"
+additional-css = ["docs/theme/custom.css"]
+additional-js = ["docs/theme/mermaid-init.js"]
 
-[output.html.search]
-limit-results = 30
+[preprocessor.index]

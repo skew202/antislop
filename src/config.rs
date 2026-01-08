@@ -1,6 +1,6 @@
 //! Configuration loading and management.
 //!
-//! Antislop uses layered configuration: built-in defaults → config file → CLI overrides.
+//! AntiSlop uses layered configuration: built-in defaults → config file → CLI overrides.
 
 use crate::{Error, Result};
 use regex::Regex;
