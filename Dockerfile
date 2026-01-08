@@ -10,6 +10,7 @@ COPY crates ./crates
 COPY src ./src
 COPY benches ./benches
 COPY config ./config
+COPY data ./data
 
 # Build release binary
 RUN cargo build --release && strip /usr/src/antislop/target/release/antislop
