@@ -2,7 +2,7 @@
     "name": "antislop",
     "displayName": "AntiSlop",
     "description": "AI-generated code slop detection",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "publisher": "antislop",
     "engines": {
         "vscode": "^1.75.0"

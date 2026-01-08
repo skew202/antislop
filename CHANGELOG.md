@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0](https://github.com/skew202/antislop/compare/v0.3.0...v0.4.0) (2026-01-08)
+
+
+### Features
+
+* Enhance CLI output, add hygiene survey, and improve filename checks ([69f71a3](https://github.com/skew202/antislop/commit/69f71a3b64125caccbcbd3993873cd4abcabcb36))
+* reorganize marketing assets and update docs ([268ca2b](https://github.com/skew202/antislop/commit/268ca2b101281ff46bd1b047866da87ce32475a5))
+
+
+### Bug Fixes
+
+* **ci:** allow npm publish to proceed even if crates.io version exists ([ffa065f](https://github.com/skew202/antislop/commit/ffa065f6a48c5351b46a127e42fa80f13b6677e1))
+* **ci:** resolve cargo-deny and docker build failures ([4d0b44e](https://github.com/skew202/antislop/commit/4d0b44e617904f46068cb9400f402100e3bd0eb5))
+* **docker:** add data directory to Dockerfile COPY for hygiene_tools.toml ([b5d56b3](https://github.com/skew202/antislop/commit/b5d56b30a1e1cd28c79986338edf431b5595f903))
+* **docker:** use rust:1.85 for edition2024 support (globset dependency) ([e9ad2ea](https://github.com/skew202/antislop/commit/e9ad2ea89ffd01b8240e370e7ad4e33af1144b5b))
+
+
+### Documentation
+
+* overhaul design to 'Information Architect' style ([bfa521a](https://github.com/skew202/antislop/commit/bfa521a7144e6b3b6a480047dfc6bb4c56318c66))
+
+
+### Miscellaneous
+
+* **npm:** bump package version to 0.3.0 ([ae082c1](https://github.com/skew202/antislop/commit/ae082c1ab46896011936bc9cdb37730a6e356268))
+
+
+### CI/CD
+
+* bump actions/cache from 4 to 5 ([7ec5933](https://github.com/skew202/antislop/commit/7ec5933921d18a2cacbf3993d088ca7952dfd13e))
+* bump actions/setup-node from 4 to 6 ([472be62](https://github.com/skew202/antislop/commit/472be622e1fb1f8ba197a630880e1d6e1cae1c18))
+* bump actions/setup-node from 4 to 6 ([2872eb4](https://github.com/skew202/antislop/commit/2872eb451f639977269c96ada243ce947fb8bf7a))
+
 ## [0.3.0](https://github.com/skew202/antislop/compare/v0.2.1...v0.3.0) (2026-01-07)
 
 
