@@ -87,6 +87,9 @@ mod tests {
             message: message.to_string(),
             match_text: match_text.to_string(),
             pattern_regex: "test".to_string(),
+            source_line: None,
+            context_before: None,
+            context_after: None,
         }
     }
 

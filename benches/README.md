@@ -33,3 +33,4 @@ cargo bench -- scan/scaling
 | `scan/scaling` | 100 to 50K lines scaling |
 | `scan/regex_fallback` | Regex-only mode |
 | `scan/mode_comparison` | Tree-sitter vs regex |
+| `hygiene_survey` | Hygiene survey execution |

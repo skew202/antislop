@@ -47,6 +47,15 @@ pub struct Finding {
     pub match_text: String,
     /// The regex pattern that matched.
     pub pattern_regex: String,
+    /// The full source line containing the finding.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source_line: Option<String>,
+    /// Context line(s) before the finding.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub context_before: Option<String>,
+    /// Context line(s) after the finding.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub context_after: Option<String>,
 }
 
 /// Result of scanning a single file.
@@ -295,6 +304,7 @@ impl Scanner {
         let mut total_score = 0u32;
 
         let comments = self.extract_comments(lang, source);
+        let lines: Vec<&str> = source.lines().collect();
 
         for comment in &comments {
             for pattern in &self.registry.patterns {
@@ -308,6 +318,16 @@ impl Scanner {
                         let severity = pattern.pattern.severity.clone();
                         total_score += severity.score();
 
+                        // Extract context lines (1-indexed to 0-indexed)
+                        let line_idx = comment.line.saturating_sub(1);
+                        let source_line = lines.get(line_idx).map(|s| s.to_string());
+                        let context_before = if line_idx > 0 {
+                            lines.get(line_idx - 1).map(|s| s.to_string())
+                        } else {
+                            None
+                        };
+                        let context_after = lines.get(line_idx + 1).map(|s| s.to_string());
+
                         findings.push(Finding {
                             file: path.to_string(),
                             line: comment.line,
@@ -317,6 +337,9 @@ impl Scanner {
                             message: pattern.pattern.message.clone(),
                             match_text: mat.as_str().to_string(),
                             pattern_regex: pattern.pattern.regex.to_string(),
+                            source_line,
+                            context_before,
+                            context_after,
                         });
                     }
                 }
@@ -466,6 +489,9 @@ mod tests {
             message: "TODO comment found".to_string(),
             match_text: "TODO".to_string(),
             pattern_regex: "(?i)todo".to_string(),
+            source_line: None,
+            context_before: None,
+            context_after: None,
         };
         assert_eq!(finding.file, "test.py");
         assert_eq!(finding.line, 10);
@@ -508,6 +534,9 @@ mod tests {
                 message: "TODO".to_string(),
                 match_text: "TODO".to_string(),
                 pattern_regex: "(?i)todo".to_string(),
+                source_line: None,
+                context_before: None,
+                context_after: None,
             }],
             score: 5,
         }];

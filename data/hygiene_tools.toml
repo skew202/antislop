@@ -1,0 +1,518 @@
+# Hygiene Survey Tool Definitions
+# Linters, formatters, and CI/CD tools for code hygiene detection
+
+[rust]
+name = "Rust"
+marker_files = ["Cargo.toml"]
+
+[[rust.linters]]
+name = "clippy"
+install = "rustup component add clippy"
+description = "Official Rust linter with many helpful warnings"
+config_files = []  # Built-in, detected by usage
+
+[[rust.linters]]
+name = "cargo-deny"
+install = "cargo install cargo-deny"
+description = "Dependency auditing and license checking"
+config_files = ["deny.toml"]
+
+[[rust.linters]]
+name = "cargo-audit"
+install = "cargo install cargo-audit"
+description = "Security vulnerability scanner"
+config_files = []
+
+[[rust.formatters]]
+name = "rustfmt"
+install = "rustup component add rustfmt"
+description = "Official Rust formatter"
+config_files = ["rustfmt.toml", ".rustfmt.toml"]
+
+# ---
+
+[python]
+name = "Python"
+marker_files = ["pyproject.toml", "setup.py", "requirements.txt", "Pipfile", "poetry.lock"]
+
+[[python.linters]]
+name = "ruff"
+install = "pip install ruff"
+description = "Fast Python linter (replaces flake8, isort, pyupgrade)"
+config_files = ["ruff.toml", ".ruff.toml"]
+
+[[python.linters]]
+name = "mypy"
+install = "pip install mypy"
+description = "Static type checker"
+config_files = ["mypy.ini", ".mypy.ini"]
+
+[[python.linters]]
+name = "pylint"
+install = "pip install pylint"
+description = "Comprehensive Python linter"
+config_files = [".pylintrc", "pylintrc"]
+
+[[python.linters]]
+name = "flake8"
+install = "pip install flake8"
+description = "Style guide enforcement"
+config_files = [".flake8", "setup.cfg", "tox.ini"]
+
+[[python.linters]]
+name = "bandit"
+install = "pip install bandit"
+description = "Security vulnerability scanner"
+config_files = [".bandit", "bandit.yaml"]
+
+[[python.linters]]
+name = "pyright"
+install = "pip install pyright"
+description = "Fast static type checker"
+config_files = ["pyrightconfig.json"]
+
+[[python.formatters]]
+name = "black"
+install = "pip install black"
+description = "Opinionated Python formatter"
+config_files = ["pyproject.toml"]
+
+[[python.formatters]]
+name = "ruff format"
+install = "pip install ruff"
+description = "Fast Python formatter (ruff's built-in)"
+config_files = ["ruff.toml", ".ruff.toml"]
+
+[[python.formatters]]
+name = "isort"
+install = "pip install isort"
+description = "Import sorter"
+config_files = [".isort.cfg", "pyproject.toml"]
+
+[[python.formatters]]
+name = "autopep8"
+install = "pip install autopep8"
+description = "PEP 8 autoformatter"
+config_files = []
+
+# ---
+
+[javascript]
+name = "JavaScript"
+marker_files = ["package.json"]
+
+[[javascript.linters]]
+name = "eslint"
+install = "npm install -D eslint"
+description = "Pluggable JavaScript linter"
+config_files = [".eslintrc", ".eslintrc.js", ".eslintrc.json", ".eslintrc.yml", "eslint.config.js", "eslint.config.mjs"]
+
+[[javascript.linters]]
+name = "jshint"
+install = "npm install -D jshint"
+description = "JavaScript code quality tool"
+config_files = [".jshintrc"]
+
+[[javascript.linters]]
+name = "standard"
+install = "npm install -D standard"
+description = "JavaScript Standard Style"
+config_files = []
+
+[[javascript.formatters]]
+name = "prettier"
+install = "npm install -D prettier"
+description = "Opinionated code formatter"
+config_files = [".prettierrc", ".prettierrc.js", ".prettierrc.json", ".prettierrc.yml", "prettier.config.js"]
+
+[[javascript.formatters]]
+name = "dprint"
+install = "npm install -D dprint"
+description = "Fast pluggable formatter"
+config_files = ["dprint.json", ".dprint.json"]
+
+# ---
+
+[typescript]
+name = "TypeScript"
+marker_files = ["tsconfig.json"]
+
+[[typescript.linters]]
+name = "eslint"
+install = "npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin"
+description = "TypeScript-aware ESLint"
+config_files = [".eslintrc", ".eslintrc.js", ".eslintrc.json", "eslint.config.js"]
+
+[[typescript.linters]]
+name = "tsc"
+install = "npm install -D typescript"
+description = "TypeScript compiler (type checking)"
+config_files = ["tsconfig.json"]
+
+[[typescript.formatters]]
+name = "prettier"
+install = "npm install -D prettier"
+description = "Opinionated code formatter"
+config_files = [".prettierrc", ".prettierrc.js", ".prettierrc.json", "prettier.config.js"]
+
+[[typescript.formatters]]
+name = "dprint"
+install = "npm install -D dprint"
+description = "Fast pluggable formatter"
+config_files = ["dprint.json"]
+
+# ---
+
+[go]
+name = "Go"
+marker_files = ["go.mod"]
+
+[[go.linters]]
+name = "go vet"
+install = "go vet ./..."
+description = "Built-in Go static analyzer"
+config_files = []
+
+[[go.linters]]
+name = "golangci-lint"
+install = "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
+description = "Fast Go meta-linter (runs 50+ linters)"
+config_files = [".golangci.yml", ".golangci.yaml", ".golangci.toml"]
+
+[[go.linters]]
+name = "staticcheck"
+install = "go install honnef.co/go/tools/cmd/staticcheck@latest"
+description = "Advanced Go static analysis"
+config_files = ["staticcheck.conf"]
+
+[[go.linters]]
+name = "gosec"
+install = "go install github.com/securego/gosec/v2/cmd/gosec@latest"
+description = "Go security checker"
+config_files = []
+
+[[go.formatters]]
+name = "gofmt"
+install = "gofmt -w ."
+description = "Official Go formatter (built-in)"
+config_files = []
+
+[[go.formatters]]
+name = "goimports"
+install = "go install golang.org/x/tools/cmd/goimports@latest"
+description = "Go formatter with import management"
+config_files = []
+
+[[go.formatters]]
+name = "gofumpt"
+install = "go install mvdan.cc/gofumpt@latest"
+description = "Stricter gofmt"
+config_files = []
+
+# ---
+
+[java]
+name = "Java"
+marker_files = ["pom.xml", "build.gradle", "build.gradle.kts"]
+
+[[java.linters]]
+name = "checkstyle"
+install = "Maven/Gradle plugin"
+description = "Java code style checker"
+config_files = ["checkstyle.xml"]
+
+[[java.linters]]
+name = "spotbugs"
+install = "Maven/Gradle plugin"
+description = "Static analysis for Java bugs"
+config_files = ["spotbugs-exclude.xml"]
+
+[[java.linters]]
+name = "pmd"
+install = "Maven/Gradle plugin"
+description = "Source code analyzer"
+config_files = ["ruleset.xml", "pmd.xml"]
+
+[[java.linters]]
+name = "errorprone"
+install = "Maven/Gradle plugin"
+description = "Compile-time bug detection"
+config_files = []
+
+[[java.formatters]]
+name = "google-java-format"
+install = "Maven/Gradle plugin or JAR"
+description = "Google's Java formatter"
+config_files = []
+
+[[java.formatters]]
+name = "spotless"
+install = "Maven/Gradle plugin"
+description = "Multi-language formatter"
+config_files = []
+
+# ---
+
+[csharp]
+name = "C#"
+marker_files = []  # Detected by .csproj/.sln
+detect_extensions = ["csproj", "sln"]
+
+[[csharp.linters]]
+name = "dotnet format"
+install = "dotnet format"
+description = ".NET code formatter and analyzer"
+config_files = [".editorconfig"]
+
+[[csharp.linters]]
+name = "StyleCop"
+install = "NuGet package"
+description = "C# style and consistency analyzer"
+config_files = ["stylecop.json"]
+
+[[csharp.linters]]
+name = "Roslynator"
+install = "NuGet package"
+description = "Extended Roslyn analyzers"
+config_files = []
+
+[[csharp.formatters]]
+name = "dotnet format"
+install = "dotnet format"
+description = ".NET code formatter"
+config_files = [".editorconfig"]
+
+[[csharp.formatters]]
+name = "CSharpier"
+install = "dotnet tool install csharpier"
+description = "Opinionated C# formatter"
+config_files = [".csharpierrc"]
+
+# ---
+
+[ruby]
+name = "Ruby"
+marker_files = ["Gemfile"]
+
+[[ruby.linters]]
+name = "rubocop"
+install = "gem install rubocop"
+description = "Ruby linter and formatter"
+config_files = [".rubocop.yml"]
+
+[[ruby.linters]]
+name = "reek"
+install = "gem install reek"
+description = "Code smell detector"
+config_files = [".reek.yml"]
+
+[[ruby.linters]]
+name = "brakeman"
+install = "gem install brakeman"
+description = "Rails security scanner"
+config_files = []
+
+[[ruby.formatters]]
+name = "rubocop"
+install = "gem install rubocop"
+description = "Ruby auto-corrector"
+config_files = [".rubocop.yml"]
+
+[[ruby.formatters]]
+name = "standard"
+install = "gem install standard"
+description = "Ruby Standard Style"
+config_files = []
+
+# ---
+
+[php]
+name = "PHP"
+marker_files = ["composer.json"]
+
+[[php.linters]]
+name = "phpstan"
+install = "composer require --dev phpstan/phpstan"
+description = "PHP static analysis"
+config_files = ["phpstan.neon", "phpstan.neon.dist"]
+
+[[php.linters]]
+name = "psalm"
+install = "composer require --dev vimeo/psalm"
+description = "PHP static analysis tool"
+config_files = ["psalm.xml"]
+
+[[php.linters]]
+name = "phpcs"
+install = "composer require --dev squizlabs/php_codesniffer"
+description = "PHP CodeSniffer"
+config_files = ["phpcs.xml", ".phpcs.xml"]
+
+[[php.formatters]]
+name = "php-cs-fixer"
+install = "composer require --dev friendsofphp/php-cs-fixer"
+description = "PHP Coding Standards Fixer"
+config_files = [".php-cs-fixer.php", ".php-cs-fixer.dist.php"]
+
+[[php.formatters]]
+name = "phpcbf"
+install = "composer require --dev squizlabs/php_codesniffer"
+description = "PHP Code Beautifier"
+config_files = []
+
+# ---
+
+[kotlin]
+name = "Kotlin"
+marker_files = ["build.gradle.kts"]
+
+[[kotlin.linters]]
+name = "detekt"
+install = "Gradle plugin"
+description = "Kotlin static analysis"
+config_files = ["detekt.yml"]
+
+[[kotlin.linters]]
+name = "ktlint"
+install = "Gradle plugin or standalone"
+description = "Kotlin linter and formatter"
+config_files = [".editorconfig"]
+
+[[kotlin.formatters]]
+name = "ktlint"
+install = "Gradle plugin or standalone"
+description = "Kotlin formatter"
+config_files = [".editorconfig"]
+
+[[kotlin.formatters]]
+name = "ktfmt"
+install = "Gradle plugin or standalone"
+description = "Kotlin formatter by Google"
+config_files = []
+
+# ---
+
+[swift]
+name = "Swift"
+marker_files = ["Package.swift"]
+
+[[swift.linters]]
+name = "swiftlint"
+install = "brew install swiftlint"
+description = "Swift linter"
+config_files = [".swiftlint.yml"]
+
+[[swift.formatters]]
+name = "swiftformat"
+install = "brew install swiftformat"
+description = "Swift formatter"
+config_files = [".swiftformat"]
+
+[[swift.formatters]]
+name = "swift-format"
+install = "Swift toolchain"
+description = "Official Swift formatter"
+config_files = [".swift-format"]
+
+# ---
+
+[scala]
+name = "Scala"
+marker_files = ["build.sbt"]
+
+[[scala.linters]]
+name = "scalastyle"
+install = "sbt plugin"
+description = "Scala style checker"
+config_files = ["scalastyle-config.xml"]
+
+[[scala.linters]]
+name = "scalafix"
+install = "sbt plugin"
+description = "Scala refactoring and linting"
+config_files = [".scalafix.conf"]
+
+[[scala.formatters]]
+name = "scalafmt"
+install = "sbt plugin"
+description = "Scala formatter"
+config_files = [".scalafmt.conf"]
+
+# ---
+
+[lua]
+name = "Lua"
+marker_files = [".luacheckrc"]
+
+[[lua.linters]]
+name = "luacheck"
+install = "luarocks install luacheck"
+description = "Lua linter"
+config_files = [".luacheckrc"]
+
+[[lua.formatters]]
+name = "stylua"
+install = "cargo install stylua"
+description = "Lua formatter"
+config_files = [".stylua.toml", "stylua.toml"]
+
+# ---
+
+[shell]
+name = "Shell"
+marker_files = []
+
+[[shell.linters]]
+name = "shellcheck"
+install = "apt install shellcheck / brew install shellcheck"
+description = "Shell script static analysis"
+config_files = [".shellcheckrc"]
+
+[[shell.formatters]]
+name = "shfmt"
+install = "go install mvdan.cc/sh/v3/cmd/shfmt@latest"
+description = "Shell formatter"
+config_files = [".editorconfig"]
+
+# ---
+# Usage patterns to detect tools from CI/scripts
+# These patterns detect tool usage even without config files
+
+[detection_patterns]
+# Format: pattern = ["tool_name", is_linter]
+"cargo clippy" = ["clippy", true]
+"cargo +nightly clippy" = ["clippy", true]
+"clippy --" = ["clippy", true]
+"cargo fmt" = ["rustfmt", false]
+"cargo +nightly fmt" = ["rustfmt", false]
+"cargo deny" = ["cargo-deny", true]
+"cargo audit" = ["cargo-audit", true]
+"go vet" = ["go vet", true]
+"golangci-lint" = ["golangci-lint", true]
+"staticcheck" = ["staticcheck", true]
+"gofmt" = ["gofmt", false]
+"goimports" = ["goimports", false]
+"eslint" = ["eslint", true]
+"prettier" = ["prettier", false]
+"dprint" = ["dprint", false]
+"black " = ["black", false]
+"ruff check" = ["ruff", true]
+"ruff format" = ["ruff format", false]
+"mypy" = ["mypy", true]
+"pylint" = ["pylint", true]
+"flake8" = ["flake8", true]
+"bandit" = ["bandit", true]
+"isort" = ["isort", false]
+"rubocop" = ["rubocop", true]
+"phpstan" = ["phpstan", true]
+"psalm" = ["psalm", true]
+"php-cs-fixer" = ["php-cs-fixer", false]
+"ktlint" = ["ktlint", true]
+"detekt" = ["detekt", true]
+"swiftlint" = ["swiftlint", true]
+"swiftformat" = ["swiftformat", false]
+"scalafmt" = ["scalafmt", false]
+"shellcheck" = ["shellcheck", true]
+"shfmt" = ["shfmt", false]
+"luacheck" = ["luacheck", true]
+"stylua" = ["stylua", false]

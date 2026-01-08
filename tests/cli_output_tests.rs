@@ -255,3 +255,43 @@ fn test_patterns_for_category_filtering() {
         assert_eq!(p.category, PatternCategory::Stub);
     }
 }
+
+#[test]
+fn test_hygiene_survey_flag() {
+    // Run hygiene survey on the project root
+    let output = Command::new(antislop_bin())
+        .arg("--hygiene-survey")
+        .arg(".")
+        .output()
+        .unwrap();
+
+    assert!(
+        output.status.success(),
+        "Hygiene survey should complete successfully"
+    );
+
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    // Should contain survey sections
+    assert!(
+        text.contains("CODE") && text.contains("HYGIENE") && text.contains("SURVEY"),
+        "Should show survey header: {}",
+        text
+    );
+    assert!(
+        text.contains("PROJECT DETECTION"),
+        "Should show project detection section"
+    );
+    assert!(
+        text.contains("LINTERS") || text.contains("FORMATTERS"),
+        "Should show linters/formatters section"
+    );
+    assert!(
+        text.contains("CI/CD") || text.contains("PIPELINES"),
+        "Should show CI/CD section"
+    );
+    assert!(
+        text.contains("RECOMMENDATIONS"),
+        "Should show recommendations section"
+    );
+}

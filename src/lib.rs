@@ -27,6 +27,7 @@
 pub mod config;
 pub mod detector;
 pub mod filename_checker;
+pub mod hygiene;
 pub mod profile;
 pub mod report;
 pub mod walker;

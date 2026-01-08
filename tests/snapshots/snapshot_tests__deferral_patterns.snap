@@ -13,7 +13,10 @@ expression: results
       "category": "deferral",
       "message": "Deferral: production code promised later",
       "match_text": "In production this would",
-      "pattern_regex": "(?i)in production.*(would|should|will|need to)"
+      "pattern_regex": "(?i)in production.*(would|should|will|need to)",
+      "source_line": "# In production this would be a real database",
+      "context_before": "# This should be in production",
+      "context_after": "db = mock_database()"
     },
     {
       "file": "deferral.py",
