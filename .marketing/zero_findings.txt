@@ -1,0 +1,4 @@
+$ antislop src/
+
+  ✓ No AI slop detected! Code is clean.
+  Scan complete: 42 files scanned in 45ms.

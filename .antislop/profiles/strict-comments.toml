@@ -1,7 +1,7 @@
 # Strict Comments Profile
 #
 # This profile detects deferral language and temporary code markers.
-# It follows the MECE principle - patterns NOT caught by standard linters.
+# It follows the Orthogonality principle - patterns NOT caught by standard linters.
 
 [metadata]
 name = "strict-comments"

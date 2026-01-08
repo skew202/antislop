@@ -177,7 +177,7 @@ fn validate_ast_query(query: &str) -> Result<()> {
     Ok(())
 }
 
-/// Validate that patterns don't overlap with standard linters (MECE principle).
+/// Validate that patterns don't overlap with standard linters (Orthogonality principle).
 ///
 /// Basic overlap check - looks for patterns that are covered by standard linters
 /// like clippy, eslint, pylint.
@@ -236,14 +236,14 @@ pub fn validate_mece_compliance(profile: &super::Profile) -> Result<MeceReport> 
     })
 }
 
-/// Report from MECE compliance validation.
+/// Report from orthogonality compliance validation.
 #[derive(Debug, Clone)]
 pub struct MeceReport {
-    /// Whether the profile is MECE-compliant.
+    /// Whether the profile is orthogonal (non-overlapping).
     pub is_compliant: bool,
     /// Warnings about potential overlaps (not blocking).
     pub warnings: Vec<String>,
-    /// Violations of MECE principle (blocking).
+    /// Violations of orthogonality principle (blocking).
     pub violations: Vec<String>,
 }
 
@@ -311,7 +311,7 @@ mod tests {
     fn test_validate_mece_compliance() {
         let profile = test_profile();
         let report = validate_mece_compliance(&profile).unwrap();
-        // The TODO pattern should be MECE-compliant
+        // The TODO pattern should be orthogonal (non-overlapping)
         assert!(report.is_compliant);
     }
 

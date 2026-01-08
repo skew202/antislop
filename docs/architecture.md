@@ -44,7 +44,7 @@ Output formatting with human-readable colored terminal output, JSON export, and 
 
 ## Quality Assurance Strategy
 
-AntiSlop uses a **MECE (Mutually Exclusive, Collectively Exhaustive)** strategy with tools like MegaLinter.
+AntiSlop uses an **Orthogonal Strategy** with tools like MegaLinter.
 - **Hygiene Test**: `scripts/check_overlap.py` ensures no pattern overlaps with standard linter defaults.
 - **Goal**: AntiSlop only flags "AI Slop" (intent/laziness), leaving syntax/style to specialized tools.
 

@@ -29,7 +29,7 @@ AntiSlop is built on **First Principles**:
 
 We believe that AI generated code should be treated with **Zero Trust**. Verify everything.
 
-### Pattern Hygiene (MECE)
+### Pattern Hygiene (Orthogonal)
 
 We follow a **Mutually Exclusive, Collectively Exhaustive** strategy with standard linters like MegaLinter.
 *   **AntiSlop**: Detects AI shortcuts (stubs, hallucinated API usage, hedging).
@@ -50,13 +50,7 @@ We follow a **Mutually Exclusive, Collectively Exhaustive** strategy with standa
 
 **The Problem**: Your AI assistant generated this code. It passes `eslint`, `clippy`, and all your linters. But look closer...
 
-```python
-def calculate_user_metrics(user_id: str) -> dict:
-    # TODO: implement actual metrics calculation
-    # For now, just return dummy data
-    # This should work in most cases
-    return {"score": 42, "level": "gold"}  # Placeholder values
-```
+![AntiSlop Demo](.marketing/assets/many_findings.png)
 
 **AntiSlop catches what linters miss:**
 

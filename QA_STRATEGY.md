@@ -16,9 +16,9 @@ We follow a multi-layered testing pyramid with emphasis on:
 
 ---
 
-## Pattern Hygiene (MECE with MegaLinter)
+## Pattern Hygiene (Orthogonal with MegaLinter)
 
-We adhere to a Mutually Exclusive, Collectively Exhaustive (MECE) strategy with standard linters.
+We adhere to an **Orthogonal Strategy** (non-overlapping) with standard linters.
 
 **Rule:** Use AntiSlop ONLY for patterns missed by standard linter defaults.
 - **Static Analysis**: `scripts/check_overlap.py` ensures no pattern regex overlaps with standard linter defaults.

@@ -73,7 +73,7 @@ cargo insta review
 
 ## Adding New Patterns
 
-1.  **Check Pattern Hygiene**: Ensure your pattern is **MECE** with standard linters.
+1.  **Check Pattern Hygiene**: Ensure your pattern is **Orthogonal** (non-overlapping) with standard linters.
     *   Run `python3 scripts/check_overlap.py` to verify no overlap.
     *   If `pylint`, `eslint`, or `clippy` catches it by default, do NOT add it.
 2.  **Edit Config**: Edit `config/default.toml` (or `config/patterns/*.toml`) to add new patterns. Each pattern needs:
