@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Hygiene Test: Check for overlap with standard linters (MECE with MegaLinter).
+Hygiene Test: Check for overlap with standard linters (Orthogonal with MegaLinter).
 Iterates over AntiSlop patterns and checks if they result in standard linter errors.
 dependency-free: uses regex to parse simple TOML.
 """
@@ -145,7 +145,7 @@ def main():
         print("Run: python3 scripts/check_overlap.py")
         sys.exit(1)
     else:
-        print("\n✅ MECE Check Passed: Patterns are orthogonal to standard linters.")
+        print("\n✅ Orthogonality Check Passed: Patterns do not overlap with standard linters.")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,25 @@
+Detect AI-generated code slop: placeholders, hedging, stubs, and deferrals
+
+Usage: antislop [OPTIONS] [PATH]...
+
+Arguments:
+  [PATH]...  Path(s) to scan (defaults to current directory) [default: .]
+
+Options:
+  -c, --config <FILE>            Path to config file
+      --json                     Output in JSON format
+  -m, --max-size <MAX_SIZE>      Maximum file size to scan (KB) [default: 1024]
+  -e, --extensions <EXTENSIONS>  File extensions to scan (comma-separated)
+  -v, --verbose...               Verbose output (-v, -vv, -vvv)
+      --completions <SHELL>      Generate shell completions [possible values: bash, elvish, fish, powershell, zsh]
+      --list-languages           List all supported languages
+      --format <FORMAT>          Output format (human, json, sarif)
+      --print-config             Print default configuration
+      --no-filename-check        Disable filename convention checking
+      --profile <PROFILE>        Load a community profile (file path, URL, or profile name)
+      --list-profiles            Print available profiles
+      --disable <CATEGORIES>     Disable pattern categories (comma-separated: placeholder,stub,deferral,hedging)
+      --only <CATEGORIES>        Only enable specific categories (comma-separated: placeholder,stub,deferral,hedging)
+      --hygiene-survey           Run a code hygiene survey (detect project types, suggest linters/formatters)
+  -h, --help                     Print help
+  -V, --version                  Print version

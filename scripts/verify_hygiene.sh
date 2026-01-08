@@ -1,5 +1,5 @@
 #!/bin/bash
-# Verify Hygiene: Compare AntiSlop findings against standard linters (MECE check)
+# Verify Hygiene: Compare AntiSlop findings against standard linters (Orthogonal check)
 # Usage: ./scripts/verify_hygiene.sh
 
 set -e

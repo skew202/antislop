@@ -1,0 +1,36 @@
+$ antislop --verbose src/
+
+  src/legacy/parser.ts:245:12: CRITICAL [stub]
+    ! Empty block detected
+    → if (err) {}
+    
+  src/legacy/data.py:42:15: CRITICAL [stub]
+    ! Empty function body found
+    → def validate_token() { todo!() }
+
+  src/utils/helpers.js:12:10: MEDIUM [deferral]
+    ! Deferral phrase detected
+    → // for now we just return True
+    
+  src/views/Main.vue:55:1: HIGH [hedging]
+    ! Hedging language detected
+    → // this should work for most cases, hopefully
+
+  src/controllers/UserController.java:102:15: LOW [noise]
+    ! Redundant comment
+    → // gets the user
+    
+  src/tests/MockData.kt:15:5: MEDIUM [stub]
+    ! Placeholder value
+    → var id = ""; // TODO set id
+
+  src/config/settings.go:33:2: MEDIUM [deferral]
+    ! Deferral phrase
+    → // later we should optimize this
+
+  ────────────────────────────────────────────────────────────
+  58 scanned, 7 with findings
+  7 total findings
+  💀 85 sloppy score
+
+  High slop detected. Immediate remediation recommended.

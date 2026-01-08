@@ -1,4 +1,4 @@
-# Pattern Hygiene (MECE)
+# Pattern Hygiene (Orthogonal)
 
 We follow a **Mutually Exclusive, Collectively Exhaustive** strategy with standard linters like MegaLinter.
 

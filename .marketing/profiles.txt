@@ -1,0 +1,13 @@
+$ antislop --list-profiles
+
+  Available Profiles:
+  
+  [Community]
+  • strict-comments  (Enforce strict commenting standards, no "TODO")
+  • no-hedging       (Banish unsure comments like "maybe", "hopefully")
+  • clean-architecture (Enforce domain separation patterns)
+  
+  [Local]
+  • my-custom-rules  (./.antislop/profiles/my-custom-rules.toml)
+  
+  Usage: antislop --profile <NAME>

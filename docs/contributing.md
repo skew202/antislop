@@ -79,7 +79,7 @@ cargo insta review
 
 ## Adding Patterns
 
-1.  **Check Pattern Hygiene**: Run `python3 scripts/check_overlap.py`. We follow a MECE strategy with standard linters.
+1.  **Check Pattern Hygiene**: Run `python3 scripts/check_overlap.py`. We follow an orthogonal strategy with standard linters.
 2.  **Update Config**: Edit files in `config/patterns/` with your pattern definition:
 
 ```toml
