@@ -8,6 +8,8 @@ allow = [
     "MIT",
     "Apache-2.0",
     "BSD-2-Clause",
+    "BSD-3-Clause",
+    "MPL-2.0",
     "Unlicense",
     "Unicode-3.0",
 ]
@@ -21,6 +23,8 @@ highlight = "all"
 # Allow specific duplicate transitive dependencies (common in Rust ecosystem)
 skip = [
     { crate = "syn", reason = "syn 1.x and 2.x are both commonly used" },
+    { crate = "thiserror", reason = "thiserror 1.x and 2.x both used by dependencies" },
+    { crate = "thiserror-impl", reason = "thiserror-impl 1.x and 2.x both used by dependencies" },
 ]
 
 [sources]
