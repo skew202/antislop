@@ -1,4 +1,4 @@
-//! Antislop - AI Slop Linter
+//! AntiSlop - AI Slop Linter
 //!
 //! A blazing-fast, multi-language linter for detecting AI-generated code slop.
 
@@ -13,10 +13,10 @@ use std::fs;
 use std::io;
 use std::path::PathBuf;
 
-/// Antislop - A blazing-fast linter for detecting AI-generated code slop.
+/// AntiSlop - A blazing-fast linter for detecting AI-generated code slop.
 #[derive(Parser, Debug)]
 #[command(name = "antislop")]
-#[command(author = "Antislop Contributors")]
+#[command(author = "AntiSlop Contributors")]
 #[command(version = VERSION)]
 #[command(about = "Detect AI-generated code slop: placeholders, hedging, stubs, and deferrals", long_about = None)]
 #[command(propagate_version = true)]

@@ -28,7 +28,7 @@ antislop --format sarif > results.sarif
 
 ## Profiles
 
-Antislop follows the Unix philosophy: **minimal defaults**, extensible via profiles.
+AntiSlop follows the Unix philosophy: **minimal defaults**, extensible via profiles.
 
 By default, only **Core** patterns (stubs, critical placeholders) are enabled.
 For most projects, we recommend the `antislop-standard` profile.

@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Currently only the latest version of Antislop is supported.
+Currently only the latest version of AntiSlop is supported.
 
 ## Reporting a Vulnerability
 

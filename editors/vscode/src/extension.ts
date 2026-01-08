@@ -36,7 +36,7 @@ export function activate(context: ExtensionContext) {
 
     client = new LanguageClient(
         'antislop',
-        'Antislop Language Server',
+        'AntiSlop Language Server',
         serverOptions,
         clientOptions
     );

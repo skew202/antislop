@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Hygiene Test: Check for overlap with standard linters (MECE with MegaLinter).
-Iterates over Antislop patterns and checks if they result in standard linter errors.
+Iterates over AntiSlop patterns and checks if they result in standard linter errors.
 dependency-free: uses regex to parse simple TOML.
 """
 import sys

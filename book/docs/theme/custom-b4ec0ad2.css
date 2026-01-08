@@ -1,0 +1,414 @@
+/* Minimal, premium dark theme with amber accents (AntiSlop) */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg: #0d0d0d;
+    --fg: #d0d0d0;
+    --accent: #ffb86c;
+    /* Amber/Gold */
+    --accent-dim: #9a6f3b;
+    /* Dimmer Amber */
+    --bg-code: #161616;
+    --border: #333;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Monokai-ish Palette */
+    --mk-bg: #1e1e1e;
+    /* Sleek dark, slightly lighter than body */
+    --mk-fg: #f8f8f2;
+    --mk-comment: #75715e;
+    --mk-yellow: #e6db74;
+    --mk-green: #a6e22e;
+    --mk-blue: #66d9ef;
+    --mk-purple: #ae81ff;
+    --mk-pink: #f92672;
+    --mk-orange: #fd971f;
+}
+
+/* Global Typography */
+body,
+.content,
+.page {
+    font-family: var(--font-sans);
+    background-color: var(--bg) !important;
+    color: var(--fg) !important;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+}
+
+/* Headers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-sans);
+    /* Switch headers to sans for cleaner modern look, or keep mono? User asked for "award winning". Sans usually better for minimal. */
+    color: #fff;
+    font-weight: 700;
+    margin-top: 2.5em;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 2.2em;
+    font-family: var(--font-mono);
+    /* Keep H1 mono for hacker vibe */
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 1.6em;
+    border-bottom: none;
+    /* Cleaner, no border for h2 */
+}
+
+h3 {
+    font-size: 1.3em;
+    color: var(--accent);
+}
+
+/* 
+   CODE BLOCKS - Monokai / Premium Dark
+*/
+/* 
+   CODE BLOCKS - Monokai / Premium Dark
+*/
+/* Force specific override for the .light theme class which defaults to white */
+.light pre,
+.light code,
+.light .hljs,
+.coal pre,
+.coal code,
+.coal .hljs,
+.navy pre,
+.navy code,
+.navy .hljs,
+.rust pre,
+.rust code,
+.rust .hljs,
+.ayu pre,
+.ayu code,
+.ayu .hljs,
+pre,
+code,
+.hljs {
+    background-color: #1e1e1e !important;
+    color: #f8f8f2 !important;
+}
+
+pre {
+    font-family: var(--font-mono) !important;
+    font-size: 0.9em;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 1.2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    overflow-x: auto;
+}
+
+code {
+    font-family: var(--font-mono) !important;
+}
+
+/* Inline Code */
+:not(pre)>code {
+    color: var(--mk-green);
+    /* Monokai Green for contrast */
+    background-color: #252525;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    border: 1px solid #333;
+}
+
+/* Syntax Highlighting (Highlight.js mapping) */
+.hljs-comment,
+.hljs-quote {
+    color: var(--mk-comment);
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-name {
+    color: var(--mk-pink);
+    font-weight: bold;
+}
+
+.hljs-attribute,
+.hljs-symbol,
+.hljs-link {
+    color: var(--mk-green);
+}
+
+.hljs-string,
+.hljs-meta,
+.hljs-addition {
+    color: var(--mk-yellow);
+}
+
+.hljs-title,
+.hljs-section {
+    color: var(--mk-green);
+    font-weight: bold;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+    color: var(--mk-blue);
+    font-style: italic;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-regexp,
+.hljs-attr {
+    color: var(--mk-orange);
+}
+
+.hljs-bullet,
+.hljs-number {
+    color: var(--mk-purple);
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+    color: var(--mk-purple);
+}
+
+.hljs-deletion {
+    color: #f92672;
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}
+
+
+/* 
+   TABLES - "Information Architect" Design (Nielsen Norman / Tufte Style)
+   Principles:
+   1. Data-Ink Ratio maximized (remove non-essential borders/colors).
+   2. No "zebra striping" (distracting in dark mode).
+   3. Alignment over grid lines.
+*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 2rem 0;
+    font-size: 0.9em;
+    background-color: transparent !important;
+    /* STRICT transparency */
+    color: var(--fg);
+}
+
+/* Header: Subtle, grounding, no heavy background */
+thead {
+    border-bottom: 2px solid var(--accent);
+    /* The only strong line */
+}
+
+th {
+    text-align: left;
+    padding: 1rem 0.5rem;
+    color: var(--accent);
+    /* Accent color for headers implies hierarchy */
+    font-family: var(--font-sans);
+    /* Sans-serif for readability */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8em;
+    border: none;
+    /* No individual cell borders */
+}
+
+/* Body: Clean, readable, subtle separation */
+td {
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid #1a1a1a;
+    /* Extremely subtle divider */
+    font-family: var(--font-sans);
+    vertical-align: top;
+    color: #aeaeae;
+    /* Slightly muted for data, code blocks will pop */
+}
+
+/* Emphasis for first column (often the "Key" or "Name") */
+td:first-child {
+    color: var(--fg);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    /* Keys are often technical */
+}
+
+/* Code blocks inside tables should fit seamlessly */
+td code {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333;
+    color: var(--accent) !important;
+    font-size: 0.85em;
+}
+
+/* 
+   Interaction: The "Spotlight" 
+   Instead of striping, we highlight the *active* row the user is reading.
+   This aids scanning without creating visual noise.
+*/
+tr {
+    background-color: transparent !important;
+    /* Force override user agent styles */
+    transition: background-color 0.15s ease;
+}
+
+tr:hover {
+    background-color: rgba(255, 184, 108, 0.03) !important;
+    /* Barely visible amber spotlight */
+}
+
+/* Remove all vertical borders */
+table,
+th,
+td {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Responsive wrapper override if needed */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* Sidebar styling overrides */
+.sidebar {
+    background-color: #050505 !important;
+    border-right: 1px solid #1a1a1a;
+}
+
+.sidebar .sidebar-scrollbox {
+    padding-top: 3rem;
+}
+
+.chapter li a {
+    color: #666;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Active Nav Element: Proper CI styling */
+.chapter li a.active {
+    color: var(--accent) !important;
+    font-weight: 700 !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    opacity: 1 !important;
+}
+
+.chapter li a:hover {
+    color: #ccc;
+}
+
+/* Navigation Buttons (Arrows) */
+.nav-chapters {
+    background-color: transparent !important;
+    /* Remove giant white block */
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 2em;
+    /* Make arrows visible */
+}
+
+/* Minimal hover effect */
+.nav-chapters:hover {
+    background-color: rgba(255, 184, 108, 0.05) !important;
+    /* Subtle accent tint */
+    color: var(--accent) !important;
+    text-decoration: none;
+}
+
+.mobile-nav-chapters {
+    background-color: transparent !important;
+}
+
+/* ASCII Hero update */
+.ascii-hero {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    padding: 3rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #222;
+    margin-bottom: 3rem;
+    font-size: 0.75em;
+    line-height: 1.25;
+    overflow-x: auto;
+    text-align: center;
+    white-space: pre;
+    box-shadow: inset 0 0 20px #000;
+}
+
+/* Print Overrides */
+@media print {
+
+    body,
+    .content {
+        background-color: white !important;
+        color: black !important;
+    }
+
+    .ascii-hero {
+        border: 1px solid #000;
+        color: #000;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    table {
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+    }
+
+    th {
+        border-bottom: 1px solid #000;
+        color: #000;
+    }
+
+    td {
+        border-bottom: 1px solid #ddd;
+        color: #000;
+    }
+
+    pre {
+        border: 1px solid #ccc;
+        background: #f5f5f5 !important;
+        color: #000 !important;
+    }
+
+    code {
+        color: #000 !important;
+    }
+
+    .hljs-keyword {
+        color: #000;
+        font-weight: bold;
+    }
+
+    /* Reset syntax for print */
+    .hljs-string {
+        color: #000;
+        font-style: italic;
+    }
+}

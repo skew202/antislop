@@ -1,10 +1,10 @@
 # Configuration
 
-Antislop uses layered configuration: built-in defaults → config file → CLI flags.
+AntiSlop uses layered configuration: built-in defaults → config file → CLI flags.
 
 ## Config File Locations
 
-Antislop searches for configuration in this order:
+AntiSlop searches for configuration in this order:
 
 1. `--config <FILE>` if provided
 2. `antislop.toml`
@@ -65,7 +65,7 @@ Profiles are reusable pattern collections stored in `.antislop/profiles/`.
 
 ### Profile Locations
 
-Antislop searches for profiles in:
+AntiSlop searches for profiles in:
 1. `.antislop/profiles/<name>.toml` (project-local)
 2. `~/.config/antislop/profiles/<name>.toml` (user)
 3. `~/.cache/antislop/profiles/<name>.toml` (cached remote)

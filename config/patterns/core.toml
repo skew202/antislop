@@ -1,4 +1,4 @@
-# Antislop Core Patterns
+# AntiSlop Core Patterns
 #
 # Minimal, universally-problematic patterns that load by default.
 # For more coverage, use --profile antislop-standard or antislop-strict.

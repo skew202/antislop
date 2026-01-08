@@ -353,7 +353,7 @@ impl ProfileLoader {
                     name: "core".to_string(),
                     description: "Built-in core antislop patterns".to_string(),
                     version: env!("CARGO_PKG_VERSION").to_string(),
-                    author: "Antislop Team".to_string(),
+                    author: "AntiSlop Team".to_string(),
                     url: None,
                     requires_version: None,
                     extends: vec![],

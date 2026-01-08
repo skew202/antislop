@@ -1,6 +1,6 @@
 {
     "name": "antislop",
-    "displayName": "Antislop",
+    "displayName": "AntiSlop",
     "description": "AI-generated code slop detection",
     "version": "0.2.2",
     "publisher": "antislop",
@@ -20,7 +20,7 @@
     "contributes": {
         "configuration": {
             "type": "object",
-            "title": "Antislop",
+            "title": "AntiSlop",
             "properties": {
                 "antislop.trace.server": {
                     "scope": "window",

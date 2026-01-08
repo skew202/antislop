@@ -2,7 +2,7 @@
 //!
 //! A blazing-fast, multi-language linter for detecting AI-generated code slop.
 //!
-//! Antislop identifies lazy placeholders, hedging language, stubs, and deferrals
+//! AntiSlop identifies lazy placeholders, hedging language, stubs, and deferrals
 //! commonly produced by quantized or rushed LLMs.
 //!
 //! ## Example

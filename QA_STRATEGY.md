@@ -20,10 +20,10 @@ We follow a multi-layered testing pyramid with emphasis on:
 
 We adhere to a Mutually Exclusive, Collectively Exhaustive (MECE) strategy with standard linters.
 
-**Rule:** Use Antislop ONLY for patterns missed by standard linter defaults.
+**Rule:** Use AntiSlop ONLY for patterns missed by standard linter defaults.
 - **Static Analysis**: `scripts/check_overlap.py` ensures no pattern regex overlaps with standard linter defaults.
-- **Dynamic Verification**: `scripts/verify_hygiene.sh` runs real linters (Pylint, ESLint, Clippy) against `examples/` to prove Antislop finds unique issues.
-- **Goal**: Antislop only flags "AI Slop" (intent/laziness), leaving syntax/style to specialized tools.
+- **Dynamic Verification**: `scripts/verify_hygiene.sh` runs real linters (Pylint, ESLint, Clippy) against `examples/` to prove AntiSlop finds unique issues.
+- **Goal**: AntiSlop only flags "AI Slop" (intent/laziness), leaving syntax/style to specialized tools.
 
 ---
 

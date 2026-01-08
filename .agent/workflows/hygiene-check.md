@@ -46,11 +46,11 @@ Check for:
 | **husky** | `.husky/` |
 | **lefthook** | `lefthook.yml` |
 
-## Antislop's Unique Value (MECE)
+## AntiSlop's Unique Value (MECE)
 
 Report what antislop catches that these tools DON'T:
 
-| Category | What Antislop Catches | Standard Tools Miss |
+| Category | What AntiSlop Catches | Standard Tools Miss |
 |----------|----------------------|---------------------|
 | **Stubs** | `todo!()`, `pass`, `NotImplementedError` | Some catch syntax, not intent |
 | **Deferrals** | "for now", "temporary", "quick hack" | Never caught |
@@ -72,7 +72,7 @@ After surveying, generate a report:
 - [ ] CI: <platform>
 - [ ] Pre-commit: <name>
 
-## Antislop Unique Value
+## AntiSlop Unique Value
 Based on your setup, antislop will catch:
 - ✅ Stub implementations (`todo!()`, `pass`)
 - ✅ Deferral language ("for now", "temporary")
