@@ -80,6 +80,10 @@ struct Args {
     /// Only enable specific categories (comma-separated: placeholder,stub,deferral,hedging)
     #[arg(long, value_delimiter = ',', value_name = "CATEGORIES")]
     only: Option<Vec<String>>,
+
+    /// Run a code hygiene survey (detect project types, suggest linters/formatters)
+    #[arg(long)]
+    hygiene_survey: bool,
 }
 
 fn main() -> Result<()> {
@@ -102,6 +106,13 @@ fn main() -> Result<()> {
 
     if let Some(shell) = args.completions {
         generate_completions(shell);
+        return Ok(());
+    }
+
+    // Run hygiene survey if requested
+    if args.hygiene_survey {
+        let survey = antislop::hygiene::run_survey(&args.paths);
+        antislop::hygiene::print_report(&survey);
         return Ok(());
     }
 
@@ -190,6 +201,7 @@ fn main() -> Result<()> {
         check_duplicates: false,     // Requires opt-in via config
         min_files_for_convention: 5, // Need 5+ files to establish pattern
         convention_threshold: 0.7,   // 70% must follow convention
+        use_language_hints: false,   // Require project convention before flagging
     };
 
     // Extract naming patterns for duplicate detection

@@ -48,28 +48,64 @@ We follow a **Mutually Exclusive, Collectively Exhaustive** strategy with standa
 
 ## Demo
 
+**The Problem**: Your AI assistant generated this code. It passes `eslint`, `clippy`, and all your linters. But look closer...
+
+```python
+def calculate_user_metrics(user_id: str) -> dict:
+    # TODO: implement actual metrics calculation
+    # For now, just return dummy data
+    # This should work in most cases
+    return {"score": 42, "level": "gold"}  # Placeholder values
 ```
-$ antislop src/
 
-  src/main.rs:42:15: CRITICAL [stub]
-      ! Empty function body found
-      → fn calculate_metrics() { todo!() }
+**Antislop catches what linters miss:**
 
-  src/legacy.py:10:5: MEDIUM [deferral]
-      ! Deferral phrase detected
-      → # for now we just return True
-
-  src/utils.js:5:1: LOW [noise]
-      ! Redundant comment
-      → // utility function
-
-  ────────────────────────────────────────────────────────────
-  📁 15 scanned, 3 with findings
-  ⚠ 3 total findings
-  💀 75 sloppy score
-
-  ⚠⚠⚠ High slop detected
 ```
+$ antislop --profile antislop-standard api/
+
+api/metrics.py 2:5: MEDIUM [placeholder]
+  │ Placeholder: TODO comment
+  │
+  1 │ def calculate_user_metrics(user_id: str) -> dict:
+  2 │     # TODO: implement actual metrics calculation
+          ^^^^
+  3 │     # For now, just return dummy data
+
+api/metrics.py 3:5: HIGH [deferral]
+  │ Deferral: 'for now' indicates incomplete implementation
+  │
+  2 │     # TODO: implement actual metrics calculation
+  3 │     # For now, just return dummy data
+          ^^^^^^^
+  4 │     # This should work in most cases
+
+api/metrics.py 4:5: MEDIUM [hedging]
+  │ Hedging: 'should work' expresses uncertainty
+  │
+  3 │     # For now, just return dummy data
+  4 │     # This should work in most cases
+          ^^^^^^^^^^^^
+  5 │     return {"score": 42, "level": "gold"}  # Placeholder values
+
+api/metrics.py 5:47: HIGH [stub]
+  │ Stub: placeholder/dummy data detected
+  │
+  4 │     # This should work in most cases
+  5 │     return {"score": 42, "level": "gold"}  # Placeholder values
+                                                    ^^^^^^^^^^^
+  6 │
+
+────────────────────────────────────────────────────────────
+📁 12 scanned, 1 with findings
+⚠ 4 total findings
+💀 85 sloppy score
+
+  By severity: 2 HIGH 2 MEDIUM 
+
+⚠⚠⚠ High slop detected - AI shortcuts found!
+```
+
+**Zero false positives. Maximum signal.** Antislop finds the intent gaps that syntax checkers can't see.
 
 ## Performance
 
@@ -132,6 +168,9 @@ antislop --json
 
 # Custom config
 antislop -c custom-config.toml
+
+# Run hygiene survey (detect linters, formatters, CI/CD)
+antislop --hygiene-survey
 ```
 
 ### Profiles

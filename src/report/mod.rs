@@ -102,7 +102,7 @@ impl Reporter {
         Ok(())
     }
 
-    /// Write a single finding to the output.
+    /// Write a single finding to the output with linter-style context.
     fn write_finding(&self, handle: &mut impl Write, finding: &Finding) -> Result<()> {
         let severity_color = |s: &Severity| -> &'static str {
             match s {
@@ -124,14 +124,19 @@ impl Reporter {
         };
 
         let reset = "\x1b[0m";
+        let dim = "\x1b[2m";
+        let bold = "\x1b[1m";
 
-        writeln!(
+        // Header: file:line:col SEVERITY [category]
+        write!(
             handle,
-            "{}{}:{}:{}: ",
-            reset,
+            "{}{}{} {}:{}:{} ",
+            bold,
             finding.file.cyan(),
+            reset,
             finding.line.to_string().dimmed(),
-            finding.column.to_string().dimmed()
+            finding.column.to_string().dimmed(),
+            reset
         )?;
         write!(
             handle,
@@ -148,9 +153,72 @@ impl Reporter {
             reset
         )?;
 
-        writeln!(handle, "    {} {}", "!".yellow(), finding.message.dimmed())?;
+        // Message
+        writeln!(handle, "  {} {}", "│".dimmed(), finding.message.dimmed())?;
+        writeln!(handle, "  {}", "│".dimmed())?;
 
-        writeln!(handle, "    {} {}", "→".blue(), finding.match_text.yellow())?;
+        // Calculate line number width for padding
+        let line_width = finding.line.to_string().len().max(3);
+
+        // Context line before (if available)
+        if let Some(ref before) = finding.context_before {
+            let prev_line = finding.line.saturating_sub(1);
+            writeln!(
+                handle,
+                "{}{:>width$} │{} {}",
+                dim,
+                prev_line,
+                reset,
+                before.dimmed(),
+                width = line_width
+            )?;
+        }
+
+        // Source line with the finding (highlighted)
+        if let Some(ref source) = finding.source_line {
+            writeln!(
+                handle,
+                "{}{:>width$} │{} {}",
+                bold,
+                finding.line,
+                reset,
+                source.yellow(),
+                width = line_width
+            )?;
+
+            // Caret line pointing to the match
+            let col = finding.column.saturating_sub(1);
+            let match_len = finding.match_text.len().max(1);
+            let padding = " ".repeat(col);
+            let caret = "^".repeat(match_len);
+            writeln!(
+                handle,
+                "{:>width$}   {}{}{}{}",
+                "",
+                padding,
+                category_color(&finding.category),
+                caret,
+                reset,
+                width = line_width
+            )?;
+        } else {
+            // Fallback: just show the match text
+            writeln!(handle, "  {} {}", "→".blue(), finding.match_text.yellow())?;
+        }
+
+        // Context line after (if available)
+        if let Some(ref after) = finding.context_after {
+            let next_line = finding.line + 1;
+            writeln!(
+                handle,
+                "{}{:>width$} │{} {}",
+                dim,
+                next_line,
+                reset,
+                after.dimmed(),
+                width = line_width
+            )?;
+        }
 
         writeln!(handle)?;
         Ok(())
@@ -320,6 +388,9 @@ mod tests {
             message: message.to_string(),
             match_text: match_text.to_string(),
             pattern_regex: "test".to_string(),
+            source_line: None,
+            context_before: None,
+            context_after: None,
         }
     }
 

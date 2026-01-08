@@ -23,6 +23,8 @@ pub struct FilenameCheckConfig {
     /// Threshold for convention deviation (0.0-1.0, where 1.0 = all files must match)
     /// Default 0.7 means 70% of files must follow a convention before deviations are flagged
     pub convention_threshold: f64,
+    /// If true, use language conventions as hints when no dominant project convention exists
+    pub use_language_hints: bool,
 }
 
 /// Extract suffix patterns from naming patterns (for duplicate detection).
@@ -174,22 +176,47 @@ impl NamingConvention {
 
     /// Returns the expected convention for a language based on common standards.
     /// This is a weak hint - actual project convention takes precedence.
-    #[allow(dead_code)]
-    fn expected_for_language(extension: &str) -> Option<Self> {
+    pub fn expected_for_language(extension: &str) -> Option<Self> {
         match extension {
-            // Python strongly prefers snake_case for modules
+            // Python: PEP 8 strongly prefers snake_case for modules
             "py" => Some(NamingConvention::SnakeCase),
-            // Rust prefers snake_case for modules
+            // Rust: rustfmt/convention prefers snake_case for modules
             "rs" => Some(NamingConvention::SnakeCase),
-            // Go strongly prefers snake_case
+            // Go: go style guide prefers snake_case
             "go" => Some(NamingConvention::SnakeCase),
-            // JavaScript/TypeScript - no strong preference, depends on tooling
+            // Ruby: convention is snake_case for files
+            "rb" => Some(NamingConvention::SnakeCase),
+            // Lua: convention is snake_case
+            "lua" => Some(NamingConvention::SnakeCase),
+            // JavaScript/TypeScript: no strong preference, varies by framework
+            // React components often use PascalCase, utilities use camelCase
             "js" | "jsx" | "ts" | "tsx" | "mjs" | "cjs" => None,
-            // Java strongly prefers PascalCase for classes (but files match class names)
+            // Java: file must match class name, which is PascalCase
             "java" => Some(NamingConvention::PascalCase),
-            // C# strongly prefers PascalCase
+            // C#: same as Java, file matches class name
             "cs" => Some(NamingConvention::PascalCase),
+            // Kotlin: same as Java, file matches class name
+            "kt" | "kts" => Some(NamingConvention::PascalCase),
+            // PHP: PSR-4 requires files match class names (PascalCase)
+            "php" => Some(NamingConvention::PascalCase),
+            // Swift: convention is PascalCase for files
+            "swift" => Some(NamingConvention::PascalCase),
+            // Scala: follows Java convention
+            "scala" => Some(NamingConvention::PascalCase),
+            // C/C++: no strong convention, often snake_case
+            "c" | "cpp" | "cc" | "cxx" | "h" | "hpp" => Some(NamingConvention::SnakeCase),
             _ => None,
+        }
+    }
+
+    /// Returns a human-readable description of this convention.
+    pub fn description(&self) -> &'static str {
+        match self {
+            NamingConvention::SnakeCase => "snake_case",
+            NamingConvention::CamelCase => "camelCase",
+            NamingConvention::PascalCase => "PascalCase",
+            NamingConvention::KebabCase => "kebab-case",
+            NamingConvention::Unknown => "unknown",
         }
     }
 }
@@ -370,6 +397,9 @@ impl FilenameChecker {
                                 ),
                                 match_text: format!("{}.{}", stem, ext),
                                 pattern_regex: "duplicate_file".to_string(),
+                                source_line: None,
+                                context_before: None,
+                                context_after: None,
                             });
                         }
                         break;
@@ -410,6 +440,9 @@ impl FilenameChecker {
                                 ),
                                 match_text: format!("{}.{}", stem, ext),
                                 pattern_regex: "duplicate_file".to_string(),
+                                source_line: None,
+                                context_before: None,
+                                context_after: None,
                             });
                         }
                         break;
@@ -425,7 +458,7 @@ impl FilenameChecker {
     fn check_convention_breaks(&self) -> Vec<Finding> {
         let mut findings = Vec::new();
 
-        for files in self.grouped_files.values() {
+        for (group, files) in self.grouped_files.iter() {
             // Need minimum files to establish a convention
             if files.len() < self.config.min_files_for_convention {
                 continue;
@@ -460,8 +493,19 @@ impl FilenameChecker {
             let dominant_convention = match dominant {
                 Some(conv) => conv,
                 None => {
-                    // No clear dominant convention - don't flag anything
-                    continue;
+                    // No clear dominant convention
+                    // If language hints are enabled, use the expected convention for this extension
+                    if self.config.use_language_hints {
+                        let ext = group.extension.trim_start_matches('.');
+                        if let Some(expected) = NamingConvention::expected_for_language(ext) {
+                            expected
+                        } else {
+                            // No hint for this language, don't flag
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
                 }
             };
 
@@ -480,16 +524,16 @@ impl FilenameChecker {
                         severity: Severity::Medium,
                         category: crate::config::PatternCategory::NamingConvention,
                         message: format!(
-                            "Naming inconsistency: '{}' uses {:?} but project uses {:?}",
-                            filename, *convention, dominant_convention
-                        )
-                        .to_lowercase()
-                        .replace("snakecase", "snake_case")
-                        .replace("camelcase", "camelCase")
-                        .replace("pascalcase", "PascalCase")
-                        .replace("kebabcase", "kebab-case"),
-                        match_text: path.clone(),
+                            "Naming inconsistency: '{}' uses {} but project uses {}",
+                            filename,
+                            convention.description(),
+                            dominant_convention.description()
+                        ),
+                        match_text: filename.to_string(),
                         pattern_regex: "naming_convention".to_string(),
+                        source_line: None,
+                        context_before: None,
+                        context_after: None,
                     });
                 }
             }
@@ -581,6 +625,7 @@ mod tests {
             check_duplicates: true,
             min_files_for_convention: 5,
             convention_threshold: 0.7,
+            use_language_hints: false,
         };
 
         // Create mock patterns for testing
@@ -625,6 +670,7 @@ mod tests {
             check_duplicates: false,
             min_files_for_convention: 5,
             convention_threshold: 0.6, // 60% threshold
+            use_language_hints: false,
         };
         let mut checker = FilenameChecker::with_config(config);
 
@@ -648,6 +694,7 @@ mod tests {
             check_duplicates: false,
             min_files_for_convention: 5,
             convention_threshold: 0.8, // 80% threshold
+            use_language_hints: false,
         };
         let mut checker = FilenameChecker::with_config(config);
 
@@ -670,6 +717,7 @@ mod tests {
             check_duplicates: false,
             min_files_for_convention: 10, // High threshold
             convention_threshold: 0.6,
+            use_language_hints: false,
         };
         let mut checker = FilenameChecker::with_config(config);
 
@@ -724,6 +772,7 @@ mod tests {
             check_duplicates: true,
             min_files_for_convention: 5,
             convention_threshold: 0.7,
+            use_language_hints: false,
         };
 
         // Create mock patterns for testing

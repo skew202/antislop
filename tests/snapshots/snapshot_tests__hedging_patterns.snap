@@ -13,7 +13,10 @@ expression: results
       "category": "hedging",
       "message": "Hedging: code acknowledges it''s not production-ready",
       "match_text": "In a real world",
-      "pattern_regex": "(?i)in a real.*(app|production|world)"
+      "pattern_regex": "(?i)in a real.*(app|production|world)",
+      "source_line": "    # In a real world scenario, this would be different",
+      "context_before": "",
+      "context_after": "    # but let's just try this approach"
     },
     {
       "file": "hedging.py",

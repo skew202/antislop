@@ -77,7 +77,7 @@ antislop --profile https://example.com/profiles/strict.toml src/
 | `--list-profiles` | List available profiles |
 | `--disable <CATS>` | Disable categories (comma-separated) |
 | `--only <CATS>` | Only enable categories (comma-separated) |
-| `--list-profiles` | List available profiles |
+| `--hygiene-survey` | Run code hygiene survey (detect linters, formatters, CI/CD) |
 | `--json` | Output in JSON format |
 | `--format <FMT>` | Output format: `text`, `json`, `sarif` |
 | `-m, --max-size <KB>` | Maximum file size to scan (default: 1024) |
@@ -86,6 +86,23 @@ antislop --profile https://example.com/profiles/strict.toml src/
 | `--completions <SHELL>` | Generate shell completions |
 | `--list-languages` | List supported languages |
 | `--print-config` | Print default configuration |
+| `--no-filename-check` | Disable filename convention checking |
+
+## Hygiene Survey
+
+Run a comprehensive code hygiene survey to discover project setup and tooling:
+
+```bash
+antislop --hygiene-survey
+```
+
+The survey detects:
+- **Project types** (Rust, Python, JavaScript, TypeScript, Go, Java, etc.)
+- **Linters & Formatters** (clippy, rustfmt, ESLint, Prettier, Ruff, etc.)
+- **CI/CD Pipelines** (GitHub Actions, GitLab CI, Jenkins, CircleCI)
+- **Pre-commit hooks** (pre-commit, husky, lefthook)
+
+It provides recommendations for missing tools based on your project type.
 
 ## Examples
 

@@ -13,7 +13,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: HACK marker",
       "match_text": "HACK:",
-      "pattern_regex": "(?i)\\bHACK\\s*:"
+      "pattern_regex": "(?i)\\bHACK\\s*:",
+      "source_line": "    # HACK: this is a quick workaround",
+      "context_before": "    # CRITICAL: security vulnerability - fix immediately",
+      "context_after": "    # FIXME: refactor this later"
     },
     {
       "file": "severity.py",
@@ -23,7 +26,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: FIXME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)\\bFIXME\\s*:"
+      "pattern_regex": "(?i)\\bFIXME\\s*:",
+      "source_line": "    # FIXME: refactor this later",
+      "context_before": "    # HACK: this is a quick workaround",
+      "context_after": "    # TODO: implement properly"
     },
     {
       "file": "severity.py",
@@ -33,7 +39,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: FIX ME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:"
+      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:",
+      "source_line": "    # FIXME: refactor this later",
+      "context_before": "    # HACK: this is a quick workaround",
+      "context_after": "    # TODO: implement properly"
     },
     {
       "file": "severity.py",
@@ -43,7 +52,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)\\bTODO\\s*:"
+      "pattern_regex": "(?i)\\bTODO\\s*:",
+      "source_line": "    # TODO: implement properly",
+      "context_before": "    # FIXME: refactor this later",
+      "context_after": "    pass"
     },
     {
       "file": "severity.py",
@@ -53,7 +65,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: TO DO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:",
+      "source_line": "    # TODO: implement properly",
+      "context_before": "    # FIXME: refactor this later",
+      "context_after": "    pass"
     },
     {
       "file": "severity.py",
@@ -63,7 +78,10 @@ expression: results
       "category": "stub",
       "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement",
+      "source_line": "    # TODO: implement properly",
+      "context_before": "    # FIXME: refactor this later",
+      "context_after": "    pass"
     },
     {
       "file": "severity.py",

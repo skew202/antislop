@@ -13,7 +13,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: TODO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)\\bTODO\\s*:"
+      "pattern_regex": "(?i)\\bTODO\\s*:",
+      "source_line": "    # TODO: implement validation with json schema",
+      "context_before": "def process_data(data):",
+      "context_after": "    # FIXME: handle edge cases where data is None"
     },
     {
       "file": "placeholder.py",
@@ -23,7 +26,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: TO DO marker",
       "match_text": "TODO:",
-      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:"
+      "pattern_regex": "(?i)\\bTO\\s*DO\\s*:",
+      "source_line": "    # TODO: implement validation with json schema",
+      "context_before": "def process_data(data):",
+      "context_after": "    # FIXME: handle edge cases where data is None"
     },
     {
       "file": "placeholder.py",
@@ -33,7 +39,10 @@ expression: results
       "category": "stub",
       "message": "Stub: TODO with implementation note",
       "match_text": "TODO: implement",
-      "pattern_regex": "(?i)TODO\\s*:?\\s*implement"
+      "pattern_regex": "(?i)TODO\\s*:?\\s*implement",
+      "source_line": "    # TODO: implement validation with json schema",
+      "context_before": "def process_data(data):",
+      "context_after": "    # FIXME: handle edge cases where data is None"
     },
     {
       "file": "placeholder.py",
@@ -43,7 +52,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: FIXME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)\\bFIXME\\s*:"
+      "pattern_regex": "(?i)\\bFIXME\\s*:",
+      "source_line": "    # FIXME: handle edge cases where data is None",
+      "context_before": "    # TODO: implement validation with json schema",
+      "context_after": "    # HACK: quick workaround for now"
     },
     {
       "file": "placeholder.py",
@@ -53,7 +65,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: FIX ME marker",
       "match_text": "FIXME:",
-      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:"
+      "pattern_regex": "(?i)\\bFIX\\s*ME\\s*:",
+      "source_line": "    # FIXME: handle edge cases where data is None",
+      "context_before": "    # TODO: implement validation with json schema",
+      "context_after": "    # HACK: quick workaround for now"
     },
     {
       "file": "placeholder.py",
@@ -63,7 +78,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: HACK marker",
       "match_text": "HACK:",
-      "pattern_regex": "(?i)\\bHACK\\s*:"
+      "pattern_regex": "(?i)\\bHACK\\s*:",
+      "source_line": "    # HACK: quick workaround for now",
+      "context_before": "    # FIXME: handle edge cases where data is None",
+      "context_after": "    # XXX urgent issue here"
     },
     {
       "file": "placeholder.py",
@@ -73,7 +91,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: XXX critical marker",
       "match_text": "XXX",
-      "pattern_regex": "(?i)\\bXXX\\b"
+      "pattern_regex": "(?i)\\bXXX\\b",
+      "source_line": "    # XXX urgent issue here",
+      "context_before": "    # HACK: quick workaround for now",
+      "context_after": "    # NOTE: important reminder"
     },
     {
       "file": "placeholder.py",
@@ -83,7 +104,10 @@ expression: results
       "category": "placeholder",
       "message": "Placeholder: BUG marker",
       "match_text": "BUG:",
-      "pattern_regex": "(?i)\\bBUG\\s*:"
+      "pattern_regex": "(?i)\\bBUG\\s*:",
+      "source_line": "# BUG: known issue in production",
+      "context_before": "# REVIEW: check this later",
+      "context_after": "# CLEANUP: technical debt"
     },
     {
       "file": "placeholder.py",

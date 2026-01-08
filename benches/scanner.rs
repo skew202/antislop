@@ -193,6 +193,23 @@ fn bench_treesitter_vs_regex(c: &mut Criterion) {
     group.finish();
 }
 
+/// Benchmark hygiene survey
+fn bench_hygiene_survey(c: &mut Criterion) {
+    use std::path::PathBuf;
+
+    let mut group = c.benchmark_group("hygiene_survey");
+
+    // Benchmark survey on the project root
+    group.bench_function("project_root", |b| {
+        b.iter(|| {
+            let paths = vec![PathBuf::from(".")];
+            antislop::hygiene::run_survey(black_box(&paths))
+        })
+    });
+
+    group.finish();
+}
+
 criterion_group!(
     benches,
     bench_python,
@@ -203,5 +220,6 @@ criterion_group!(
     bench_scaling,
     bench_regex_fallback,
     bench_treesitter_vs_regex,
+    bench_hygiene_survey,
 );
 criterion_main!(benches);

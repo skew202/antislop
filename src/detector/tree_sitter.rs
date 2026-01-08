@@ -124,6 +124,9 @@ impl TreeSitterExtractor {
                         message: pattern.message.clone(),
                         match_text: text,
                         pattern_regex: pattern.regex.to_string(),
+                        source_line: None, // TODO: Extract from source
+                        context_before: None,
+                        context_after: None,
                     });
                 }
             }
