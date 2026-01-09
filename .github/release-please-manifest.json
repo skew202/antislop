@@ -1,6 +1,6 @@
 {
-  ".": "1.0.0",
-  "packages/antislop": "1.0.0",
-  "editors/vscode": "1.0.0",
-  "crates/antislop-lsp": "1.0.0"
+  ".": "1.1.0",
+  "packages/antislop": "1.1.0",
+  "editors/vscode": "1.1.0",
+  "crates/antislop-lsp": "1.0.1"
 }
