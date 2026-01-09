@@ -3,7 +3,7 @@
 [![CI](https://github.com/skew202/antislop/actions/workflows/ci.yml/badge.svg)](https://github.com/skew202/antislop/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/antislop.svg)](https://crates.io/crates/antislop)
 [![npm](https://img.shields.io/npm/v/antislop.svg)](https://www.npmjs.com/package/antislop)
-[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://skew202.github.io/antislop/antislop/)
+[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://skew202.github.io/antislop/)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](https://github.com/skew202/antislop)
 
 **A blazing-fast, multi-language linter for detecting AI-generated code slop.**
