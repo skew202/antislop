@@ -1,6 +1,6 @@
 {
   "name": "antislop",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A blazing-fast, multi-language linter for detecting AI-generated code slop",
   "bin": {
     "antislop": "bin/antislop"
