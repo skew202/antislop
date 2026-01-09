@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0] (2026-01-09)
+
+### Features
+
+* Unified versioning across all components
+* Production release v1.0.0
+
 ## [0.2.3](https://github.com/skew202/antislop/compare/v0.2.2...v0.2.3) (2026-01-08)
 
 

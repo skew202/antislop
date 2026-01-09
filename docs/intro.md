@@ -11,7 +11,7 @@
 
 **AntiSlop** is a blazing-fast, multi-language linter for detecting AI-generated code slop.
 
-![AntiSlop Demo](../.marketing/assets/many_findings.png)
+![AntiSlop Demo](assets/many_findings.png)
 
 ## What is Slop?
 
