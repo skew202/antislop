@@ -47,7 +47,7 @@ scala = ["tree-sitter", "dep:tree-sitter-scala"]
 anyhow = "1.0"
 clap = { version = "4.5", features = ["derive", "cargo", "unicode"] }
 clap_complete = "4.5"
-dirs = "5"
+dirs = "6"
 globset = "0.4"
 ignore = "0.4"
 owo-colors = "4.1"
