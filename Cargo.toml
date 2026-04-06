@@ -65,7 +65,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 ureq = { version = "2.11", optional = true, default-features = false, features = ["tls"] }
 
 # Tree-sitter core and language grammars
-tree-sitter = { version = "0.24", optional = true }
+tree-sitter = { version = "0.26", optional = true }
 tree-sitter-python = { version = "0.23", optional = true }
 tree-sitter-javascript = { version = "0.23", optional = true }
 tree-sitter-typescript = { version = "0.23", optional = true }
