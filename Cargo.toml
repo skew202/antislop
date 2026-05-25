@@ -50,7 +50,7 @@ clap_complete = "4.5"
 dirs = "5"
 globset = "0.4"
 ignore = "0.4"
-owo-colors = "4.1"
+owo-colors = "4.3"
 rayon = { version = "1.10", optional = true }
 regex = "1.11"
 semver = "1.0"
